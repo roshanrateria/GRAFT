@@ -1,4 +1,7 @@
-// Ledger package - hash-chain ledger logic
-// Exports will be added as implementation progresses
-export {};
+// Types
+export { EventType, GENESIS_PREV_HASH } from './types.js';
+// Canonical JSON utilities
+export { sortedKeys, canonicalStringify } from './canonical-json.js';
+// Verification
+export { computeHash, verifyChain } from './verify.js';
 //# sourceMappingURL=index.js.map
