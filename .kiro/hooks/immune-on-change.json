@@ -1,0 +1,15 @@
+{
+  "version": "v1",
+  "hooks": [
+    {
+      "name": "Run immune tests on organ/immune changes",
+      "trigger": "PostFileSave",
+      "description": "Run immune system tests when organ files or immune package files are saved",
+      "matcher": "(organs|packages/immune)/.*",
+      "action": {
+        "type": "command",
+        "command": "pnpm test:immune"
+      }
+    }
+  ]
+}

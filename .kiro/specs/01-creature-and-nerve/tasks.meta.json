@@ -1,0 +1,413 @@
+{
+  "pbtResults": {},
+  "executionHistory": {
+    "Create `packages/nerve/src/types.ts` with message type definitions": [
+      {
+        "executionId": "9be5a080-38ad-4a7e-9358-ac51ee346c23",
+        "chatSessionId": "sess_d078a70e-00a5-4e64-b5c5-3c235a916aeb",
+        "timestamp": 1794205317529
+      },
+      {
+        "executionId": "9be5a080-38ad-4a7e-9358-ac51ee346c23",
+        "chatSessionId": "sess_d078a70e-00a5-4e64-b5c5-3c235a916aeb",
+        "timestamp": 1794205332004
+      },
+      {
+        "executionId": "9be5a080-38ad-4a7e-9358-ac51ee346c23",
+        "chatSessionId": "sess_d078a70e-00a5-4e64-b5c5-3c235a916aeb",
+        "timestamp": 1794205469873
+      }
+    ],
+    "Create `packages/nerve/src/schemas.ts` with zod schemas for all messages": [
+      {
+        "executionId": "9be5a080-38ad-4a7e-9358-ac51ee346c23",
+        "chatSessionId": "sess_d078a70e-00a5-4e64-b5c5-3c235a916aeb",
+        "timestamp": 1794205317613
+      },
+      {
+        "executionId": "9be5a080-38ad-4a7e-9358-ac51ee346c23",
+        "chatSessionId": "sess_d078a70e-00a5-4e64-b5c5-3c235a916aeb",
+        "timestamp": 1794205475227
+      },
+      {
+        "executionId": "9be5a080-38ad-4a7e-9358-ac51ee346c23",
+        "chatSessionId": "sess_d078a70e-00a5-4e64-b5c5-3c235a916aeb",
+        "timestamp": 1794205571963
+      }
+    ],
+    "Create `packages/nerve/src/protocol.ts` with protocol constants": [
+      {
+        "executionId": "9be5a080-38ad-4a7e-9358-ac51ee346c23",
+        "chatSessionId": "sess_d078a70e-00a5-4e64-b5c5-3c235a916aeb",
+        "timestamp": 1794205317664
+      },
+      {
+        "executionId": "9be5a080-38ad-4a7e-9358-ac51ee346c23",
+        "chatSessionId": "sess_d078a70e-00a5-4e64-b5c5-3c235a916aeb",
+        "timestamp": 1794205594748
+      },
+      {
+        "executionId": "9be5a080-38ad-4a7e-9358-ac51ee346c23",
+        "chatSessionId": "sess_d078a70e-00a5-4e64-b5c5-3c235a916aeb",
+        "timestamp": 1794205756635
+      }
+    ],
+    "Write unit tests for schema validation": [
+      {
+        "executionId": "9be5a080-38ad-4a7e-9358-ac51ee346c23",
+        "chatSessionId": "sess_d078a70e-00a5-4e64-b5c5-3c235a916aeb",
+        "timestamp": 1794205317712
+      },
+      {
+        "executionId": "9be5a080-38ad-4a7e-9358-ac51ee346c23",
+        "chatSessionId": "sess_d078a70e-00a5-4e64-b5c5-3c235a916aeb",
+        "timestamp": 1794205768682
+      },
+      {
+        "executionId": "9be5a080-38ad-4a7e-9358-ac51ee346c23",
+        "chatSessionId": "sess_d078a70e-00a5-4e64-b5c5-3c235a916aeb",
+        "timestamp": 1794206104230
+      }
+    ],
+    "Create `packages/nerve/src/tissue.ts` with CSS tokens and chart helpers": [
+      {
+        "executionId": "9be5a080-38ad-4a7e-9358-ac51ee346c23",
+        "chatSessionId": "sess_d078a70e-00a5-4e64-b5c5-3c235a916aeb",
+        "timestamp": 1794205317777
+      },
+      {
+        "executionId": "9be5a080-38ad-4a7e-9358-ac51ee346c23",
+        "chatSessionId": "sess_d078a70e-00a5-4e64-b5c5-3c235a916aeb",
+        "timestamp": 1794206126967
+      },
+      {
+        "executionId": "9be5a080-38ad-4a7e-9358-ac51ee346c23",
+        "chatSessionId": "sess_d078a70e-00a5-4e64-b5c5-3c235a916aeb",
+        "timestamp": 1794206320410
+      }
+    ],
+    "Create `packages/nerve/src/tissue.css` with base styles": [
+      {
+        "executionId": "9be5a080-38ad-4a7e-9358-ac51ee346c23",
+        "chatSessionId": "sess_d078a70e-00a5-4e64-b5c5-3c235a916aeb",
+        "timestamp": 1794205317819
+      },
+      {
+        "executionId": "9be5a080-38ad-4a7e-9358-ac51ee346c23",
+        "chatSessionId": "sess_d078a70e-00a5-4e64-b5c5-3c235a916aeb",
+        "timestamp": 1794206344549
+      },
+      {
+        "executionId": "9be5a080-38ad-4a7e-9358-ac51ee346c23",
+        "chatSessionId": "sess_d078a70e-00a5-4e64-b5c5-3c235a916aeb",
+        "timestamp": 1794206525951
+      }
+    ],
+    "Write tests for tissue helpers": [
+      {
+        "executionId": "9be5a080-38ad-4a7e-9358-ac51ee346c23",
+        "chatSessionId": "sess_d078a70e-00a5-4e64-b5c5-3c235a916aeb",
+        "timestamp": 1794205317863
+      },
+      {
+        "executionId": "9be5a080-38ad-4a7e-9358-ac51ee346c23",
+        "chatSessionId": "sess_d078a70e-00a5-4e64-b5c5-3c235a916aeb",
+        "timestamp": 1794206537534
+      },
+      {
+        "executionId": "75478113-42b1-4cb3-9739-b26769ea69c7",
+        "chatSessionId": "sess_d078a70e-00a5-4e64-b5c5-3c235a916aeb",
+        "timestamp": 1794206892357
+      }
+    ],
+    "Create `apps/server/src/seed.ts` with deterministic data generator": [
+      {
+        "executionId": "9be5a080-38ad-4a7e-9358-ac51ee346c23",
+        "chatSessionId": "sess_d078a70e-00a5-4e64-b5c5-3c235a916aeb",
+        "timestamp": 1794205317906
+      },
+      {
+        "executionId": "75478113-42b1-4cb3-9739-b26769ea69c7",
+        "chatSessionId": "sess_d078a70e-00a5-4e64-b5c5-3c235a916aeb",
+        "timestamp": 1794206922652
+      },
+      {
+        "executionId": "75478113-42b1-4cb3-9739-b26769ea69c7",
+        "chatSessionId": "sess_d078a70e-00a5-4e64-b5c5-3c235a916aeb",
+        "timestamp": 1794207503145
+      }
+    ],
+    "Generate 90 days of plausible mood, tasks, habits, calendar data": [
+      {
+        "executionId": "9be5a080-38ad-4a7e-9358-ac51ee346c23",
+        "chatSessionId": "sess_d078a70e-00a5-4e64-b5c5-3c235a916aeb",
+        "timestamp": 1794205317949
+      },
+      {
+        "executionId": "75478113-42b1-4cb3-9739-b26769ea69c7",
+        "chatSessionId": "sess_d078a70e-00a5-4e64-b5c5-3c235a916aeb",
+        "timestamp": 1794207548527
+      }
+    ],
+    "Use seeded RNG for reproducibility": [
+      {
+        "executionId": "9be5a080-38ad-4a7e-9358-ac51ee346c23",
+        "chatSessionId": "sess_d078a70e-00a5-4e64-b5c5-3c235a916aeb",
+        "timestamp": 1794205317992
+      },
+      {
+        "executionId": "75478113-42b1-4cb3-9739-b26769ea69c7",
+        "chatSessionId": "sess_d078a70e-00a5-4e64-b5c5-3c235a916aeb",
+        "timestamp": 1794207560743
+      }
+    ],
+    "Write tests verifying determinism": [
+      {
+        "executionId": "9be5a080-38ad-4a7e-9358-ac51ee346c23",
+        "chatSessionId": "sess_d078a70e-00a5-4e64-b5c5-3c235a916aeb",
+        "timestamp": 1794205318035
+      },
+      {
+        "executionId": "75478113-42b1-4cb3-9739-b26769ea69c7",
+        "chatSessionId": "sess_d078a70e-00a5-4e64-b5c5-3c235a916aeb",
+        "timestamp": 1794207575843
+      }
+    ],
+    "Create `apps/web/src/Creature.tsx` with slot grid component": [
+      {
+        "executionId": "9be5a080-38ad-4a7e-9358-ac51ee346c23",
+        "chatSessionId": "sess_d078a70e-00a5-4e64-b5c5-3c235a916aeb",
+        "timestamp": 1794205318078
+      },
+      {
+        "executionId": "75478113-42b1-4cb3-9739-b26769ea69c7",
+        "chatSessionId": "sess_d078a70e-00a5-4e64-b5c5-3c235a916aeb",
+        "timestamp": 1794207607229
+      },
+      {
+        "executionId": "a3445b9b-3314-44df-9d20-f61192eede4c",
+        "chatSessionId": "sess_d078a70e-00a5-4e64-b5c5-3c235a916aeb",
+        "timestamp": 1794224985455
+      },
+      {
+        "executionId": "a3445b9b-3314-44df-9d20-f61192eede4c",
+        "chatSessionId": "sess_d078a70e-00a5-4e64-b5c5-3c235a916aeb",
+        "timestamp": 1794225545840
+      }
+    ],
+    "Create `apps/web/src/DataStore.ts` with Zustand store": [
+      {
+        "executionId": "9be5a080-38ad-4a7e-9358-ac51ee346c23",
+        "chatSessionId": "sess_d078a70e-00a5-4e64-b5c5-3c235a916aeb",
+        "timestamp": 1794205318123
+      },
+      {
+        "executionId": "a3445b9b-3314-44df-9d20-f61192eede4c",
+        "chatSessionId": "sess_d078a70e-00a5-4e64-b5c5-3c235a916aeb",
+        "timestamp": 1794225546492
+      }
+    ],
+    "Create `apps/web/src/SandboxHost.tsx` for iframe management": [
+      {
+        "executionId": "9be5a080-38ad-4a7e-9358-ac51ee346c23",
+        "chatSessionId": "sess_d078a70e-00a5-4e64-b5c5-3c235a916aeb",
+        "timestamp": 1794205318166
+      },
+      {
+        "executionId": "a3445b9b-3314-44df-9d20-f61192eede4c",
+        "chatSessionId": "sess_d078a70e-00a5-4e64-b5c5-3c235a916aeb",
+        "timestamp": 1794225569704
+      }
+    ],
+    "Write component tests": [
+      {
+        "executionId": "9be5a080-38ad-4a7e-9358-ac51ee346c23",
+        "chatSessionId": "sess_d078a70e-00a5-4e64-b5c5-3c235a916aeb",
+        "timestamp": 1794205318210
+      },
+      {
+        "executionId": "a3445b9b-3314-44df-9d20-f61192eede4c",
+        "chatSessionId": "sess_d078a70e-00a5-4e64-b5c5-3c235a916aeb",
+        "timestamp": 1794225547751
+      }
+    ],
+    "Create `apps/web/src/NerveHost.ts` with message router": [
+      {
+        "executionId": "9be5a080-38ad-4a7e-9358-ac51ee346c23",
+        "chatSessionId": "sess_d078a70e-00a5-4e64-b5c5-3c235a916aeb",
+        "timestamp": 1794205318253
+      },
+      {
+        "executionId": "a3445b9b-3314-44df-9d20-f61192eede4c",
+        "chatSessionId": "sess_d078a70e-00a5-4e64-b5c5-3c235a916aeb",
+        "timestamp": 1794225585814
+      },
+      {
+        "executionId": "a3445b9b-3314-44df-9d20-f61192eede4c",
+        "chatSessionId": "sess_d078a70e-00a5-4e64-b5c5-3c235a916aeb",
+        "timestamp": 1794226160124
+      }
+    ],
+    "Implement permission checking": [
+      {
+        "executionId": "9be5a080-38ad-4a7e-9358-ac51ee346c23",
+        "chatSessionId": "sess_d078a70e-00a5-4e64-b5c5-3c235a916aeb",
+        "timestamp": 1794205318299
+      },
+      {
+        "executionId": "a3445b9b-3314-44df-9d20-f61192eede4c",
+        "chatSessionId": "sess_d078a70e-00a5-4e64-b5c5-3c235a916aeb",
+        "timestamp": 1794226181652
+      }
+    ],
+    "Implement rate limiting (20 msg/sec)": [
+      {
+        "executionId": "9be5a080-38ad-4a7e-9358-ac51ee346c23",
+        "chatSessionId": "sess_d078a70e-00a5-4e64-b5c5-3c235a916aeb",
+        "timestamp": 1794205318343
+      },
+      {
+        "executionId": "a3445b9b-3314-44df-9d20-f61192eede4c",
+        "chatSessionId": "sess_d078a70e-00a5-4e64-b5c5-3c235a916aeb",
+        "timestamp": 1794226182423
+      }
+    ],
+    "Implement payload size check (16 KB max)": [
+      {
+        "executionId": "9be5a080-38ad-4a7e-9358-ac51ee346c23",
+        "chatSessionId": "sess_d078a70e-00a5-4e64-b5c5-3c235a916aeb",
+        "timestamp": 1794205318396
+      },
+      {
+        "executionId": "a3445b9b-3314-44df-9d20-f61192eede4c",
+        "chatSessionId": "sess_d078a70e-00a5-4e64-b5c5-3c235a916aeb",
+        "timestamp": 1794226184214
+      }
+    ],
+    "Write unit tests": [
+      {
+        "executionId": "9be5a080-38ad-4a7e-9358-ac51ee346c23",
+        "chatSessionId": "sess_d078a70e-00a5-4e64-b5c5-3c235a916aeb",
+        "timestamp": 1794205318467
+      },
+      {
+        "executionId": "a3445b9b-3314-44df-9d20-f61192eede4c",
+        "chatSessionId": "sess_d078a70e-00a5-4e64-b5c5-3c235a916aeb",
+        "timestamp": 1794226184613
+      }
+    ],
+    "Create `organs/handwritten/mood-weather/manifest.json`": [
+      {
+        "executionId": "9be5a080-38ad-4a7e-9358-ac51ee346c23",
+        "chatSessionId": "sess_d078a70e-00a5-4e64-b5c5-3c235a916aeb",
+        "timestamp": 1794205318510
+      },
+      {
+        "executionId": "a3445b9b-3314-44df-9d20-f61192eede4c",
+        "chatSessionId": "sess_d078a70e-00a5-4e64-b5c5-3c235a916aeb",
+        "timestamp": 1794226219351
+      },
+      {
+        "executionId": "a3445b9b-3314-44df-9d20-f61192eede4c",
+        "chatSessionId": "sess_d078a70e-00a5-4e64-b5c5-3c235a916aeb",
+        "timestamp": 1794226488777
+      }
+    ],
+    "Create `organs/handwritten/mood-weather/index.html`": [
+      {
+        "executionId": "9be5a080-38ad-4a7e-9358-ac51ee346c23",
+        "chatSessionId": "sess_d078a70e-00a5-4e64-b5c5-3c235a916aeb",
+        "timestamp": 1794205318554
+      },
+      {
+        "executionId": "a3445b9b-3314-44df-9d20-f61192eede4c",
+        "chatSessionId": "sess_d078a70e-00a5-4e64-b5c5-3c235a916aeb",
+        "timestamp": 1794226489182
+      }
+    ],
+    "Create `organs/handwritten/mood-weather/spec.md`": [
+      {
+        "executionId": "9be5a080-38ad-4a7e-9358-ac51ee346c23",
+        "chatSessionId": "sess_d078a70e-00a5-4e64-b5c5-3c235a916aeb",
+        "timestamp": 1794205318596
+      },
+      {
+        "executionId": "a3445b9b-3314-44df-9d20-f61192eede4c",
+        "chatSessionId": "sess_d078a70e-00a5-4e64-b5c5-3c235a916aeb",
+        "timestamp": 1794226489599
+      }
+    ],
+    "Create `organs/handwritten/mood-weather/properties.js`": [
+      {
+        "executionId": "9be5a080-38ad-4a7e-9358-ac51ee346c23",
+        "chatSessionId": "sess_d078a70e-00a5-4e64-b5c5-3c235a916aeb",
+        "timestamp": 1794205318640
+      },
+      {
+        "executionId": "a3445b9b-3314-44df-9d20-f61192eede4c",
+        "chatSessionId": "sess_d078a70e-00a5-4e64-b5c5-3c235a916aeb",
+        "timestamp": 1794226490009
+      }
+    ],
+    "Verify it renders in sandbox and reads seeded data": [
+      {
+        "executionId": "9be5a080-38ad-4a7e-9358-ac51ee346c23",
+        "chatSessionId": "sess_d078a70e-00a5-4e64-b5c5-3c235a916aeb",
+        "timestamp": 1794205318683
+      },
+      {
+        "executionId": "a3445b9b-3314-44df-9d20-f61192eede4c",
+        "chatSessionId": "sess_d078a70e-00a5-4e64-b5c5-3c235a916aeb",
+        "timestamp": 1794226490387
+      }
+    ],
+    "Mood Weather organ renders in sandbox": [
+      {
+        "executionId": "9be5a080-38ad-4a7e-9358-ac51ee346c23",
+        "chatSessionId": "sess_d078a70e-00a5-4e64-b5c5-3c235a916aeb",
+        "timestamp": 1794205318726
+      },
+      {
+        "executionId": "a3445b9b-3314-44df-9d20-f61192eede4c",
+        "chatSessionId": "sess_d078a70e-00a5-4e64-b5c5-3c235a916aeb",
+        "timestamp": 1794226506858
+      }
+    ],
+    "Organ can read seeded mood data via Nerve API": [
+      {
+        "executionId": "9be5a080-38ad-4a7e-9358-ac51ee346c23",
+        "chatSessionId": "sess_d078a70e-00a5-4e64-b5c5-3c235a916aeb",
+        "timestamp": 1794205318770
+      },
+      {
+        "executionId": "a3445b9b-3314-44df-9d20-f61192eede4c",
+        "chatSessionId": "sess_d078a70e-00a5-4e64-b5c5-3c235a916aeb",
+        "timestamp": 1794226507324
+      }
+    ],
+    "Rate limiting works (quarantine after 20 msg/sec)": [
+      {
+        "executionId": "9be5a080-38ad-4a7e-9358-ac51ee346c23",
+        "chatSessionId": "sess_d078a70e-00a5-4e64-b5c5-3c235a916aeb",
+        "timestamp": 1794205318813
+      },
+      {
+        "executionId": "a3445b9b-3314-44df-9d20-f61192eede4c",
+        "chatSessionId": "sess_d078a70e-00a5-4e64-b5c5-3c235a916aeb",
+        "timestamp": 1794226507950
+      }
+    ],
+    "API version mismatch marks organ as decayed": [
+      {
+        "executionId": "9be5a080-38ad-4a7e-9358-ac51ee346c23",
+        "chatSessionId": "sess_d078a70e-00a5-4e64-b5c5-3c235a916aeb",
+        "timestamp": 1794205318858
+      },
+      {
+        "executionId": "a3445b9b-3314-44df-9d20-f61192eede4c",
+        "chatSessionId": "sess_d078a70e-00a5-4e64-b5c5-3c235a916aeb",
+        "timestamp": 1794226508528
+      }
+    ]
+  }
+}

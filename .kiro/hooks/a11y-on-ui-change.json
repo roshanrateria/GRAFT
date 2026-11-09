@@ -1,0 +1,15 @@
+{
+  "version": "v1",
+  "hooks": [
+    {
+      "name": "Run accessibility tests on UI changes",
+      "trigger": "PostFileSave",
+      "description": "Run accessibility tests when UI files are saved",
+      "matcher": "apps/web/src/.*",
+      "action": {
+        "type": "command",
+        "command": "pnpm test:a11y"
+      }
+    }
+  ]
+}

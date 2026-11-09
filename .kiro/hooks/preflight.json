@@ -1,0 +1,15 @@
+{
+  "version": "v1",
+  "hooks": [
+    {
+      "name": "Run preflight checks",
+      "trigger": "UserPromptSubmit",
+      "description": "Run preflight checks when user types 'preflight'",
+      "matcher": "^preflight$",
+      "action": {
+        "type": "command",
+        "command": "bash scripts/preflight.sh"
+      }
+    }
+  ]
+}

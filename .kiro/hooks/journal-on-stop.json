@@ -1,0 +1,14 @@
+{
+  "version": "v1",
+  "hooks": [
+    {
+      "name": "Journal session on agent stop",
+      "trigger": "Stop",
+      "description": "Record session outcome in journal on stop",
+      "action": {
+        "type": "agent",
+        "prompt": "Append a journal entry to KIRO_USAGE.md using the template. Include what worked, what failed, and what you would change."
+      }
+    }
+  ]
+}

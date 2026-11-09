@@ -1,0 +1,15 @@
+{
+  "version": "v1",
+  "hooks": [
+    {
+      "name": "Sync Nerve API documentation",
+      "trigger": "PostFileSave",
+      "description": "Update docs/NERVE_API.md when nerve package changes",
+      "matcher": "packages/nerve/.*",
+      "action": {
+        "type": "agent",
+        "prompt": "Check if Nerve API changes require documentation updates. Flag any version-bump needs."
+      }
+    }
+  ]
+}
