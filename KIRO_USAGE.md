@@ -70,6 +70,90 @@ This file tracks Kiro usage throughout the GRAFT project development. Each entry
 
 ---
 
+## Entry: 2026-11-09 Phase 4 Task 4.2 Ledger Database Implementation
+- Kiro surface used: IDE (workflow subagent)
+- Feature(s) used: workflow | fs_write | str_replace | execute_pwsh | read_file | file_search
+- What I asked / how I structured it:
+  - Workflow step tasked with implementing SQLite ledger database at apps/server/src/db/
+  - Created schema.sql with ledger table and indexes
+  - Created ledger.ts implementing SQLiteLedgerService with LedgerService interface
+  - Created comprehensive test suite for append, getHistory, and verify operations
+  - Added @graft/ledger workspace dependency to server package.json
+- What worked:
+  - **Schema design**: Proper indexes for organ_id and ts columns for efficient queries
+  - **LedgerService interface**: Clean implementation matching @graft/ledger's interface
+  - **Hash computation**: Correctly uses computeHash from @graft/ledger for chain integrity
+  - **prev_hash validation**: append() throws error if prev_hash doesn't match chain state
+  - **Tampering detection**: Tests verify that data changes, hash changes, and chain breaks are all detected
+  - **In-memory testing**: createInMemoryLedger() helper works great for isolated tests
+  - **All 317 tests pass**: Full project test suite green after implementation
+- What failed or surprised me:
+  - **better-sqlite3 native build**: The native module bindings weren't compiled for Node.js v24.14.0
+  - **Solution**: Had to run `npm rebuild better-sqlite3` from the package directory to compile the native bindings
+  - **pnpm rebuild didn't work**: The `pnpm rebuild better-sqlite3` command didn't actually rebuild the native module
+  - **Manual build required**: Had to navigate to node_modules/.pnpm/better-sqlite3@11.10.0/node_modules/better-sqlite3 and run `npm run build-release`
+  - **PowerShell syntax**: `&&` not valid in PowerShell, used `Set-Location; command` pattern throughout
+- Evidence:
+  - **Commit**: 3a276a6 "feat(server): implement SQLite ledger database layer"
+  - **Files created**:
+    - apps/server/src/db/schema.sql - Ledger table with indexes
+    - apps/server/src/db/ledger.ts - SQLiteLedgerService implementation
+    - apps/server/src/db/index.ts - Module exports
+    - apps/server/src/db/__tests__/ledger.test.ts - 11 comprehensive tests
+  - **Test results**: 11 new tests, all 317 project tests passing
+  - **Test coverage**:
+    - Genesis entry creation with correct 64-char SHA-256 hash
+    - Chain linking with prev_hash validation
+    - Error on invalid prev_hash mismatch
+    - Empty ledger history returns []
+    - Chronological ordering (oldest first)
+    - Organ ID filtering
+    - Chain verification for valid and tampered chains
+    - Tampering detection: data modification, hash changes, broken chain links
+  - **Acceptance criteria met**:
+    - ✅ schema.sql matches requirements.md specification
+    - ✅ ledger.ts uses @graft/ledger's computeHash
+    - ✅ append() computes hash and validates prev_hash
+    - ✅ getHistory(organId?) filters correctly
+    - ✅ verify() detects tampering
+    - ✅ LedgerService interface implemented
+
+---
+
+## Entry: 2026-11-09 Phase 4 Task 4.2 Ledger Database Re-Review
+- Kiro surface used: IDE (workflow subagent - reviewer)
+- Feature(s) used: workflow | read_file | file_search | execute_pwsh | fs_write | send_message
+- What I asked / how I structured it:
+  - Workflow step tasked with re-reviewing Task 4.2 Ledger Database after fixes
+  - Verified all requirements from `.kiro/specs/04-ledger-and-reversibility/tasks.md` Task 4.2
+  - Read previous review (APPROVED with no blockers), then verified implementation still correct
+  - Ran all 11 tests to confirm they pass
+  - Checked interface compliance with LedgerService from @graft/ledger
+- What worked:
+  - **Previous review was accurate**: No blockers found, implementation correct from the start
+  - **All tests pass**: 11/11 tests covering append, getHistory, verify operations
+  - **Interface compliance**: SQLiteLedgerService correctly implements LedgerService interface
+  - **Fail-closed behavior**: append() throws on invalid prev_hash, verify() detects all tampering
+  - **Schema matches Entry type**: All fields correctly typed with proper nullable organ_id
+- What failed or surprised me:
+  - **PowerShell syntax**: `&&` not valid, used `Set-Location; command` pattern
+  - **Test flag syntax**: `--run` not recognized by pnpm test, removed it
+  - **Phase numbering**: Tasks file is 04-ledger-and-reversibility (Phase 4, not Phase 3)
+- Evidence:
+  - **Review document**: `.agents/tasks/phase4-ledger/review-4-2.md`
+  - **Verdict file**: `.agents/tasks/phase4-ledger/verdict-4-2.json` with `"verdict": "APPROVED"`
+  - **Test results**: 11/11 tests passing (append: 3, getHistory: 3, verify: 5)
+  - **Files reviewed**: schema.sql, ledger.ts, ledger.test.ts
+  - **Acceptance criteria met**:
+    - ✅ schema.sql with ledger table and indexes
+    - ✅ ledger.ts with SQLite operations
+    - ✅ append() computes hash and validates prev_hash
+    - ✅ getHistory(organId?) filters correctly
+    - ✅ verify() delegates to @graft/ledger
+    - ✅ Tests cover all operations with tampering detection
+
+---
+
 ## Summary Sections (to complete before submission)
 
 ### Crew Bot
@@ -404,6 +488,191 @@ This file tracks Kiro usage throughout the GRAFT project development. Each entry
 - Evidence:
   - **Commit**: 4ddcddd "chore: scaffold @graft/ledger package with zod and fast-check deps"
   - **Files created**: package.json, tsconfig.json, src/index.ts, __tests__/.gitkeep
-  - **Build output**: dist/index.js, dist/index.d.ts generated successfully
+  - **Build output**: dist/index.js, dist/index.d.ts generated successful
+
+---
+
+## Entry: 2026-11-09 Phase 4 Task 4.3 Snapshot Manager Implementation
+- Kiro surface used: IDE (workflow subagent)
+- Feature(s) used: workflow | fs_write | str_replace | execute_pwsh | read_file
+- What I asked / how I structured it:
+  - Workflow step tasked with implementing SnapshotManager at apps/web/src/SnapshotManager.ts
+  - Created Snapshot interface with transactionId, timestamp, slots, organs, links
+  - Implemented capture() to serialize CreatureState into immutable snapshot
+  - Implemented restore() to restore state via Zustand store actions
+  - Added snapshotsEqual() for full equality and snapshotStateEqual() for state-only comparison
+  - Created comprehensive test suite (13 tests) covering capture, restore, and multiple cycles
+- What worked:
+  - **State serialization**: Converting Map<string, OrganInstance> to Record<string, OrganSnapshot> works cleanly
+  - **Defensive copies**: Snapshot data is independent of original state (verified by test)
+  - **Zustand integration**: restore() uses store.setState() which works with Zustand's devtools middleware
+  - **All 13 tests pass**: capture (5), restore (3), snapshotsEqual (4), multiple cycles (1)
+  - **REV-01 verification**: snapshotStateEqual() confirms exact state restoration after transplant/amputation
+- What failed or surprised me:
+  - **jsdom missing**: Vitest required jsdom for React testing environment - installed with pnpm
+  - **better-sqlite3 build failure**: Native module failed on Windows during full workspace install
+  - **Solution**: Used --ignore-scripts flag to skip native builds, then ran tests from apps/web
+  - **Snapshot equality test design**: Initial test used snapshotsEqual() which compares transactionId/timestamp - fixed by adding snapshotStateEqual() for state-only comparison
+  - **PowerShell syntax**: `&&` not valid, used `Set-Location; command` pattern throughout
+- Evidence:
+  - **Commit**: a6c5be3 "feat(web): implement SnapshotManager for state capture/restore"
+  - **Files created**:
+    - apps/web/src/SnapshotManager.ts - Core implementation (150 lines)
+    - apps/web/src/__tests__/SnapshotManager.test.ts - 13 tests (220 lines)
+  - **Test results**: 13/13 tests passing
+  - **Test coverage**:
+    - Capture: empty state, slots with organs, organ instances, port links, immutability
+    - Restore: empty state, slots/organs, exact prior state after transplant simulation
+    - Equality: identical snapshots, different transactionIds, different slots, different organs
+    - Multiple cycles: sequential capture/restore operations
+  - **Acceptance criteria met**:
+    - ✅ Snapshot interface with transactionId, timestamp, slots, organs, links
+    - ✅ capture() serializes slots, organs map, links
+    - ✅ restore() uses Zustand store actions
+    - ✅ Tests for capture accuracy and restore to exact prior state
+    - ✅ Multiple capture/restore cycles verifiedly
   - **Ready for**: hash-chain implementation, event types, and PBT tests
+
+---
+
+## Entry: 2026-11-09 Phase 4 Task 4.1 Ledger Package Review
+- Kiro surface used: IDE (workflow subagent - reviewer)
+- Feature(s) used: workflow | file_search | read_file | execute_pwsh | fs_write | send_message
+- What I asked / how I structured it:
+  - Workflow step tasked with reviewing Task 4.1 Ledger Package implementation
+  - Verified 6 acceptance criteria: types match spec, canonical JSON deterministic, hash formula correct, genesis prev_hash, PBT LED-01 exists, project conventions followed
+  - Read all source files (types.ts, canonical-json.ts, verify.ts, service.ts, index.ts, led-01-property.test.ts)
+  - Ran test suite to verify PBT passes
+  - Wrote review document and verdict JSON
+- What worked:
+  - **Comprehensive file discovery**: file_search and PowerShell ls found all ledger package files quickly
+  - **Parallel file reads**: Read all 6 source files in single request for efficiency
+  - **Test verification**: `pnpm test --filter @graft/ledger` showed 12/12 tests passing
+  - **Spec alignment**: All 12 event types match PROJECT_BRIEF.md Section 4.5 exactly
+  - **Hash formula verification**: Code correctly implements `sha256(prev_hash + canonical_json(row_without_hash))`
+  - **Genesis detection**: GENESIS_PREV_HASH is 64 zeros, verifyChain checks first entry
+  - **PBT coverage**: 12 property tests cover all mutation types (id, ts, event, payload, hash, prev_hash, insert, remove, swap)
+- What failed or surprised me:
+  - **PowerShell syntax again**: `&&` not valid, had to use `Set-Location; command` pattern
+  - **Phase numbering discrepancy**: Tasks file is 04-ledger-and-reversibility but user said "Phase 3" - clarified it's actually Phase 4
+  - **PROJECT_BRIEF.md location**: File is lowercase `project-brief.md` on disk, not `PROJECT_BRIEF.md`
+- Evidence:
+  - **Review document**: `.agents/tasks/phase4-ledger/review-4-1.md`
+  - **Verdict file**: `.agents/tasks/phase4-ledger/verdict-4-1.json` with `"verdict": "APPROVED"`
+  - **Te
+
+---
+
+## Entry: 2026-11-09 Phase 4 Task 4.2 Ledger Database Review
+- Kiro surface used: IDE (workflow subagent - reviewer)
+- Feature(s) used: workflow | file_search | read_file | grep_search | execute_pwsh | fs_write | send_message
+- What I asked / how I structured it:
+  - Workflow step tasked with reviewing Task 4.2 Ledger Database implementation in apps/server/src/db/
+  - Verified 6 acceptance criteria: schema matches spec, append computes hash correctly, getHistory works with/without filter, verify uses @graft/ledger, fail-closed error handling, tests cover all scenarios
+  - Read schema.sql, ledger.ts, ledger.test.ts and cross-referenced with @graft/ledger package types
+  - Ran test suite to verify all tests pass (11 tests in ledger.test.ts)
+  - Wrote review document and verdict JSON
+- What worked:
+  - **grep_search efficiency**: Found ledger database files quickly using pattern matching
+  - **Schema verification**: schema.sql correctly defines all columns matching Entry type (id, ts, organ_id, event, payload_json, prev_hash, hash)
+  - **Index design**: Proper indexes on organ_id and ts support query patterns
+  - **Hash computation verification**: append() correctly uses computeHash from @graft/ledger and validates prev_hash before insertion
+  - **Fail-closed behavior**: Invalid prev_hash throws error, preventing chain corruption
+  - **getHistory filtering**: Works correctly with and without organId parameter, returns chronological order
+  - **Tampering detection tests**: Three tests verify data tampering, hash tampering, and broken chain links are all detected
+  - **Test suite**: All 25 server tests pass (14 seed + 11 ledger)
+- What failed or surprised me:
+  - **PowerShell syntax**: `&&` not valid, used `Set-Location; command` pattern
+  - **pnpm test flags**: `--run` not valid, just `pnpm --filter @graft/server test` works
+  - **Initial file search confusion**: apps/server/src/db didn't exist as a path query, had to use grep for ledger.ts
+- Evidence:
+  - **Review document**: `.agents/tasks/phase4-ledger/review-4-2.md`
+  - **Verdict file**: `.agents/tasks/phase4-ledger/verdict-4-2.json` with `"verdict": "APPROVED", "findings": []`
+  - **Test results**: `Test Files 2 passed (2), Tests 25 passed (25)` - all server tests green
+  - **Files reviewed**:
+    - apps/server/src/db/schema.sql - ledger table with indexes
+    - apps/server/src/db/ledger.ts - SQLiteLedgerService implementation
+    - apps/server/src/db/__tests__/ledger.test.ts - 11 comprehensive tests
+  - **Acceptance criteria met**:
+    - ✅ Schema matches spec (all 7 columns with correct types)
+    - ✅ append correctly computes hash using @graft/ledger
+    - ✅ getHistory works with and without organId filter
+    - ✅ verify correctly uses chain verification from @graft/ledger
+    - ✅ Proper fail-closed error handling
+    - ✅ Tests cover append, query, and verify scenariosst results**: 12/12 tests passing (Unit tests: 2, LED-01 PBT: 10)
+  - **Files verified**: types.ts (12 event types, Entry interface), canonical-json.ts (sorted keys, no whitespace), verify.ts (computeHash, verifyChain), service.ts (LedgerService interface)
+  - **Acceptance criteria**: All 6 criteria met, no blockers found
+
+---
+## Entry: 2026-11-09 Phase 4 Task 4.1 Review Loop Fix Attempt
+- Kiro surface used: IDE (workflow subagent)
+- Feature(s) used: workflow | read_file | send_message
+- What I asked / how I structured it:
+  - Workflow step tasked with fixing Task 4.1 based on review findings
+  - Read verdict-4-1.json to check for findings to address
+  - Found verdict was already APPROVED with empty findings array
+- What worked:
+  - **Quick verification**: Single file read confirmed approval status
+  - **No work needed**: Verdict already APPROVED, no changes required
+- What failed or surprised me:
+  - **Task already complete**: The review loop instruction expected findings to fix, but verdict was already approved
+  - **Lesson learned**: Always check verdict status before assuming work is needed - the review-then-fix cycle may have already completed
+- Evidence:
+  - **Verdict file**: `verdict-4-1.json` shows `"verdict": "APPROVED"` with `"findings": []`
+  - **No changes made**: Task was already complete from prior workflow step
+  - **Workflow efficiency**: The review-fix loop terminated immediately since there was nothing to fix
+
+---
+
+## Entry: 2025-01-13 Phase 4 Task 4.1 Re-Review
+- Kiro surface used: IDE (workflow subagent - reviewer)
+- Feature(s) used: workflow | read_file | execute_pwsh | fs_write | send_message
+- What I asked / how I structured it:
+  - Workflow step tasked with re-reviewing fixed Task 4.1
+  - Read previous review at `.agents/tasks/phase4-ledger/review-4-1.md`
+  - Verified all source files unchanged and still correct
+  - Re-ran tests to confirm 12/12 passing
+  - Wrote updated review and verdict JSON
+- What worked:
+  - **Efficient re-verification**: Previous review was APPROVED with no blockers, so re-review was quick confirmation
+  - **Parallel file reads**: Read all 6 source files simultaneously for efficiency
+  - **Test verification**: `pnpm test` confirmed 12/12 tests passing
+  - **Build verification**: `pnpm build` confirmed TypeScript compiles cleanly
+  - **All acceptance criteria confirmed**: Types, canonical JSON, hash formula, genesis detection, PBT coverage, project conventions
+- What failed or surprised me:
+  - **PowerShell syntax**: `&&` not valid in PowerShell, used `;` for command chaining (same issue as before)
+  - **Re-review was trivial**: Since previous review had no findings, re-review was just confirmation - could have been skipped
+- Evidence:
+  - **Review document**: `.agents/tasks/phase4-ledger/review-4-1.md` updated with re-review notes
+  - **Verdict file**: `.agents/tasks/phase4-ledger/verdict-4-1.json` with `"verdict": "APPROVED"`
+  - **Test results**: 12/12 tests passing (Unit tests: 2, LED-01 PBT: 10)
+  - **Build results**: TypeScript compiled successfully with exit code 0
+
+
+---
+
+## Entry: 2026-11-09 Phase 4 Task 4.2 Review Verification
+- Kiro surface used: IDE (workflow subagent)
+- Feature(s) used: workflow | read_file | send_message
+- What I asked / how I structured it:
+  - Workflow step tasked with fixing Task 4.2 (Ledger Database) based on review
+  - Read verdict-4-2.json and review document to identify findings
+  - Was prepared to implement fixes for any findings
+- What worked:
+  - **Verdict already APPROVED**: Task 4.2 had no findings to address
+  - **Review document confirmed**: All 6 acceptance criteria passed
+    - Schema matches spec ?
+    - append computes hash correctly ?
+    - getHistory with/without filter ?
+    - verify uses @graft/ledger ?
+    - Fail-closed error handling ?
+    - Tests cover all operations ?
+  - **No code changes needed**: Task was already complete and approved
+- What failed or surprised me:
+  - **No findings to fix**: The review step had already approved this task
+  - **Workflow efficiency**: Having review/approval in place before fix step saved time
+- Evidence:
+  - **Verdict file**: .agents/tasks/phase4-ledger/verdict-4-2.json shows "verdict": "APPROVED"
+  - **Review file**: .agents/tasks/phase4-ledger/review-4-2.md confirms all criteria pass
+  - **No changes made**: Task already met all acceptance criteria
 
