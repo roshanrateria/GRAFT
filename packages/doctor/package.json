@@ -18,6 +18,7 @@
     "test:watch": "vitest"
   },
   "dependencies": {
+    "@graft/immune": "workspace:*",
     "@graft/nerve": "workspace:*",
     "zod": "^3.23.8"
   },

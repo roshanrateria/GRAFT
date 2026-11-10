@@ -113,6 +113,9 @@ importers:
 
   packages/doctor:
     dependencies:
+      '@graft/immune':
+        specifier: workspace:*
+        version: link:../immune
       '@graft/nerve':
         specifier: workspace:*
         version: link:../nerve

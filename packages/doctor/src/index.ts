@@ -31,3 +31,15 @@ export {
 } from './providers/index.js';
 
 export type { ReplayConfig, ReplayFixture, LLMConfig } from './providers/index.js';
+
+// Repair Loop
+export {
+  runRepairLoop,
+  buildWithRepairLoop,
+  MAX_REPAIR_ROUNDS,
+} from './repair-loop.js';
+
+export type {
+  RepairLoopResult,
+  RepairAttempt,
+} from './repair-loop.js';
