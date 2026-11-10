@@ -18,3 +18,10 @@ export {
 } from './llm.js';
 
 export type { LLMConfig } from './llm.js';
+
+export {
+  CrewDoctorProvider,
+  createCrewProvider,
+} from './crew.js';
+
+export type { CrewConfig } from './crew.js';

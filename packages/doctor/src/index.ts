@@ -28,9 +28,11 @@ export {
   createReplayProviderFromFixture,
   LLMDdoctorProvider,
   createLLMProvider,
+  CrewDoctorProvider,
+  createCrewProvider,
 } from './providers/index.js';
 
-export type { ReplayConfig, ReplayFixture, LLMConfig } from './providers/index.js';
+export type { ReplayConfig, ReplayFixture, LLMConfig, CrewConfig } from './providers/index.js';
 
 // Repair Loop
 export {
