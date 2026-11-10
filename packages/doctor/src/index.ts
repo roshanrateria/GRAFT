@@ -26,6 +26,8 @@ export {
   ReplayDoctorProvider,
   createReplayProvider,
   createReplayProviderFromFixture,
+  LLMDdoctorProvider,
+  createLLMProvider,
 } from './providers/index.js';
 
-export type { ReplayConfig, ReplayFixture } from './providers/index.js';
+export type { ReplayConfig, ReplayFixture, LLMConfig } from './providers/index.js';
