@@ -134,11 +134,39 @@ async function runStage(
     const result = await runner();
     const duration = Date.now() - startTime;
 
+    // If stage failed but no error was provided, create one from the result
+    let error = result.error;
+    if (!result.passed && !error) {
+      // Stage failed without explicit error - create one from result details
+      if (result.constructs && result.constructs.length > 0) {
+        // Static analysis: use first banned construct
+        const construct = result.constructs[0];
+        error = {
+          code: `IMM_BANNED_${construct.type.toUpperCase().replace(/-/g, '_')}`,
+          message: construct.reason,
+          location: construct.location,
+        };
+      } else if (result.violations && result.violations.length > 0) {
+        // Manifest validation: use first violation
+        const violation = result.violations[0];
+        error = {
+          code: 'IMM_MANIFEST_VIOLATION',
+          message: violation.message,
+          location: violation.location,
+        };
+      } else {
+        error = {
+          code: 'IMM_STAGE_FAILED',
+          message: `Stage ${stage} failed without specific error`,
+        };
+      }
+    }
+
     return {
       stage,
       passed: result.passed ?? true,
       duration,
-      error: result.error,
+      error,
     };
   } catch (error) {
     const duration = Date.now() - startTime;
