@@ -9,7 +9,7 @@
 
 import { describe, it, expect } from 'vitest';
 import * as fc from 'fast-check';
-import { TransactionCoordinator, type TransplantCoordinatorDeps } from '../TransactionCoordinator';
+import { TransactionCoordinator, type TransactionCoordinatorDeps } from '../TransactionCoordinator';
 import { capture, snapshotStateEqual, type Snapshot } from '../SnapshotManager';
 import type { CreatureState, OrganInstance, OrganSlot } from '../stores/creatureStore';
 import type { ImmuneReport, OrganBundle, OrganPort } from '@graft/immune';
@@ -144,8 +144,8 @@ const creatureStateArbitrary = fc.record({
 const organBundleArbitrary = fc.record({
   manifest: manifestArbitrary,
   indexHtml: fc.constant('<!DOCTYPE html><html><body>Test Organ</body></html>'),
-  spec: fc.option(fc.string()),
-  properties: fc.option(fc.string()),
+  spec: fc.option(fc.string(), { nil: undefined }),
+  properties: fc.option(fc.string(), { nil: undefined }),
 });
 
 // =============================================================================

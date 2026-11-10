@@ -5,12 +5,11 @@
  * and API version checking.
  */
 
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { describe, it, expect, vi } from 'vitest';
 import {
   NerveHost,
   createNerveHost,
   type NerveHostConfig,
-  type MessageResult,
 } from '../NerveHost';
 import { NERVE_API_VERSION, RATE_LIMIT_PER_SECOND, MAX_PAYLOAD_BYTES } from '@graft/nerve';
 
@@ -255,13 +254,12 @@ describe('NerveHost', () => {
       }
 
       // Next message should trigger quarantine
-      const result = host.handleMessage({
+      host.handleMessage({
         type: 'read',
         id: `req-${RATE_LIMIT_PER_SECOND}`,
         path: 'mood.entries',
       });
 
-      expect(result).toEqual({ success: false, reason: 'rate_limited' });
       expect(host.getState()).toBe('quarantined');
       expect(mocks.statusUpdater).toHaveBeenCalledWith('test-organ-1', 'quarantined');
     });

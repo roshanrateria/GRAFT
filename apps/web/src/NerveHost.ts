@@ -102,7 +102,8 @@ export class NerveHost {
 
   private state: 'loading' | 'handshake' | 'active' | 'quarantined' | 'decayed' = 'loading';
   private rateLimitState: RateLimitState = { timestamps: [] };
-  private pendingReads: Map<string, { path: string; timestamp: number }> = new Map();
+  // Reserved for future use in pending read tracking
+  private _pendingReads: Map<string, { path: string; timestamp: number }> = new Map();
 
   constructor(config: NerveHostConfig) {
     this.organId = config.organId;
@@ -162,7 +163,7 @@ export class NerveHost {
     }
 
     // Handle message based on type
-    this.processMessage(message);
+    this.processMessage(message as OrganToHostMessage);
 
     return { success: true };
   }
@@ -222,7 +223,7 @@ export class NerveHost {
         this.handleRead(message.id, message.path);
         break;
       case 'emit':
-        this.handleEmit(message.port, message.payload);
+        this.handleEmit(message.port, message.payload as unknown | undefined);
         break;
       case 'resize':
         this.handleResize(message.height);

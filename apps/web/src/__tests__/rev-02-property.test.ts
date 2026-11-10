@@ -9,7 +9,7 @@
 
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import * as fc from 'fast-check';
-import { TransactionCoordinator, type TransplantCoordinatorDeps } from '../TransactionCoordinator';
+import { TransactionCoordinator, type TransactionCoordinatorDeps } from '../TransactionCoordinator';
 import { capture, snapshotStateEqual } from '../SnapshotManager';
 import type { CreatureState, OrganInstance } from '../stores/creatureStore';
 import type { ImmuneReport, OrganBundle } from '@graft/immune';

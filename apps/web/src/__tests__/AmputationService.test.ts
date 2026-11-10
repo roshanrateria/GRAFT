@@ -7,15 +7,13 @@
 
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import {
-  AmputationService,
   createAmputationService,
   InMemorySnapshotStorage,
   InMemoryLinkStorage,
-  type AmputationServiceDeps,
 } from '../AmputationService';
 import { capture, type Snapshot, type PortLink } from '../SnapshotManager';
 import type { CreatureState, OrganInstance, OrganSlot } from '../stores/creatureStore';
-import type { LedgerService, Entry, EventType } from '@graft/ledger';
+import type { LedgerService, Entry } from '@graft/ledger';
 
 // =============================================================================
 // Test Fixtures

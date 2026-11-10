@@ -14,7 +14,7 @@
  */
 
 import { capture, restore, type Snapshot } from './SnapshotManager.js';
-import type { CreatureState, OrganInstance, OrganSlot } from './stores/creatureStore.js';
+import type { CreatureState, OrganInstance } from './stores/creatureStore.js';
 import type { ImmuneReport, OrganBundle } from '@graft/immune';
 import { runImmuneSystem } from '@graft/immune';
 import type { LedgerService, Entry, EventType } from '@graft/ledger';

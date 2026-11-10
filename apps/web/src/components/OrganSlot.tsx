@@ -12,8 +12,8 @@
  * @see .kiro/steering/design-theatre.md for UI specifications
  */
 
-import { useState, useCallback, useReducer } from 'react';
-import { useCreatureStore, SlotPosition, OrganInstance } from '../stores/creatureStore';
+import { useState, useCallback } from 'react';
+import { useCreatureStore, SlotPosition } from '../stores/creatureStore';
 import './OrganSlot.css';
 
 export interface OrganSlotProps {

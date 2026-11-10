@@ -3,17 +3,24 @@
  *
  * The left panel of the Theatre UI.
  * Displays wish input, streaming spec, properties, and build progress.
+ * Includes passcode input for live Doctor mode.
  *
  * @see .kiro/steering/design-theatre.md for UI specifications
  */
 
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import './DoctorNotes.css';
 
 interface Assumption {
   id: string;
   text: string;
   status: 'pending' | 'confirmed' | 'rejected';
+}
+
+interface LiveSession {
+  token: string;
+  expiresAt: number;
+  wishCount: number;
 }
 
 interface DoctorNotesProps {
@@ -31,6 +38,39 @@ export function DoctorNotes({ className }: DoctorNotesProps) {
   const [specText, setSpecText] = useState('');
   const [propertiesText, setPropertiesText] = useState('');
   const [buildProgress, setBuildProgress] = useState<number | null>(null);
+
+  // Live mode state
+  const [passcode, setPasscode] = useState('');
+  const [isAuthenticating, setIsAuthenticating] = useState(false);
+  const [liveSession, setLiveSession] = useState<LiveSession | null>(null);
+  const [authError, setAuthError] = useState<string | null>(null);
+  const [canGoLive, setCanGoLive] = useState(false);
+
+  // Check if live mode is available on mount
+  useEffect(() => {
+    const checkLiveAvailability = async () => {
+      try {
+        const response = await fetch('/api/doctor/status');
+        if (response.ok) {
+          const data = await response.json();
+          setCanGoLive(data.canGoLive);
+        }
+      } catch {
+        // Server not available, use replay mode
+        setCanGoLive(false);
+      }
+    };
+    checkLiveAvailability();
+  }, []);
+
+  // Validate existing session on mount (session stored in memory only)
+  useEffect(() => {
+    const validateSession = async () => {
+      // Session token is stored in component state only (not localStorage for security)
+      // On page refresh, session is lost - user must re-enter passcode
+    };
+    validateSession();
+  }, []);
 
   const handleWishSubmit = useCallback(async () => {
     if (!wish.trim() || isSubmitting) return;
@@ -63,6 +103,56 @@ export function DoctorNotes({ className }: DoctorNotesProps) {
     }
   }, [handleWishSubmit]);
 
+  // Passcode submission for live mode
+  const handlePasscodeSubmit = useCallback(async () => {
+    if (!passcode.trim() || isAuthenticating) return;
+
+    setIsAuthenticating(true);
+    setAuthError(null);
+
+    try {
+      const response = await fetch('/api/doctor/live', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ passcode }),
+      });
+
+      if (!response.ok) {
+        const data = await response.json();
+        setAuthError(data.error === 'Invalid passcode' ? 'Invalid passcode' : 'Authentication failed');
+        return;
+      }
+
+      const data = await response.json();
+      setLiveSession({
+        token: data.sessionToken,
+        expiresAt: data.expiresAt,
+        wishCount: 0,
+      });
+      setPasscode(''); // Clear passcode from memory after successful auth
+    } catch {
+      setAuthError('Failed to connect to server');
+    } finally {
+      setIsAuthenticating(false);
+    }
+  }, [passcode, isAuthenticating]);
+
+  // Logout from live mode
+  const handleLogout = useCallback(async () => {
+    if (liveSession) {
+      try {
+        await fetch('/api/doctor/logout', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ sessionToken: liveSession.token }),
+        });
+      } catch {
+        // Ignore logout errors
+      }
+    }
+    setLiveSession(null);
+  }, [liveSession]);
+
   return (
     <aside
       className={`doctor-notes ${className || ''}`}
@@ -70,7 +160,61 @@ export function DoctorNotes({ className }: DoctorNotesProps) {
     >
       <header className="doctor-notes__header">
         <h2 className="doctor-notes__title">Doctor's Notes</h2>
+        {/* Live mode indicator */}
+        {liveSession && (
+          <div className="doctor-notes__live-indicator" aria-label="Live mode active">
+            <span className="doctor-notes__live-badge">LIVE</span>
+            <button
+              className="doctor-notes__logout-button"
+              onClick={handleLogout}
+              aria-label="Exit live mode"
+              title="Exit live mode"
+            >
+              ✕
+            </button>
+          </div>
+        )}
       </header>
+
+      {/* Passcode Input for Live Mode */}
+      {!liveSession && canGoLive && (
+        <section className="doctor-notes__passcode" aria-label="Live mode authentication">
+          <label className="doctor-notes__passcode-label" htmlFor="passcode-input">
+            Enter passcode for live mode
+          </label>
+          <div className="doctor-notes__passcode-row">
+            <input
+              id="passcode-input"
+              type="password"
+              className="doctor-notes__passcode-input"
+              value={passcode}
+              onChange={(e) => setPasscode(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                  e.preventDefault();
+                  handlePasscodeSubmit();
+                }
+              }}
+              placeholder="Passcode"
+              disabled={isAuthenticating}
+              autoComplete="off"
+            />
+            <button
+              className="doctor-notes__passcode-submit"
+              onClick={handlePasscodeSubmit}
+              disabled={!passcode.trim() || isAuthenticating}
+              aria-label="Authenticate for live mode"
+            >
+              {isAuthenticating ? '...' : '→'}
+            </button>
+          </div>
+          {authError && (
+            <span className="doctor-notes__passcode-error" role="alert">
+              {authError}
+            </span>
+          )}
+        </section>
+      )}
 
       {/* Wish Input */}
       <section className="doctor-notes__wish" aria-label="Wish input">

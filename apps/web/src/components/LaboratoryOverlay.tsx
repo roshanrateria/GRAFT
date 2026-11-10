@@ -65,12 +65,10 @@ export function LaboratoryOverlay({
   report,
   organName,
   organDescription,
-  onTransplant,
-  onReject,
   onClose,
   className,
 }: LaboratoryOverlayProps) {
-  const [reducedMotion, setReducedMotion] = useState(false);
+  const [_reducedMotion, setReducedMotion] = useState(false);
 
   // Check for reduced motion preference
   useEffect(() => {

@@ -42,6 +42,154 @@
 }
 
 /* ==========================================================================
+   Live Mode Indicator
+   ========================================================================== */
+
+.doctor-notes__live-indicator {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.doctor-notes__live-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-1) var(--space-3);
+  font-family: var(--font-body);
+  font-size: var(--text-xs);
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: var(--color-alert);
+  background-color: rgba(196, 71, 47, 0.15);
+  border: 1px solid var(--color-alert);
+  border-radius: var(--radius-sm);
+  animation: doctor-notes__live-pulse 2s ease-in-out infinite;
+}
+
+@keyframes doctor-notes__live-pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.6;
+  }
+}
+
+.doctor-notes__logout-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+  background: transparent;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: color var(--transition-fast), border-color var(--transition-fast);
+}
+
+.doctor-notes__logout-button:hover {
+  color: var(--color-alert);
+  border-color: var(--color-alert);
+}
+
+.doctor-notes__logout-button:focus-visible {
+  outline: 2px solid var(--color-bone);
+  outline-offset: 2px;
+}
+
+/* ==========================================================================
+   Passcode Input
+   ========================================================================== */
+
+.doctor-notes__passcode {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-4);
+  border-bottom: 1px solid var(--color-border);
+  background-color: rgba(196, 71, 47, 0.05);
+}
+
+.doctor-notes__passcode-label {
+  font-family: var(--font-body);
+  font-size: var(--text-xs);
+  font-weight: 500;
+  color: var(--color-text-muted);
+}
+
+.doctor-notes__passcode-row {
+  display: flex;
+  gap: var(--space-2);
+}
+
+.doctor-notes__passcode-input {
+  flex: 1;
+  font-family: var(--font-ledger);
+  font-size: var(--text-sm);
+  color: var(--color-text-primary);
+  background-color: var(--color-background);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-2) var(--space-3);
+  transition: border-color var(--transition-fast);
+}
+
+.doctor-notes__passcode-input::placeholder {
+  color: var(--color-text-muted);
+}
+
+.doctor-notes__passcode-input:focus {
+  outline: none;
+  border-color: var(--color-brass);
+}
+
+.doctor-notes__passcode-input:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.doctor-notes__passcode-submit {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  font-size: var(--text-lg);
+  font-weight: 700;
+  color: var(--color-background);
+  background-color: var(--color-brass);
+  border: none;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: background-color var(--transition-fast);
+}
+
+.doctor-notes__passcode-submit:hover:not(:disabled) {
+  background-color: color-mix(in srgb, var(--color-brass) 85%, white);
+}
+
+.doctor-notes__passcode-submit:focus-visible {
+  outline: 2px solid var(--color-bone);
+  outline-offset: 2px;
+}
+
+.doctor-notes__passcode-submit:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.doctor-notes__passcode-error {
+  font-size: var(--text-xs);
+  color: var(--color-alert);
+}
+
+/* ==========================================================================
    3. Wish Input
    ========================================================================== */
 
@@ -266,6 +414,10 @@
   .doctor-notes__wish-submit,
   .doctor-notes__progress-fill {
     transition: none;
+  }
+
+  .doctor-notes__live-badge {
+    animation: none;
   }
 }
 

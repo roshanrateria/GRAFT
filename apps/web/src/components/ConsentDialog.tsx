@@ -62,7 +62,7 @@ export function ConsentDialog({
   onReject,
   className,
 }: ConsentDialogProps) {
-  const [reducedMotion, setReducedMotion] = useState(false);
+  const [_reducedMotion, setReducedMotion] = useState(false);
   const dialogRef = useRef<HTMLDivElement>(null);
   const transplantBtnRef = useRef<HTMLButtonElement>(null);
   const focusTrapRef = useRef<HTMLDivElement>(null);

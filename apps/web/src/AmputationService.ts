@@ -14,7 +14,7 @@
  */
 
 import { capture, restore, type Snapshot, type PortLink } from './SnapshotManager.js';
-import type { CreatureState, OrganInstance, OrganSlot } from './stores/creatureStore.js';
+import type { CreatureState } from './stores/creatureStore.js';
 import type { LedgerService, EventType } from '@graft/ledger';
 
 // =============================================================================
