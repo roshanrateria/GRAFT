@@ -2,8 +2,12 @@
  * OrganSlot Styles
  *
  * Empty organ slots in the grid with Victorian anatomical theatre aesthetic.
- * Features stitched seams between slots.
+ * Features stitched seams between slots, status indicators, and port visualization.
  */
+
+/* ==========================================================================
+   1. Slot Container
+   ========================================================================== */
 
 .organ-slot {
   position: relative;
@@ -46,20 +50,39 @@
   box-shadow: var(--shadow-md);
 }
 
-/* Quarantined slot */
+/* Quarantined slot - alert styling */
 .organ-slot--quarantined {
   border-color: var(--color-alert);
   border-style: solid;
+  animation: quarantined-pulse 2s ease-in-out infinite;
 }
 
-/* Decayed slot */
+@keyframes quarantined-pulse {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(196, 71, 47, 0);
+  }
+  50% {
+    box-shadow: 0 0 8px 2px rgba(196, 71, 47, 0.3);
+  }
+}
+
+/* Decayed slot - warning styling */
 .organ-slot--decayed {
   border-color: var(--color-warning);
   border-style: dashed;
-  opacity: 0.7;
+  opacity: 0.85;
 }
 
-/* Slot content */
+/* Confirming state */
+.organ-slot--confirming {
+  border-color: var(--color-alert);
+  background-color: rgba(196, 71, 47, 0.05);
+}
+
+/* ==========================================================================
+   2. Slot Content
+   ========================================================================== */
+
 .organ-slot__content {
   display: flex;
   flex-direction: column;
@@ -71,12 +94,15 @@
   height: 100%;
 }
 
-/* Empty slot placeholder */
+/* ==========================================================================
+   3. Empty Slot Placeholder
+   ========================================================================== */
+
 .organ-slot__empty {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: var(--space-3);
+  gap: var(--space-2);
   color: var(--color-text-muted);
 }
 
@@ -92,7 +118,17 @@
   color: var(--color-text-muted);
 }
 
-/* Slot identifier */
+.organ-slot__empty-hint {
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+  opacity: 0.7;
+  font-style: italic;
+}
+
+/* ==========================================================================
+   4. Slot Identifier
+   ========================================================================== */
+
 .organ-slot__id {
   position: absolute;
   top: var(--space-2);
@@ -103,7 +139,10 @@
   opacity: 0.5;
 }
 
-/* Organ content wrapper */
+/* ==========================================================================
+   5. Organ Content Wrapper
+   ========================================================================== */
+
 .organ-slot__organ {
   width: 100%;
   height: 100%;
@@ -117,6 +156,7 @@
   align-items: center;
   padding: var(--space-2) var(--space-3);
   border-bottom: 1px solid var(--color-border);
+  gap: var(--space-2);
 }
 
 .organ-slot__organ-name {
@@ -124,17 +164,54 @@
   font-size: var(--text-base);
   font-weight: 600;
   color: var(--color-bone);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
+.organ-slot__organ-status-group {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  flex-shrink: 0;
+}
+
+/* ==========================================================================
+   6. Status Indicators
+   ========================================================================== */
+
 .organ-slot__organ-status {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
   font-size: var(--text-xs);
   padding: var(--space-1) var(--space-2);
   border-radius: var(--radius-full);
+  white-space: nowrap;
+}
+
+.organ-slot__status-icon {
+  font-size: var(--text-sm);
+}
+
+.organ-slot__status-label {
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .organ-slot__status-label {
+    display: inline;
+  }
 }
 
 .organ-slot__organ-status--active {
   background-color: rgba(111, 154, 125, 0.2);
   color: var(--color-vein-green);
+}
+
+.organ-slot__organ-status--pending {
+  background-color: rgba(176, 141, 87, 0.2);
+  color: var(--color-brass);
 }
 
 .organ-slot__organ-status--quarantined {
@@ -147,12 +224,211 @@
   color: var(--color-brass);
 }
 
+/* ==========================================================================
+   7. Ports Visualization
+   ========================================================================== */
+
+.organ-slot__ports {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1);
+  padding: var(--space-2);
+  border-bottom: 1px solid var(--color-border);
+  background-color: rgba(14, 11, 11, 0.2);
+  opacity: 0;
+  max-height: 0;
+  overflow: hidden;
+  transition: opacity var(--transition-fast), max-height var(--transition-fast);
+}
+
+.organ-slot__ports--visible {
+  opacity: 1;
+  max-height: 60px;
+}
+
+.organ-slot__port {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  font-family: var(--font-ledger);
+  font-size: var(--text-xs);
+  padding: var(--space-1) var(--space-2);
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.organ-slot__port:hover {
+  border-color: var(--color-brass);
+  background-color: rgba(176, 141, 87, 0.1);
+}
+
+.organ-slot__port:focus-visible {
+  outline: 2px solid var(--color-brass);
+  outline-offset: 1px;
+}
+
+.organ-slot__port--in {
+  color: var(--color-vein-green);
+}
+
+.organ-slot__port--out {
+  color: var(--color-brass);
+}
+
+.organ-slot__port-marker {
+  font-size: var(--text-xs);
+}
+
+.organ-slot__port-name {
+  max-width: 80px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ==========================================================================
+   8. Organ Body
+   ========================================================================== */
+
 .organ-slot__organ-body {
   flex: 1;
   overflow: auto;
+  min-height: 60px;
 }
 
-/* Slot sizes */
+.organ-slot__organ-content {
+  padding: var(--space-4);
+  color: var(--color-text-muted);
+  font-size: var(--text-sm);
+  font-style: italic;
+}
+
+/* ==========================================================================
+   9. Actions (Amputate)
+   ========================================================================== */
+
+.organ-slot__actions {
+  display: flex;
+  justify-content: flex-end;
+  padding: var(--space-2) var(--space-3);
+  border-top: 1px solid var(--color-border);
+}
+
+.organ-slot__amputate {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  font-family: var(--font-body);
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: var(--radius-sm);
+  padding: var(--space-1) var(--space-2);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  opacity: 0.5;
+}
+
+.organ-slot:hover .organ-slot__amputate {
+  opacity: 1;
+}
+
+.organ-slot__amputate:hover:not(:disabled) {
+  color: var(--color-alert);
+  border-color: var(--color-alert);
+  background-color: rgba(196, 71, 47, 0.1);
+}
+
+.organ-slot__amputate:focus-visible {
+  outline: 2px solid var(--color-alert);
+  outline-offset: 1px;
+  opacity: 1;
+}
+
+.organ-slot__amputate:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.organ-slot__amputate-icon {
+  width: 12px;
+  height: 12px;
+}
+
+.organ-slot__amputate-text {
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .organ-slot__amputate-text {
+    display: inline;
+  }
+}
+
+/* ==========================================================================
+   10. Confirmation Dialog
+   ========================================================================== */
+
+.organ-slot__confirm {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.organ-slot__confirm-text {
+  font-size: var(--text-xs);
+  color: var(--color-alert);
+  font-weight: 600;
+}
+
+.organ-slot__confirm-btn {
+  font-family: var(--font-body);
+  font-size: var(--text-xs);
+  font-weight: 500;
+  padding: var(--space-1) var(--space-2);
+  border-radius: var(--radius-sm);
+  border: none;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.organ-slot__confirm-btn--yes {
+  background-color: var(--color-alert);
+  color: var(--color-background);
+}
+
+.organ-slot__confirm-btn--yes:hover {
+  background-color: color-mix(in srgb, var(--color-alert) 85%, white);
+}
+
+.organ-slot__confirm-btn--yes:focus-visible {
+  outline: 2px solid var(--color-alert);
+  outline-offset: 1px;
+}
+
+.organ-slot__confirm-btn--no {
+  background-color: var(--color-surface);
+  color: var(--color-text-secondary);
+  border: 1px solid var(--color-border);
+}
+
+.organ-slot__confirm-btn--no:hover {
+  background-color: rgba(176, 141, 87, 0.1);
+}
+
+.organ-slot__confirm-btn--no:focus-visible {
+  outline: 2px solid var(--color-brass);
+  outline-offset: 1px;
+}
+
+/* ==========================================================================
+   11. Slot Sizes
+   ========================================================================== */
+
 .organ-slot--small {
   min-height: 120px;
 }
@@ -165,7 +441,28 @@
   min-height: 300px;
 }
 
-/* Responsive */
+/* ==========================================================================
+   12. Reduced Motion Support
+   ========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .organ-slot,
+  .organ-slot__ports,
+  .organ-slot__amputate,
+  .organ-slot__port,
+  .organ-slot__confirm-btn {
+    transition: none;
+  }
+
+  .organ-slot--quarantined {
+    animation: none;
+  }
+}
+
+/* ==========================================================================
+   13. Responsive
+   ========================================================================== */
+
 @media (max-width: 768px) {
   .organ-slot {
     min-height: 150px;
@@ -186,5 +483,19 @@
   .organ-slot__empty-icon {
     width: 32px;
     height: 32px;
+  }
+
+  .organ-slot__organ-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-1);
+  }
+
+  .organ-slot__organ-name {
+    font-size: var(--text-sm);
+  }
+
+  .organ-slot__ports--visible {
+    max-height: 80px;
   }
 }
