@@ -1,0 +1,14 @@
+{
+  "id": "behave-mem-001",
+  "name": "behave-mem-001",
+  "description": "Recursive object allocation memory bomb",
+  "version": "1.0.0",
+  "apiVersion": "1.0.0",
+  "permissions": ["read:mood.entries"],
+  "ports": [],
+  "slotSize": "small",
+  "expectedStage": "behavioral",
+  "expectedReason": "Memory exhaustion detected",
+  "isAttack": true,
+  "category": "behavioral-attack"
+}

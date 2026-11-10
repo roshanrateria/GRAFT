@@ -1,0 +1,14 @@
+{
+  "id": "behave-time-001",
+  "name": "behave-time-001",
+  "description": "Timing attack using performance.now",
+  "version": "1.0.0",
+  "apiVersion": "1.0.0",
+  "permissions": ["read:tasks"],
+  "ports": [],
+  "slotSize": "small",
+  "expectedStage": "static",
+  "expectedReason": "performance.now access is banned",
+  "isAttack": true,
+  "category": "behavioral-attack"
+}

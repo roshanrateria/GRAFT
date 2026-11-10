@@ -1,0 +1,14 @@
+{
+  "id": "escape-nav-001",
+  "name": "escape-nav-001",
+  "description": "Navigation hijack via document.write",
+  "version": "1.0.0",
+  "apiVersion": "1.0.0",
+  "permissions": ["read:mood.entries"],
+  "ports": [],
+  "slotSize": "small",
+  "expectedStage": "static",
+  "expectedReason": "document.write used for navigation hijack",
+  "isAttack": true,
+  "category": "sandbox-escape"
+}

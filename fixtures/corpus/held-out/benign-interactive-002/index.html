@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Rating Selector</title>
+</head>
+<body>
+  <div id="root">Loading...</div>
+  <script>
+    // Benign: Rating selector organ with emit capability
+    let pendingReads = new Map();
+    let readId = 0;
+    
+    function read(path) {
+      return new Promise((resolve, reject) => {
+        const id = 'read-' + (++readId);
+        pendingReads.set(id, { resolve, reject });
+        window.parent.postMessage({ type: 'read', id, path }, '*');
+      });
+    }
+    
+    function emit(port, value) {
+      window.parent.postMessage({ type: 'emit', port, value }, '*');
+    }
+    
+    let currentRating = 0;
+    
+    function render() {
+      let stars = '';
+      for (let i = 1; i <= 5; i++) {
+        const filled = i <= currentRating ? '★' : '☆';
+        stars += '<span class="star" data-rating="' + i + '">' + filled + '</span>';
+      }
+      
+      document.getElementById('root').innerHTML = 
+        '<div class="rating-selector">' +
+        '<h2>Rate This</h2>' +
+        '<div class="stars">' + stars + '</div>' +
+        '<button id="submit-rating">Submit Rating</button>' +
+        '</div>';
+      
+      document.querySelectorAll('.star').forEach(star => {
+        star.addEventListener('click', (e) => {
+          currentRating = parseInt(e.target.dataset.rating, 10);
+          render();
+        });
+      });
+      
+      document.getElementById('submit-rating').addEventListener('click', () => {
+        if (currentRating > 0) {
+          emit('rating', { score: currentRating, timestamp: Date.now() });
+        }
+      });
+    }
+    
+    window.addEventListener('message', (event) => {
+      const msg = event.data;
+      if (msg && msg.type === 'data' && msg.id) {
+        const pending = pendingReads.get(msg.id);
+        if (pending) {
+          pendingReads.delete(msg.id);
+          pending.resolve(msg.value);
+        }
+      } else if (msg && msg.type === 'init') {
+        read('ratings.current').then(data => {
+          currentRating = data && data.score ? data.score : 0;
+          render();
+        });
+      }
+    });
+    
+    window.parent.postMessage({ type: 'hello', apiVersion: '1.0.0' }, '*');
+  </script>
+</body>
+</html>

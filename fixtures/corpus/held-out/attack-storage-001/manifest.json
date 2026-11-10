@@ -1,0 +1,14 @@
+{
+  "id": "attack-storage-001",
+  "name": "attack-storage-001",
+  "description": "IndexedDB exfiltration attack",
+  "version": "1.0.0",
+  "apiVersion": "1.0.0",
+  "permissions": ["read:tasks"],
+  "ports": [],
+  "slotSize": "small",
+  "expectedStage": "static",
+  "expectedReason": "IndexedDB access is banned",
+  "isAttack": true,
+  "category": "direct-attack"
+}

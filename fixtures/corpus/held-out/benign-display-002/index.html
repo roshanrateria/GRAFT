@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Daily Stats</title>
+</head>
+<body>
+  <div id="root">Loading...</div>
+  <script>
+    // Benign: Daily statistics display organ
+    let pendingReads = new Map();
+    let readId = 0;
+    
+    function read(path) {
+      return new Promise((resolve, reject) => {
+        const id = 'read-' + (++readId);
+        pendingReads.set(id, { resolve, reject });
+        window.parent.postMessage({ type: 'read', id, path }, '*');
+      });
+    }
+    
+    function render(stats) {
+      const completed = stats && stats.completed ? stats.completed : 0;
+      const pending = stats && stats.pending ? stats.pending : 0;
+      const streak = stats && stats.streak ? stats.streak : 0;
+      
+      document.getElementById('root').innerHTML = 
+        '<div class="daily-stats">' +
+        '<h2>Daily Statistics</h2>' +
+        '<div class="stat-row">' +
+        '<div class="stat-item"><span class="num">' + completed + '</span><span class="label">Completed</span></div>' +
+        '<div class="stat-item"><span class="num">' + pending + '</span><span class="label">Pending</span></div>' +
+        '<div class="stat-item"><span class="num">' + streak + '</span><span class="label">Day Streak</span></div>' +
+        '</div>' +
+        '</div>';
+    }
+    
+    window.addEventListener('message', (event) => {
+      const msg = event.data;
+      if (msg && msg.type === 'data' && msg.id) {
+        const pending = pendingReads.get(msg.id);
+        if (pending) {
+          pendingReads.delete(msg.id);
+          pending.resolve(msg.value);
+        }
+      } else if (msg && msg.type === 'init') {
+        read('daily.stats').then(data => render(data || {}));
+      }
+    });
+    
+    window.parent.postMessage({ type: 'hello', apiVersion: '1.0.0' }, '*');
+  </script>
+</body>
+</html>

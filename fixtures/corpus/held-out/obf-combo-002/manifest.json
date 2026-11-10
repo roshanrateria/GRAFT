@@ -1,0 +1,14 @@
+{
+  "id": "obf-combo-002",
+  "name": "obf-combo-002",
+  "description": "Combined Symbol.iterator + destructuring attack",
+  "version": "1.0.0",
+  "apiVersion": "1.0.0",
+  "permissions": ["read:tasks"],
+  "ports": [],
+  "slotSize": "small",
+  "expectedStage": "static",
+  "expectedReason": "Symbol.iterator used to construct fetch call",
+  "isAttack": true,
+  "category": "obfuscated-attack"
+}

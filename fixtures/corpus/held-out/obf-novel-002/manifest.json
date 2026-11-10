@@ -1,0 +1,14 @@
+{
+  "id": "obf-novel-002",
+  "name": "obf-novel-002",
+  "description": "Reflect.apply obfuscation attack",
+  "version": "1.0.0",
+  "apiVersion": "1.0.0",
+  "permissions": ["read:tasks"],
+  "ports": [],
+  "slotSize": "small",
+  "expectedStage": "static",
+  "expectedReason": "Reflect.apply used to indirectly call Function constructor",
+  "isAttack": true,
+  "category": "obfuscated-attack"
+}

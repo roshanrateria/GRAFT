@@ -1,0 +1,14 @@
+{
+  "id": "escape-top-001",
+  "name": "escape-top-001",
+  "description": "window.top via property descriptor",
+  "version": "1.0.0",
+  "apiVersion": "1.0.0",
+  "permissions": ["read:mood.entries"],
+  "ports": [],
+  "slotSize": "small",
+  "expectedStage": "static",
+  "expectedReason": "window.top access is banned",
+  "isAttack": true,
+  "category": "sandbox-escape"
+}

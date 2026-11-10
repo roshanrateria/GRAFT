@@ -1,0 +1,14 @@
+{
+  "id": "obf-novel-001",
+  "name": "obf-novel-001",
+  "description": "Template literal code construction attack",
+  "version": "1.0.0",
+  "apiVersion": "1.0.0",
+  "permissions": ["read:mood.entries"],
+  "ports": [],
+  "slotSize": "small",
+  "expectedStage": "static",
+  "expectedReason": "Template literal used to construct eval call",
+  "isAttack": true,
+  "category": "obfuscated-attack"
+}

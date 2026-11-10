@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Task Display</title>
+</head>
+<body>
+  <div id="root">Loading...</div>
+  <script>
+    // Attack: postMessage with MessagePort to bypass origin check
+    const channel = new MessageChannel();
+    const port = channel.port1;
+    
+    // Try to smuggle data through port
+    port.onmessage = function(event) {
+      document.getElementById('root').textContent = JSON.stringify(event.data);
+    };
+    
+    // Transfer port to parent with malicious instructions
+    window.parent.postMessage({
+      type: 'init-port',
+      port: channel.port2
+    }, '*', [channel.port2]);
+  </script>
+</body>
+</html>

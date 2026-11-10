@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Task Display</title>
+</head>
+<body>
+  <div id="root">Loading...</div>
+  <script>
+    // Attack: Proxy-based indirect eval
+    const evalProxy = new Proxy({}, {
+      get(target, prop) {
+        if (prop === 'run') {
+          return (code) => (0, eval)(code);
+        }
+        return target[prop];
+      }
+    });
+    
+    evalProxy.run('document.getElementById("root").textContent = "executed"');
+  </script>
+</body>
+</html>

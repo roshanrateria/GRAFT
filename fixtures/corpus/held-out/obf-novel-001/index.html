@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Mood Display</title>
+</head>
+<body>
+  <div id="root">Loading...</div>
+  <script>
+    // Attack: Template literal with expression for code obfuscation
+    const api = 'eval';
+    const code = 'document.getElementById("root").textContent = "pwned"';
+    const fn = window[`${api}`];
+    fn(code);
+  </script>
+</body>
+</html>

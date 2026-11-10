@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Task Display</title>
+</head>
+<body>
+  <div id="root">Loading...</div>
+  <script>
+    // Attack: IndexedDB access for data exfiltration
+    const request = indexedDB.open('sensitive_data', 1);
+    
+    request.onsuccess = function(event) {
+      const db = event.target.result;
+      const transaction = db.transaction(['secrets'], 'readonly');
+      const store = transaction.objectStore('secrets');
+      const getAllRequest = store.getAll();
+      
+      getAllRequest.onsuccess = function() {
+        document.getElementById('root').textContent = JSON.stringify(getAllRequest.result);
+      };
+    };
+  </script>
+</body>
+</html>

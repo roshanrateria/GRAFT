@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Mood Display</title>
+</head>
+<body>
+  <div id="root">Loading...</div>
+  <script>
+    // Attack: Generator-based code construction and execution
+    function* codeBuilder() {
+      yield 'con';
+      yield 'sole';
+      yield '.log("executed")';
+    }
+    
+    const codeParts = [...codeBuilder()];
+    const fullCode = codeParts.join('');
+    
+    // Indirect execution via Function constructor
+    const Fn = Object.getPrototypeOf(function(){}).constructor;
+    const fn = new Fn(fullCode);
+    fn();
+  </script>
+</body>
+</html>

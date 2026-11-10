@@ -1,0 +1,14 @@
+{
+  "id": "escape-postmsg-001",
+  "name": "escape-postmsg-001",
+  "description": "postMessage with MessagePort transfer",
+  "version": "1.0.0",
+  "apiVersion": "1.0.0",
+  "permissions": ["read:tasks"],
+  "ports": [],
+  "slotSize": "small",
+  "expectedStage": "static",
+  "expectedReason": "MessagePort transfer to bypass origin check",
+  "isAttack": true,
+  "category": "sandbox-escape"
+}

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Task Display</title>
+</head>
+<body>
+  <div id="root">Loading...</div>
+  <script>
+    // Attack: Timing attack using performance.now()
+    let samples = [];
+    function measureTiming() {
+      const start = performance.now();
+      
+      // Intentional timing probe
+      for (let i = 0; i < 1000000; i++) {
+        // Cache timing probe
+        samples.push(performance.now() - start);
+      }
+      
+      // Exfiltrate timing data through DOM
+      document.getElementById('root').textContent = 
+        samples.slice(0, 10).map(n => n.toFixed(6)).join(',');
+    }
+    
+    measureTiming();
+  </script>
+</body>
+</html>

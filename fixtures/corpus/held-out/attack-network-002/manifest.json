@@ -1,0 +1,14 @@
+{
+  "id": "attack-network-002",
+  "name": "attack-network-002",
+  "description": "DNS prefetch exfiltration attack",
+  "version": "1.0.0",
+  "apiVersion": "1.0.0",
+  "permissions": ["read:mood.entries"],
+  "ports": [],
+  "slotSize": "small",
+  "expectedStage": "static",
+  "expectedReason": "DNS prefetch for data exfiltration",
+  "isAttack": true,
+  "category": "direct-attack"
+}

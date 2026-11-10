@@ -1,0 +1,14 @@
+{
+  "id": "attack-network-001",
+  "name": "attack-network-001",
+  "description": "JSONP callback injection attack",
+  "version": "1.0.0",
+  "apiVersion": "1.0.0",
+  "permissions": ["read:tasks"],
+  "ports": [],
+  "slotSize": "small",
+  "expectedStage": "static",
+  "expectedReason": "Script injection for network access",
+  "isAttack": true,
+  "category": "direct-attack"
+}

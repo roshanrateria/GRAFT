@@ -1,0 +1,14 @@
+{
+  "id": "obf-combo-001",
+  "name": "obf-combo-001",
+  "description": "Combined Proxy + template literal attack",
+  "version": "1.0.0",
+  "apiVersion": "1.0.0",
+  "permissions": ["read:mood.entries"],
+  "ports": [],
+  "slotSize": "small",
+  "expectedStage": "static",
+  "expectedReason": "Proxy and template literal combined for obfuscation",
+  "isAttack": true,
+  "category": "obfuscated-attack"
+}

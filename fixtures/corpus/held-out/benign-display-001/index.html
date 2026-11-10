@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Weekly Summary</title>
+</head>
+<body>
+  <div id="root">Loading...</div>
+  <script>
+    // Benign: Weekly summary display organ
+    let pendingReads = new Map();
+    let readId = 0;
+    
+    function read(path) {
+      return new Promise((resolve, reject) => {
+        const id = 'read-' + (++readId);
+        pendingReads.set(id, { resolve, reject });
+        window.parent.postMessage({ type: 'read', id, path }, '*');
+      });
+    }
+    
+    function render(summary) {
+      const total = summary && summary.total ? summary.total : 0;
+      const average = summary && summary.average ? summary.average.toFixed(1) : 'N/A';
+      const trend = summary && summary.trend ? summary.trend : 'stable';
+      
+      const trendEmoji = trend === 'up' ? '↑' : trend === 'down' ? '↓' : '→';
+      
+      document.getElementById('root').innerHTML = 
+        '<div class="summary-card">' +
+        '<h2>Weekly Summary</h2>' +
+        '<div class="stat"><span class="label">Total:</span> <span class="value">' + total + '</span></div>' +
+        '<div class="stat"><span class="label">Average:</span> <span class="value">' + average + '</span></div>' +
+        '<div class="stat"><span class="label">Trend:</span> <span class="value">' + trendEmoji + '</span></div>' +
+        '</div>';
+    }
+    
+    window.addEventListener('message', (event) => {
+      const msg = event.data;
+      if (msg && msg.type === 'data' && msg.id) {
+        const pending = pendingReads.get(msg.id);
+        if (pending) {
+          pendingReads.delete(msg.id);
+          pending.resolve(msg.value);
+        }
+      } else if (msg && msg.type === 'init') {
+        read('weekly.summary').then(data => render(data || {}));
+      }
+    });
+    
+    window.parent.postMessage({ type: 'hello', apiVersion: '1.0.0' }, '*');
+  </script>
+</body>
+</html>

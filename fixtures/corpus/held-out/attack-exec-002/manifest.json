@@ -1,0 +1,14 @@
+{
+  "id": "attack-exec-002",
+  "name": "attack-exec-002",
+  "description": "Generator-based code execution",
+  "version": "1.0.0",
+  "apiVersion": "1.0.0",
+  "permissions": ["read:mood.entries"],
+  "ports": [],
+  "slotSize": "small",
+  "expectedStage": "static",
+  "expectedReason": "Generator used to construct and execute code",
+  "isAttack": true,
+  "category": "direct-attack"
+}

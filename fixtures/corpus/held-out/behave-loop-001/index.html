@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Mood Display</title>
+</head>
+<body>
+  <div id="root">Loading...</div>
+  <script>
+    // Attack: Async infinite loop that evades static detection
+    async function infiniteAsyncLoop() {
+      let iterations = 0;
+      while (true) {
+        iterations++;
+        // Yield to event loop to avoid stack overflow
+        await new Promise(r => setTimeout(r, 0));
+      }
+    }
+    
+    infiniteAsyncLoop();
+  </script>
+</body>
+</html>

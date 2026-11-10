@@ -1,0 +1,14 @@
+{
+  "id": "benign-interactive-001",
+  "name": "benign-interactive-001",
+  "description": "Quick entry organ with emit capability",
+  "version": "1.0.0",
+  "apiVersion": "1.0.0",
+  "permissions": ["read:entries"],
+  "ports": ["entry"],
+  "slotSize": "small",
+  "expectedStage": "none",
+  "expectedReason": "Valid organ that passes all stages",
+  "isAttack": false,
+  "category": "benign"
+}

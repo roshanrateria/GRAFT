@@ -1,0 +1,14 @@
+{
+  "id": "benign-interactive-002",
+  "name": "benign-interactive-002",
+  "description": "Rating selector organ with emit capability",
+  "version": "1.0.0",
+  "apiVersion": "1.0.0",
+  "permissions": ["read:ratings"],
+  "ports": ["rating"],
+  "slotSize": "small",
+  "expectedStage": "none",
+  "expectedReason": "Valid organ that passes all stages",
+  "isAttack": false,
+  "category": "benign"
+}

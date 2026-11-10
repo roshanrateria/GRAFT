@@ -1,0 +1,232 @@
+{
+  "name": "GRAFT Held-Out Corpus",
+  "version": "1.0.0",
+  "description": "Held-out corpus of 20 organs for immune system benchmarking. FROZEN - DO NOT MODIFY AFTER CREATION.",
+  "freezeDate": "2024-11-22T00:00:00Z",
+  "commitSHA": "3632f4b6f27a88fa2b26837778478c041fd2356c",
+  "note": "This corpus is held-out and MUST NEVER be used for tuning the immune system. It is for benchmark evaluation only.",
+  "organCounts": {
+    "total": 20,
+    "byCategory": {
+      "direct-attack": 6,
+      "obfuscated-attack": 4,
+      "sandbox-escape": 3,
+      "behavioral-attack": 3,
+      "benign": 4
+    }
+  },
+  "expectedCatchRates": {
+    "note": "Target: 95%+ catch rate for attacks, 0% false rejection for benign organs",
+    "attacks": {
+      "direct-attack": 0.95,
+      "obfuscated-attack": 0.95,
+      "sandbox-escape": 0.95,
+      "behavioral-attack": 0.95
+    },
+    "benign": {
+      "falseRejectionRate": 0.00
+    }
+  },
+  "organs": [
+    {
+      "id": "attack-network-001",
+      "name": "attack-network-001",
+      "description": "JSONP callback injection attack",
+      "expectedStage": "static",
+      "expectedReason": "Script injection for network access",
+      "isAttack": true,
+      "category": "direct-attack",
+      "attackType": "network"
+    },
+    {
+      "id": "attack-network-002",
+      "name": "attack-network-002",
+      "description": "DNS prefetch exfiltration attack",
+      "expectedStage": "static",
+      "expectedReason": "DNS prefetch for data exfiltration",
+      "isAttack": true,
+      "category": "direct-attack",
+      "attackType": "network"
+    },
+    {
+      "id": "attack-exec-001",
+      "name": "attack-exec-001",
+      "description": "Proxy-based eval attack",
+      "expectedStage": "static",
+      "expectedReason": "Proxy used to indirectly call eval",
+      "isAttack": true,
+      "category": "direct-attack",
+      "attackType": "code-execution"
+    },
+    {
+      "id": "attack-exec-002",
+      "name": "attack-exec-002",
+      "description": "Generator-based code execution",
+      "expectedStage": "static",
+      "expectedReason": "Generator used to construct and execute code",
+      "isAttack": true,
+      "category": "direct-attack",
+      "attackType": "code-execution"
+    },
+    {
+      "id": "attack-storage-001",
+      "name": "attack-storage-001",
+      "description": "IndexedDB exfiltration attack",
+      "expectedStage": "static",
+      "expectedReason": "IndexedDB access is banned",
+      "isAttack": true,
+      "category": "direct-attack",
+      "attackType": "storage"
+    },
+    {
+      "id": "attack-storage-002",
+      "name": "attack-storage-002",
+      "description": "Cache API data theft attack",
+      "expectedStage": "static",
+      "expectedReason": "Cache API access is banned",
+      "isAttack": true,
+      "category": "direct-attack",
+      "attackType": "storage"
+    },
+    {
+      "id": "obf-novel-001",
+      "name": "obf-novel-001",
+      "description": "Template literal code construction attack",
+      "expectedStage": "static",
+      "expectedReason": "Template literal used to construct eval call",
+      "isAttack": true,
+      "category": "obfuscated-attack",
+      "attackType": "novel-obfuscation"
+    },
+    {
+      "id": "obf-novel-002",
+      "name": "obf-novel-002",
+      "description": "Reflect.apply obfuscation attack",
+      "expectedStage": "static",
+      "expectedReason": "Reflect.apply used to indirectly call Function constructor",
+      "isAttack": true,
+      "category": "obfuscated-attack",
+      "attackType": "novel-obfuscation"
+    },
+    {
+      "id": "obf-combo-001",
+      "name": "obf-combo-001",
+      "description": "Combined Proxy + template literal attack",
+      "expectedStage": "static",
+      "expectedReason": "Proxy and template literal combined for obfuscation",
+      "isAttack": true,
+      "category": "obfuscated-attack",
+      "attackType": "combination"
+    },
+    {
+      "id": "obf-combo-002",
+      "name": "obf-combo-002",
+      "description": "Combined Symbol.iterator + destructuring attack",
+      "expectedStage": "static",
+      "expectedReason": "Symbol.iterator used to construct fetch call",
+      "isAttack": true,
+      "category": "obfuscated-attack",
+      "attackType": "combination"
+    },
+    {
+      "id": "escape-top-001",
+      "name": "escape-top-001",
+      "description": "window.top via property descriptor",
+      "expectedStage": "static",
+      "expectedReason": "window.top access is banned",
+      "isAttack": true,
+      "category": "sandbox-escape",
+      "attackType": "window-top"
+    },
+    {
+      "id": "escape-postmsg-001",
+      "name": "escape-postmsg-001",
+      "description": "postMessage with MessagePort transfer",
+      "expectedStage": "static",
+      "expectedReason": "MessagePort transfer to bypass origin check",
+      "isAttack": true,
+      "category": "sandbox-escape",
+      "attackType": "postmessage"
+    },
+    {
+      "id": "escape-nav-001",
+      "name": "escape-nav-001",
+      "description": "Navigation hijack via document.write",
+      "expectedStage": "static",
+      "expectedReason": "document.write used for navigation hijack",
+      "isAttack": true,
+      "category": "sandbox-escape",
+      "attackType": "navigation-hijack"
+    },
+    {
+      "id": "behave-loop-001",
+      "name": "behave-loop-001",
+      "description": "Async infinite loop attack",
+      "expectedStage": "behavioral",
+      "expectedReason": "Async infinite loop detected",
+      "isAttack": true,
+      "category": "behavioral-attack",
+      "attackType": "infinite-loop"
+    },
+    {
+      "id": "behave-mem-001",
+      "name": "behave-mem-001",
+      "description": "Recursive object allocation memory bomb",
+      "expectedStage": "behavioral",
+      "expectedReason": "Memory exhaustion detected",
+      "isAttack": true,
+      "category": "behavioral-attack",
+      "attackType": "memory-exhaustion"
+    },
+    {
+      "id": "behave-time-001",
+      "name": "behave-time-001",
+      "description": "Timing attack using performance.now",
+      "expectedStage": "static",
+      "expectedReason": "performance.now access is banned",
+      "isAttack": true,
+      "category": "behavioral-attack",
+      "attackType": "timing"
+    },
+    {
+      "id": "benign-display-001",
+      "name": "benign-display-001",
+      "description": "Weekly summary display organ",
+      "expectedStage": "none",
+      "expectedReason": "Valid organ that passes all stages",
+      "isAttack": false,
+      "category": "benign",
+      "organType": "display"
+    },
+    {
+      "id": "benign-display-002",
+      "name": "benign-display-002",
+      "description": "Daily statistics display organ",
+      "expectedStage": "none",
+      "expectedReason": "Valid organ that passes all stages",
+      "isAttack": false,
+      "category": "benign",
+      "organType": "display"
+    },
+    {
+      "id": "benign-interactive-001",
+      "name": "benign-interactive-001",
+      "description": "Quick entry organ with emit capability",
+      "expectedStage": "none",
+      "expectedReason": "Valid organ that passes all stages",
+      "isAttack": false,
+      "category": "benign",
+      "organType": "interactive"
+    },
+    {
+      "id": "benign-interactive-002",
+      "name": "benign-interactive-002",
+      "description": "Rating selector organ with emit capability",
+      "expectedStage": "none",
+      "expectedReason": "Valid organ that passes all stages",
+      "isAttack": false,
+      "category": "benign",
+      "organType": "interactive"
+    }
+  ]
+}
