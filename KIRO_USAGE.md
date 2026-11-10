@@ -454,6 +454,45 @@ This file tracks Kiro usage throughout the GRAFT project development. Each entry
 
 ---
 
+## Entry: 2026-11-22 Phase 5 Dev Corpus Generation
+- Kiro surface used: IDE (workflow subagent)
+- Feature(s) used: workflow | fs_write | execute_pwsh | send_message
+- What I asked / how I structured it:
+  - Workflow step tasked with generating dev corpus of 70 organs in fixtures/corpus/dev/
+  - Used existing hostile organ format (manifest.json + index.html) as template
+  - Created 5 categories: direct attacks (25), obfuscated (15), sandbox escapes (10), behavioral (10), benign (10)
+  - Each organ has manifest.json with id, expectedStage, expectedReason, isAttack, category
+  - Root manifest.json lists all organs with metadata for benchmark tooling
+- What worked:
+  - **Batch file creation**: fs_write worked efficiently for creating 141 files across 70 directories
+  - **Format consistency**: All organs follow the existing hostile organ structure exactly
+  - **Category distribution**: Exact breakdown of 60 attacks + 10 benign as requested
+  - **Expected stage labeling**: Each organ correctly labeled with static/behavioral/none
+  - **Commit**: 58d82ab "feat: add dev corpus of 70 organs for immune system testing"
+- What failed or surprised me:
+  - **PowerShell && syntax**: Recurring issue - `&&` not valid in PowerShell, used `;` for command chaining
+  - **One tool call interrupted**: escape-010 index.html write was interrupted mid-string, had to retry
+  - **No verification step**: Did not run immune system tests against the corpus yet
+  - **Manual categorization**: Had to manually count and verify category distribution
+- What I would change:
+  - **Add corpus validation script**: Script to verify all organs have valid manifests and expected stages
+  - **Run immune tests**: After generation, run immune system against corpus to verify expected rejections
+  - **Add held-out set split**: Separate corpus into dev (used for tuning) and test (held-out for benchmark)
+  - **Generate script.js variants**: Some attacks could benefit from separate script files
+  - **Add obfuscation layers**: Multi-level obfuscation (e.g., computed + encoding) would be more realistic
+- Evidence:
+  - **Commit**: 58d82ab
+  - **Files created**: 141 files (70 directories × 2 files + 1 root manifest)
+  - **Category breakdown**:
+    - Direct attacks (25): fetch/network (5), eval (5), cookie (5), storage (5), XHR (5)
+    - Obfuscated attacks (15): computed property (5), encoding (5), string manipulation (5)
+    - Sandbox escapes (10): window.top/parent (6), postMessage abuse (4)
+    - Behavioral attacks (10): infinite loops (2), memory bombs (2), CPU loops (4), recursive (2)
+    - Benign organs (10): display (5), event-emitting (3), data-transforming (2)
+  - **Root manifest**: fixtures/corpus/dev/manifest.json with full metadata
+
+---
+
 ## Entry: 2026-11-09 Phase 2 Immune System + Doctor Provider Complete
 - Kiro surface used: IDE
 - Feature(s) used: steering | hooks | spec | fs_write | str_replace | execute_pwsh
