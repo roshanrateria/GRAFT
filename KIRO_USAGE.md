@@ -2391,3 +2391,50 @@ ev-02-property.test.ts\
     - Misses listed openly with analysis
   - **Clean-room constraint**: Red Team agent reads NERVE_API.md and ban list comments only
   - **Hook triggered**: journal-on-stop fired after workflow launch
+
+---
+
+## Entry: 2026-11-10 Phase 5 Ablation Study Implementation
+- Kiro surface used: IDE (workflow subagent)
+- Feature(s) used: workflow | fs_write | str_replace | execute_pwsh | read_file | send_message
+- What I asked / how I structured it:
+  - Workflow step tasked with creating ablation study script at `scripts/ablation-study.ts`
+  - Compare two configurations: sandbox+CSP only vs full immune system
+  - Run on both dev corpus (70 organs) and held-out corpus (20 organs)
+  - Report catch rate, misses, time per organ, layer contributions
+  - Output to `fixtures/corpus/ablation.json`
+- What worked:
+  - **Clean imports**: Direct import from `packages/immune/src/orchestrator.ts` worked
+  - **Stage-by-stage tracking**: Map<ImmuneStage, boolean> correctly tracks which stages catch each attack
+  - **Layer contribution analysis**: Shows static analysis catches 51 attacks (proactive), manifest catches 5 (declarative)
+  - **Clear comparison**: 73.7% full immune vs 47.4% sandbox-only = +26.3% improvement
+  - **Performance measurement**: 4.6ms overhead for full immune vs 0ms for sandbox simulation
+  - **JSON output**: Clean serialization with all required fields
+  - **Commit**: 02efd50 "feat(scripts): add ablation study comparing sandbox+CSP vs full immune system"
+- What failed or surprised me:
+  - **Template literal syntax error**: `${((a - b) * 100).toFixed(1)}` - the closing paren was outside the template expression, causing parse errors
+  - **Fix**: Extract to variable first, then use in template
+  - **Map/Set iteration**: TypeScript complained about `for (const [k, v] of map)` and `[...set]` needing downlevelIteration
+  - **Fix**: Used `map.forEach()` and `Array.from(set)` instead
+  - **PowerShell && syntax**: Same recurring issue - used `;` for command chaining
+  - **Behavioral/property stages catch 0**: In this run, all attacks were caught at static or manifest stage
+- What I would change:
+  - **Add more behavioral attacks**: Current corpus has attacks mostly caught at static stage
+  - **Add property-based attack patterns**: Need attacks that pass static/manifest but fail property tests
+  - **Track which operations CSP blocks**: More detailed sandbox analysis would show what CSP catches at runtime
+  - **Add timing breakdown by stage**: Show time spent in each immune stage separately
+  - **Add regression detection**: Compare ablation results over time to catch performance regressions
+- Evidence:
+  - **Commit**: 02efd50 "feat(scripts): add ablation study comparing sandbox+CSP vs full immune system"
+  - **Files created**:
+    - scripts/ablation-study.ts (722 lines)
+    - fixtures/corpus/ablation.json (59KB JSON output)
+  - **Key results**:
+    - Dev corpus: 70 organs, Held-out: 20 organs, Total: 90 organs
+    - Sandbox+CSP: 47.4% catch rate (36/76 attacks)
+    - Full immune: 73.7% catch rate (56/76 attacks)
+    - Layer contributions: Static 51, Manifest 5, Behavioral 0, Property 0
+    - Immune-only catches: 21 attacks that sandbox missed
+    - Sandbox-only catches: 1 attack (escape-top-001)
+    - Neither catches: 19 attacks
+  - **Performance**: 4.6ms overhead for +26.3% catch rate improvement

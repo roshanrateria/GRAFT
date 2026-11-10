@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-11-10T09:08:48.491Z",
+  "timestamp": "2026-11-10T09:15:38.779Z",
   "corpus": {
     "dev": 70,
     "heldOut": 20,
@@ -49,7 +49,7 @@
       "obf-combo-002",
       "obf-novel-001"
     ],
-    "avgTimeMs": 0,
+    "avgTimeMs": 0.09210526315789473,
     "totalAttacks": 76,
     "caughtAttacks": 36
   },
@@ -77,7 +77,7 @@
       "escape-top-001",
       "obf-combo-001"
     ],
-    "avgTimeMs": 4.565789473684211,
+    "avgTimeMs": 4.526315789473684,
     "totalAttacks": 76,
     "caughtAttacks": 56
   },
@@ -195,13 +195,13 @@
       "sandboxOnly": {
         "passed": false,
         "rejectionReason": "Behavioral attack not blocked by sandbox/CSP",
-        "durationMs": 0
+        "durationMs": 1
       },
       "fullImmune": {
         "passed": false,
         "rejectionStage": "static",
         "rejectionReason": "Infinite while(true) loop detected - can freeze the organ",
-        "durationMs": 12
+        "durationMs": 20
       },
       "layerContributions": {
         "static": true,
@@ -218,13 +218,13 @@
       "sandboxOnly": {
         "passed": false,
         "rejectionReason": "Behavioral attack not blocked by sandbox/CSP",
-        "durationMs": 0
+        "durationMs": 3
       },
       "fullImmune": {
         "passed": false,
         "rejectionStage": "static",
         "rejectionReason": "Infinite for(;;) loop detected - can freeze the organ",
-        "durationMs": 2
+        "durationMs": 3
       },
       "layerContributions": {
         "static": true,
@@ -247,7 +247,7 @@
         "passed": true,
         "rejectionStage": null,
         "rejectionReason": null,
-        "durationMs": 50
+        "durationMs": 52
       },
       "layerContributions": {
         "static": false,
@@ -270,7 +270,7 @@
         "passed": true,
         "rejectionStage": null,
         "rejectionReason": null,
-        "durationMs": 15
+        "durationMs": 14
       },
       "layerContributions": {
         "static": false,
@@ -339,7 +339,7 @@
         "passed": true,
         "rejectionStage": null,
         "rejectionReason": null,
-        "durationMs": 16
+        "durationMs": 13
       },
       "layerContributions": {
         "static": false,
@@ -362,7 +362,7 @@
         "passed": true,
         "rejectionStage": null,
         "rejectionReason": null,
-        "durationMs": 14
+        "durationMs": 15
       },
       "layerContributions": {
         "static": false,
@@ -385,7 +385,7 @@
         "passed": true,
         "rejectionStage": null,
         "rejectionReason": null,
-        "durationMs": 14
+        "durationMs": 12
       },
       "layerContributions": {
         "static": false,
@@ -408,7 +408,7 @@
         "passed": true,
         "rejectionStage": null,
         "rejectionReason": null,
-        "durationMs": 16
+        "durationMs": 13
       },
       "layerContributions": {
         "static": false,
@@ -500,7 +500,7 @@
         "passed": false,
         "rejectionStage": "static",
         "rejectionReason": "window.parent is not allowed",
-        "durationMs": 1
+        "durationMs": 2
       },
       "layerContributions": {
         "static": true,
@@ -523,7 +523,7 @@
         "passed": false,
         "rejectionStage": "static",
         "rejectionReason": "window.parent is not allowed",
-        "durationMs": 1
+        "durationMs": 2
       },
       "layerContributions": {
         "static": true,
@@ -615,7 +615,7 @@
         "passed": false,
         "rejectionStage": "static",
         "rejectionReason": "window.parent is not allowed",
-        "durationMs": 3
+        "durationMs": 2
       },
       "layerContributions": {
         "static": true,
@@ -632,7 +632,7 @@
       "sandboxOnly": {
         "passed": true,
         "rejectionReason": null,
-        "durationMs": 0
+        "durationMs": 1
       },
       "fullImmune": {
         "passed": false,
@@ -684,7 +684,7 @@
         "passed": false,
         "rejectionStage": "static",
         "rejectionReason": "document.cookie is not allowed",
-        "durationMs": 0
+        "durationMs": 1
       },
       "layerContributions": {
         "static": true,
@@ -753,7 +753,7 @@
         "passed": false,
         "rejectionStage": "static",
         "rejectionReason": "document.cookie is not allowed",
-        "durationMs": 1
+        "durationMs": 0
       },
       "layerContributions": {
         "static": true,
@@ -776,7 +776,7 @@
         "passed": false,
         "rejectionStage": "static",
         "rejectionReason": "fetch() is not allowed",
-        "durationMs": 0
+        "durationMs": 1
       },
       "layerContributions": {
         "static": true,
@@ -914,7 +914,7 @@
         "passed": true,
         "rejectionStage": null,
         "rejectionReason": null,
-        "durationMs": 10
+        "durationMs": 11
       },
       "layerContributions": {
         "static": false,
@@ -937,7 +937,7 @@
         "passed": true,
         "rejectionStage": null,
         "rejectionReason": null,
-        "durationMs": 22
+        "durationMs": 10
       },
       "layerContributions": {
         "static": false,
@@ -960,7 +960,7 @@
         "passed": true,
         "rejectionStage": null,
         "rejectionReason": null,
-        "durationMs": 16
+        "durationMs": 14
       },
       "layerContributions": {
         "static": false,
@@ -1006,7 +1006,7 @@
         "passed": false,
         "rejectionStage": "static",
         "rejectionReason": "window.parent is not allowed",
-        "durationMs": 1
+        "durationMs": 0
       },
       "layerContributions": {
         "static": true,
@@ -1052,7 +1052,7 @@
         "passed": false,
         "rejectionStage": "static",
         "rejectionReason": "window.parent is not allowed",
-        "durationMs": 1
+        "durationMs": 0
       },
       "layerContributions": {
         "static": true,
@@ -1098,7 +1098,7 @@
         "passed": true,
         "rejectionStage": null,
         "rejectionReason": null,
-        "durationMs": 13
+        "durationMs": 11
       },
       "layerContributions": {
         "static": false,
@@ -1144,7 +1144,7 @@
         "passed": false,
         "rejectionStage": "static",
         "rejectionReason": "new Function() is not allowed",
-        "durationMs": 1
+        "durationMs": 0
       },
       "layerContributions": {
         "static": true,
@@ -1167,7 +1167,7 @@
         "passed": false,
         "rejectionStage": "static",
         "rejectionReason": "setTimeout with string argument is not allowed",
-        "durationMs": 0
+        "durationMs": 1
       },
       "layerContributions": {
         "static": true,
@@ -1213,7 +1213,7 @@
         "passed": true,
         "rejectionStage": null,
         "rejectionReason": null,
-        "durationMs": 12
+        "durationMs": 11
       },
       "layerContributions": {
         "static": false,
@@ -1236,7 +1236,7 @@
         "passed": true,
         "rejectionStage": null,
         "rejectionReason": null,
-        "durationMs": 10
+        "durationMs": 12
       },
       "layerContributions": {
         "static": false,
@@ -1282,7 +1282,7 @@
         "passed": false,
         "rejectionStage": "static",
         "rejectionReason": "Computed access on window is not allowed (catches obfuscated access)",
-        "durationMs": 0
+        "durationMs": 1
       },
       "layerContributions": {
         "static": true,
@@ -1305,7 +1305,7 @@
         "passed": false,
         "rejectionStage": "static",
         "rejectionReason": "Computed access on window is not allowed (catches obfuscated access)",
-        "durationMs": 1
+        "durationMs": 0
       },
       "layerContributions": {
         "static": true,
@@ -1322,13 +1322,13 @@
       "sandboxOnly": {
         "passed": true,
         "rejectionReason": "Blocked at runtime by CSP: \\blocalStorage\\b",
-        "durationMs": 0
+        "durationMs": 1
       },
       "fullImmune": {
         "passed": false,
         "rejectionStage": "static",
         "rejectionReason": "Computed access on window is not allowed (catches obfuscated access)",
-        "durationMs": 0
+        "durationMs": 2
       },
       "layerContributions": {
         "static": true,
@@ -1374,7 +1374,7 @@
         "passed": false,
         "rejectionStage": "static",
         "rejectionReason": "Computed access on window is not allowed (catches obfuscated access)",
-        "durationMs": 0
+        "durationMs": 1
       },
       "layerContributions": {
         "static": true,
@@ -1397,7 +1397,7 @@
         "passed": false,
         "rejectionStage": "static",
         "rejectionReason": "fetch() is not allowed",
-        "durationMs": 0
+        "durationMs": 1
       },
       "layerContributions": {
         "static": true,
@@ -1466,7 +1466,7 @@
         "passed": false,
         "rejectionStage": "static",
         "rejectionReason": "Computed access on window is not allowed (catches obfuscated access)",
-        "durationMs": 1
+        "durationMs": 0
       },
       "layerContributions": {
         "static": true,
@@ -1512,7 +1512,7 @@
         "passed": false,
         "rejectionStage": "static",
         "rejectionReason": "Computed access on window is not allowed (catches obfuscated access)",
-        "durationMs": 1
+        "durationMs": 0
       },
       "layerContributions": {
         "static": true,
@@ -1558,7 +1558,7 @@
         "passed": false,
         "rejectionStage": "static",
         "rejectionReason": "Computed access on window is not allowed (catches obfuscated access)",
-        "durationMs": 0
+        "durationMs": 1
       },
       "layerContributions": {
         "static": true,
@@ -1604,7 +1604,7 @@
         "passed": false,
         "rejectionStage": "static",
         "rejectionReason": "localStorage is not allowed",
-        "durationMs": 1
+        "durationMs": 0
       },
       "layerContributions": {
         "static": true,
@@ -1673,7 +1673,7 @@
         "passed": false,
         "rejectionStage": "static",
         "rejectionReason": "localStorage is not allowed",
-        "durationMs": 0
+        "durationMs": 1
       },
       "layerContributions": {
         "static": true,
@@ -1696,7 +1696,7 @@
         "passed": false,
         "rejectionStage": "static",
         "rejectionReason": "sessionStorage is not allowed",
-        "durationMs": 1
+        "durationMs": 0
       },
       "layerContributions": {
         "static": true,
@@ -1719,7 +1719,7 @@
         "passed": false,
         "rejectionStage": "static",
         "rejectionReason": "new XMLHttpRequest() is not allowed",
-        "durationMs": 0
+        "durationMs": 1
       },
       "layerContributions": {
         "static": true,
@@ -1805,7 +1805,7 @@
       "sandboxOnly": {
         "passed": false,
         "rejectionReason": "Attack uses allowed operations",
-        "durationMs": 0
+        "durationMs": 1
       },
       "fullImmune": {
         "passed": false,
@@ -1834,7 +1834,7 @@
         "passed": true,
         "rejectionStage": null,
         "rejectionReason": null,
-        "durationMs": 9
+        "durationMs": 13
       },
       "layerContributions": {
         "static": false,
@@ -1857,7 +1857,7 @@
         "passed": false,
         "rejectionStage": "manifest",
         "rejectionReason": "Invalid read target: tasks. Valid targets: mood.entries, tasks.items, habits.checkins, calendar.events",
-        "durationMs": 0
+        "durationMs": 1
       },
       "layerContributions": {
         "static": false,
@@ -1874,7 +1874,7 @@
       "sandboxOnly": {
         "passed": true,
         "rejectionReason": "Blocked at runtime by CSP: \\bwindow\\.parent\\b",
-        "durationMs": 0
+        "durationMs": 1
       },
       "fullImmune": {
         "passed": false,
@@ -1903,7 +1903,7 @@
         "passed": false,
         "rejectionStage": "manifest",
         "rejectionReason": "Invalid read target: tasks. Valid targets: mood.entries, tasks.items, habits.checkins, calendar.events",
-        "durationMs": 0
+        "durationMs": 1
       },
       "layerContributions": {
         "static": false,
@@ -1926,7 +1926,7 @@
         "passed": true,
         "rejectionStage": null,
         "rejectionReason": null,
-        "durationMs": 12
+        "durationMs": 15
       },
       "layerContributions": {
         "static": false,
@@ -1995,7 +1995,7 @@
         "passed": false,
         "rejectionStage": "manifest",
         "rejectionReason": "Invalid read target: tasks. Valid targets: mood.entries, tasks.items, habits.checkins, calendar.events",
-        "durationMs": 0
+        "durationMs": 1
       },
       "layerContributions": {
         "static": false,
@@ -2012,13 +2012,13 @@
       "sandboxOnly": {
         "passed": true,
         "rejectionReason": null,
-        "durationMs": 1
+        "durationMs": 0
       },
       "fullImmune": {
         "passed": false,
         "rejectionStage": "static",
         "rejectionReason": "window.parent is not allowed",
-        "durationMs": 1
+        "durationMs": 2
       },
       "layerContributions": {
         "static": true,
@@ -2087,7 +2087,7 @@
         "passed": false,
         "rejectionStage": "static",
         "rejectionReason": "window.parent is not allowed",
-        "durationMs": 2
+        "durationMs": 1
       },
       "layerContributions": {
         "static": true,
@@ -2110,7 +2110,7 @@
         "passed": true,
         "rejectionStage": null,
         "rejectionReason": null,
-        "durationMs": 11
+        "durationMs": 10
       },
       "layerContributions": {
         "static": false,
@@ -2179,7 +2179,7 @@
         "passed": true,
         "rejectionStage": null,
         "rejectionReason": null,
-        "durationMs": 14
+        "durationMs": 11
       },
       "layerContributions": {
         "static": false,

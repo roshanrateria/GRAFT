@@ -1,0 +1,1514 @@
+{
+  "timestamp": "2026-11-10T09:15:14.623Z",
+  "corpus": {
+    "dev": 70,
+    "heldOut": 20,
+    "hostile": 6,
+    "total": 96
+  },
+  "summary": {
+    "totalOrgans": 96,
+    "totalAttacks": 76,
+    "totalBenign": 20,
+    "caughtAttacks": 56,
+    "missedAttacks": 20,
+    "falseRejections": 20,
+    "trueAcceptances": 0,
+    "catchRate": 73.68421052631578,
+    "falseRejectionRate": 100
+  },
+  "byStage": {
+    "static": {
+      "caught": 51,
+      "total": 76,
+      "rate": 67.10526315789474
+    },
+    "manifest": {
+      "caught": 56,
+      "total": 76,
+      "rate": 73.68421052631578
+    },
+    "behavioral": {
+      "caught": 56,
+      "total": 76,
+      "rate": 73.68421052631578
+    },
+    "property": {
+      "caught": 56,
+      "total": 76,
+      "rate": 73.68421052631578
+    }
+  },
+  "byCategory": {
+    "behavioral-attack": {
+      "total": 13,
+      "caught": 5,
+      "missed": 8,
+      "catchRate": 38.46153846153847
+    },
+    "direct-attack": {
+      "total": 31,
+      "caught": 27,
+      "missed": 4,
+      "catchRate": 87.09677419354838
+    },
+    "sandbox-escape": {
+      "total": 13,
+      "caught": 6,
+      "missed": 7,
+      "catchRate": 46.15384615384615
+    },
+    "obfuscated-attack": {
+      "total": 19,
+      "caught": 18,
+      "missed": 1,
+      "catchRate": 94.73684210526315
+    }
+  },
+  "misses": [
+    {
+      "organId": "behave-003",
+      "source": "dev",
+      "category": "behavioral-attack",
+      "expectedStage": "behavioral",
+      "reason": "Passed all immune stages"
+    },
+    {
+      "organId": "behave-004",
+      "source": "dev",
+      "category": "behavioral-attack",
+      "expectedStage": "behavioral",
+      "reason": "Passed all immune stages"
+    },
+    {
+      "organId": "behave-006",
+      "source": "dev",
+      "category": "behavioral-attack",
+      "expectedStage": "behavioral",
+      "reason": "Passed all immune stages"
+    },
+    {
+      "organId": "behave-007",
+      "source": "dev",
+      "category": "behavioral-attack",
+      "expectedStage": "behavioral",
+      "reason": "Passed all immune stages"
+    },
+    {
+      "organId": "behave-008",
+      "source": "dev",
+      "category": "behavioral-attack",
+      "expectedStage": "behavioral",
+      "reason": "Passed all immune stages"
+    },
+    {
+      "organId": "behave-009",
+      "source": "dev",
+      "category": "behavioral-attack",
+      "expectedStage": "behavioral",
+      "reason": "Passed all immune stages"
+    },
+    {
+      "organId": "behave-010",
+      "source": "dev",
+      "category": "behavioral-attack",
+      "expectedStage": "behavioral",
+      "reason": "Passed all immune stages"
+    },
+    {
+      "organId": "escape-002",
+      "source": "dev",
+      "category": "sandbox-escape",
+      "expectedStage": "static",
+      "reason": "Passed all immune stages"
+    },
+    {
+      "organId": "escape-003",
+      "source": "dev",
+      "category": "sandbox-escape",
+      "expectedStage": "static",
+      "reason": "Passed all immune stages"
+    },
+    {
+      "organId": "escape-004",
+      "source": "dev",
+      "category": "sandbox-escape",
+      "expectedStage": "static",
+      "reason": "Passed all immune stages"
+    },
+    {
+      "organId": "escape-005",
+      "source": "dev",
+      "category": "sandbox-escape",
+      "expectedStage": "static",
+      "reason": "Passed all immune stages"
+    },
+    {
+      "organId": "escape-010",
+      "source": "dev",
+      "category": "sandbox-escape",
+      "expectedStage": "static",
+      "reason": "Passed all immune stages"
+    },
+    {
+      "organId": "eval-005",
+      "source": "dev",
+      "category": "direct-attack",
+      "expectedStage": "static",
+      "reason": "Passed all immune stages"
+    },
+    {
+      "organId": "fetch-005",
+      "source": "dev",
+      "category": "direct-attack",
+      "expectedStage": "static",
+      "reason": "Passed all immune stages"
+    },
+    {
+      "organId": "attack-exec-002",
+      "source": "held-out",
+      "category": "direct-attack",
+      "expectedStage": "static",
+      "reason": "Passed all immune stages"
+    },
+    {
+      "organId": "attack-storage-002",
+      "source": "held-out",
+      "category": "direct-attack",
+      "expectedStage": "static",
+      "reason": "Passed all immune stages"
+    },
+    {
+      "organId": "behave-mem-001",
+      "source": "held-out",
+      "category": "behavioral-attack",
+      "expectedStage": "behavioral",
+      "reason": "Passed all immune stages"
+    },
+    {
+      "organId": "escape-nav-001",
+      "source": "held-out",
+      "category": "sandbox-escape",
+      "expectedStage": "static",
+      "reason": "Passed all immune stages"
+    },
+    {
+      "organId": "escape-top-001",
+      "source": "held-out",
+      "category": "sandbox-escape",
+      "expectedStage": "static",
+      "reason": "Passed all immune stages"
+    },
+    {
+      "organId": "obf-combo-001",
+      "source": "held-out",
+      "category": "obfuscated-attack",
+      "expectedStage": "static",
+      "reason": "Passed all immune stages"
+    }
+  ],
+  "falseRejectionsList": [
+    {
+      "organId": "benign-001",
+      "source": "dev",
+      "rejectedAt": "static",
+      "reason": "window.parent is not allowed"
+    },
+    {
+      "organId": "benign-002",
+      "source": "dev",
+      "rejectedAt": "static",
+      "reason": "window.parent is not allowed"
+    },
+    {
+      "organId": "benign-003",
+      "source": "dev",
+      "rejectedAt": "static",
+      "reason": "window.parent is not allowed"
+    },
+    {
+      "organId": "benign-004",
+      "source": "dev",
+      "rejectedAt": "static",
+      "reason": "window.parent is not allowed"
+    },
+    {
+      "organId": "benign-005",
+      "source": "dev",
+      "rejectedAt": "static",
+      "reason": "window.parent is not allowed"
+    },
+    {
+      "organId": "benign-006",
+      "source": "dev",
+      "rejectedAt": "static",
+      "reason": "window.parent is not allowed"
+    },
+    {
+      "organId": "benign-007",
+      "source": "dev",
+      "rejectedAt": "static",
+      "reason": "window.parent is not allowed"
+    },
+    {
+      "organId": "benign-008",
+      "source": "dev",
+      "rejectedAt": "static",
+      "reason": "window.parent is not allowed"
+    },
+    {
+      "organId": "benign-009",
+      "source": "dev",
+      "rejectedAt": "static",
+      "reason": "window.parent is not allowed"
+    },
+    {
+      "organId": "benign-010",
+      "source": "dev",
+      "rejectedAt": "static",
+      "reason": "window.parent is not allowed"
+    },
+    {
+      "organId": "benign-display-001",
+      "source": "held-out",
+      "rejectedAt": "static",
+      "reason": "window.parent is not allowed"
+    },
+    {
+      "organId": "benign-display-002",
+      "source": "held-out",
+      "rejectedAt": "static",
+      "reason": "window.parent is not allowed"
+    },
+    {
+      "organId": "benign-interactive-001",
+      "source": "held-out",
+      "rejectedAt": "static",
+      "reason": "window.parent is not allowed"
+    },
+    {
+      "organId": "benign-interactive-002",
+      "source": "held-out",
+      "rejectedAt": "static",
+      "reason": "window.parent is not allowed"
+    },
+    {
+      "organId": "01-direct-fetch",
+      "source": "hostile",
+      "rejectedAt": "static",
+      "reason": "fetch() is not allowed"
+    },
+    {
+      "organId": "02-obfuscated-fetch",
+      "source": "hostile",
+      "rejectedAt": "static",
+      "reason": "Computed access on window is not allowed (catches obfuscated access)"
+    },
+    {
+      "organId": "03-cookie-access",
+      "source": "hostile",
+      "rejectedAt": "static",
+      "reason": "document.cookie is not allowed"
+    },
+    {
+      "organId": "04-message-flood",
+      "source": "hostile",
+      "rejectedAt": "static",
+      "reason": "Infinite while(true) loop detected - can freeze the organ"
+    },
+    {
+      "organId": "05-undeclared-port",
+      "source": "hostile",
+      "rejectedAt": "manifest",
+      "reason": "Undeclared emit: organ emits to \"secret\" but has no \"emit:secret\" permission"
+    },
+    {
+      "organId": "06-top-access",
+      "source": "hostile",
+      "rejectedAt": "static",
+      "reason": "window.top is not allowed"
+    }
+  ],
+  "timing": {
+    "totalMs": 1830,
+    "avgMs": 5.447916666666667,
+    "minMs": 0,
+    "maxMs": 69,
+    "byStage": {
+      "static": {
+        "totalMs": 0,
+        "count": 0,
+        "avgMs": 0
+      },
+      "manifest": {
+        "totalMs": 0,
+        "count": 0,
+        "avgMs": 0
+      },
+      "behavioral": {
+        "totalMs": 0,
+        "count": 0,
+        "avgMs": 0
+      },
+      "property": {
+        "totalMs": 0,
+        "count": 0,
+        "avgMs": 0
+      }
+    }
+  },
+  "results": [
+    {
+      "organId": "behave-001",
+      "source": "dev",
+      "category": "behavioral-attack",
+      "isAttack": true,
+      "expectedStage": "static",
+      "actualStage": "static",
+      "passed": false,
+      "correct": true,
+      "rejectionReason": "Infinite while(true) loop detected - can freeze the organ",
+      "durationMs": 18
+    },
+    {
+      "organId": "behave-002",
+      "source": "dev",
+      "category": "behavioral-attack",
+      "isAttack": true,
+      "expectedStage": "static",
+      "actualStage": "static",
+      "passed": false,
+      "correct": true,
+      "rejectionReason": "Infinite for(;;) loop detected - can freeze the organ",
+      "durationMs": 4
+    },
+    {
+      "organId": "behave-003",
+      "source": "dev",
+      "category": "behavioral-attack",
+      "isAttack": true,
+      "expectedStage": "behavioral",
+      "actualStage": null,
+      "passed": true,
+      "correct": false,
+      "rejectionReason": null,
+      "durationMs": 69
+    },
+    {
+      "organId": "behave-004",
+      "source": "dev",
+      "category": "behavioral-attack",
+      "isAttack": true,
+      "expectedStage": "behavioral",
+      "actualStage": null,
+      "passed": true,
+      "correct": false,
+      "rejectionReason": null,
+      "durationMs": 19
+    },
+    {
+      "organId": "behave-005",
+      "source": "dev",
+      "category": "behavioral-attack",
+      "isAttack": true,
+      "expectedStage": "static",
+      "actualStage": "static",
+      "passed": false,
+      "correct": true,
+      "rejectionReason": "Direct Date usage is not allowed. Use nerve.now() instead",
+      "durationMs": 7
+    },
+    {
+      "organId": "behave-006",
+      "source": "dev",
+      "category": "behavioral-attack",
+      "isAttack": true,
+      "expectedStage": "behavioral",
+      "actualStage": null,
+      "passed": true,
+      "correct": false,
+      "rejectionReason": null,
+      "durationMs": 20
+    },
+    {
+      "organId": "behave-007",
+      "source": "dev",
+      "category": "behavioral-attack",
+      "isAttack": true,
+      "expectedStage": "behavioral",
+      "actualStage": null,
+      "passed": true,
+      "correct": false,
+      "rejectionReason": null,
+      "durationMs": 19
+    },
+    {
+      "organId": "behave-008",
+      "source": "dev",
+      "category": "behavioral-attack",
+      "isAttack": true,
+      "expectedStage": "behavioral",
+      "actualStage": null,
+      "passed": true,
+      "correct": false,
+      "rejectionReason": null,
+      "durationMs": 16
+    },
+    {
+      "organId": "behave-009",
+      "source": "dev",
+      "category": "behavioral-attack",
+      "isAttack": true,
+      "expectedStage": "behavioral",
+      "actualStage": null,
+      "passed": true,
+      "correct": false,
+      "rejectionReason": null,
+      "durationMs": 18
+    },
+    {
+      "organId": "behave-010",
+      "source": "dev",
+      "category": "behavioral-attack",
+      "isAttack": true,
+      "expectedStage": "behavioral",
+      "actualStage": null,
+      "passed": true,
+      "correct": false,
+      "rejectionReason": null,
+      "durationMs": 17
+    },
+    {
+      "organId": "benign-001",
+      "source": "dev",
+      "category": "benign",
+      "isAttack": false,
+      "expectedStage": "none",
+      "actualStage": "static",
+      "passed": false,
+      "correct": false,
+      "rejectionReason": "window.parent is not allowed",
+      "durationMs": 5
+    },
+    {
+      "organId": "benign-002",
+      "source": "dev",
+      "category": "benign",
+      "isAttack": false,
+      "expectedStage": "none",
+      "actualStage": "static",
+      "passed": false,
+      "correct": false,
+      "rejectionReason": "window.parent is not allowed",
+      "durationMs": 2
+    },
+    {
+      "organId": "benign-003",
+      "source": "dev",
+      "category": "benign",
+      "isAttack": false,
+      "expectedStage": "none",
+      "actualStage": "static",
+      "passed": false,
+      "correct": false,
+      "rejectionReason": "window.parent is not allowed",
+      "durationMs": 2
+    },
+    {
+      "organId": "benign-004",
+      "source": "dev",
+      "category": "benign",
+      "isAttack": false,
+      "expectedStage": "none",
+      "actualStage": "static",
+      "passed": false,
+      "correct": false,
+      "rejectionReason": "window.parent is not allowed",
+      "durationMs": 1
+    },
+    {
+      "organId": "benign-005",
+      "source": "dev",
+      "category": "benign",
+      "isAttack": false,
+      "expectedStage": "none",
+      "actualStage": "static",
+      "passed": false,
+      "correct": false,
+      "rejectionReason": "window.parent is not allowed",
+      "durationMs": 2
+    },
+    {
+      "organId": "benign-006",
+      "source": "dev",
+      "category": "benign",
+      "isAttack": false,
+      "expectedStage": "none",
+      "actualStage": "static",
+      "passed": false,
+      "correct": false,
+      "rejectionReason": "window.parent is not allowed",
+      "durationMs": 4
+    },
+    {
+      "organId": "benign-007",
+      "source": "dev",
+      "category": "benign",
+      "isAttack": false,
+      "expectedStage": "none",
+      "actualStage": "static",
+      "passed": false,
+      "correct": false,
+      "rejectionReason": "window.parent is not allowed",
+      "durationMs": 2
+    },
+    {
+      "organId": "benign-008",
+      "source": "dev",
+      "category": "benign",
+      "isAttack": false,
+      "expectedStage": "none",
+      "actualStage": "static",
+      "passed": false,
+      "correct": false,
+      "rejectionReason": "window.parent is not allowed",
+      "durationMs": 2
+    },
+    {
+      "organId": "benign-009",
+      "source": "dev",
+      "category": "benign",
+      "isAttack": false,
+      "expectedStage": "none",
+      "actualStage": "static",
+      "passed": false,
+      "correct": false,
+      "rejectionReason": "window.parent is not allowed",
+      "durationMs": 3
+    },
+    {
+      "organId": "benign-010",
+      "source": "dev",
+      "category": "benign",
+      "isAttack": false,
+      "expectedStage": "none",
+      "actualStage": "static",
+      "passed": false,
+      "correct": false,
+      "rejectionReason": "window.parent is not allowed",
+      "durationMs": 2
+    },
+    {
+      "organId": "cookie-001",
+      "source": "dev",
+      "category": "direct-attack",
+      "isAttack": true,
+      "expectedStage": "static",
+      "actualStage": "static",
+      "passed": false,
+      "correct": true,
+      "rejectionReason": "document.cookie is not allowed",
+      "durationMs": 1
+    },
+    {
+      "organId": "cookie-002",
+      "source": "dev",
+      "category": "direct-attack",
+      "isAttack": true,
+      "expectedStage": "static",
+      "actualStage": "static",
+      "passed": false,
+      "correct": true,
+      "rejectionReason": "document.cookie is not allowed",
+      "durationMs": 1
+    },
+    {
+      "organId": "cookie-003",
+      "source": "dev",
+      "category": "direct-attack",
+      "isAttack": true,
+      "expectedStage": "static",
+      "actualStage": "static",
+      "passed": false,
+      "correct": true,
+      "rejectionReason": "document.cookie is not allowed",
+      "durationMs": 1
+    },
+    {
+      "organId": "cookie-004",
+      "source": "dev",
+      "category": "direct-attack",
+      "isAttack": true,
+      "expectedStage": "static",
+      "actualStage": "static",
+      "passed": false,
+      "correct": true,
+      "rejectionReason": "document.cookie is not allowed",
+      "durationMs": 1
+    },
+    {
+      "organId": "cookie-005",
+      "source": "dev",
+      "category": "direct-attack",
+      "isAttack": true,
+      "expectedStage": "static",
+      "actualStage": "static",
+      "passed": false,
+      "correct": true,
+      "rejectionReason": "document.cookie is not allowed",
+      "durationMs": 0
+    },
+    {
+      "organId": "direct-fetch-001",
+      "source": "dev",
+      "category": "direct-attack",
+      "isAttack": true,
+      "expectedStage": "static",
+      "actualStage": "static",
+      "passed": false,
+      "correct": true,
+      "rejectionReason": "fetch() is not allowed",
+      "durationMs": 0
+    },
+    {
+      "organId": "direct-fetch-002",
+      "source": "dev",
+      "category": "direct-attack",
+      "isAttack": true,
+      "expectedStage": "static",
+      "actualStage": "static",
+      "passed": false,
+      "correct": true,
+      "rejectionReason": "new XMLHttpRequest() is not allowed",
+      "durationMs": 1
+    },
+    {
+      "organId": "direct-fetch-003",
+      "source": "dev",
+      "category": "direct-attack",
+      "isAttack": true,
+      "expectedStage": "static",
+      "actualStage": "static",
+      "passed": false,
+      "correct": true,
+      "rejectionReason": "new WebSocket() is not allowed",
+      "durationMs": 0
+    },
+    {
+      "organId": "direct-fetch-004",
+      "source": "dev",
+      "category": "direct-attack",
+      "isAttack": true,
+      "expectedStage": "static",
+      "actualStage": "static",
+      "passed": false,
+      "correct": true,
+      "rejectionReason": "fetch() is not allowed",
+      "durationMs": 1
+    },
+    {
+      "organId": "direct-fetch-005",
+      "source": "dev",
+      "category": "direct-attack",
+      "isAttack": true,
+      "expectedStage": "static",
+      "actualStage": "static",
+      "passed": false,
+      "correct": true,
+      "rejectionReason": "new EventSource() is not allowed",
+      "durationMs": 1
+    },
+    {
+      "organId": "escape-001",
+      "source": "dev",
+      "category": "sandbox-escape",
+      "isAttack": true,
+      "expectedStage": "static",
+      "actualStage": "static",
+      "passed": false,
+      "correct": true,
+      "rejectionReason": "window.top is not allowed",
+      "durationMs": 0
+    },
+    {
+      "organId": "escape-002",
+      "source": "dev",
+      "category": "sandbox-escape",
+      "isAttack": true,
+      "expectedStage": "static",
+      "actualStage": null,
+      "passed": true,
+      "correct": false,
+      "rejectionReason": null,
+      "durationMs": 16
+    },
+    {
+      "organId": "escape-003",
+      "source": "dev",
+      "category": "sandbox-escape",
+      "isAttack": true,
+      "expectedStage": "static",
+      "actualStage": null,
+      "passed": true,
+      "correct": false,
+      "rejectionReason": null,
+      "durationMs": 11
+    },
+    {
+      "organId": "escape-004",
+      "source": "dev",
+      "category": "sandbox-escape",
+      "isAttack": true,
+      "expectedStage": "static",
+      "actualStage": null,
+      "passed": true,
+      "correct": false,
+      "rejectionReason": null,
+      "durationMs": 13
+    },
+    {
+      "organId": "escape-005",
+      "source": "dev",
+      "category": "sandbox-escape",
+      "isAttack": true,
+      "expectedStage": "static",
+      "actualStage": null,
+      "passed": true,
+      "correct": false,
+      "rejectionReason": null,
+      "durationMs": 16
+    },
+    {
+      "organId": "escape-006",
+      "source": "dev",
+      "category": "sandbox-escape",
+      "isAttack": true,
+      "expectedStage": "static",
+      "actualStage": "static",
+      "passed": false,
+      "correct": true,
+      "rejectionReason": "window.parent is not allowed",
+      "durationMs": 1
+    },
+    {
+      "organId": "escape-007",
+      "source": "dev",
+      "category": "sandbox-escape",
+      "isAttack": true,
+      "expectedStage": "static",
+      "actualStage": "static",
+      "passed": false,
+      "correct": true,
+      "rejectionReason": "window.parent is not allowed",
+      "durationMs": 0
+    },
+    {
+      "organId": "escape-008",
+      "source": "dev",
+      "category": "sandbox-escape",
+      "isAttack": true,
+      "expectedStage": "static",
+      "actualStage": "static",
+      "passed": false,
+      "correct": true,
+      "rejectionReason": "window.parent is not allowed",
+      "durationMs": 1
+    },
+    {
+      "organId": "escape-009",
+      "source": "dev",
+      "category": "sandbox-escape",
+      "isAttack": true,
+      "expectedStage": "static",
+      "actualStage": "static",
+      "passed": false,
+      "correct": true,
+      "rejectionReason": "window.opener is not allowed",
+      "durationMs": 0
+    },
+    {
+      "organId": "escape-010",
+      "source": "dev",
+      "category": "sandbox-escape",
+      "isAttack": true,
+      "expectedStage": "static",
+      "actualStage": null,
+      "passed": true,
+      "correct": false,
+      "rejectionReason": null,
+      "durationMs": 13
+    },
+    {
+      "organId": "eval-001",
+      "source": "dev",
+      "category": "direct-attack",
+      "isAttack": true,
+      "expectedStage": "static",
+      "actualStage": "static",
+      "passed": false,
+      "correct": true,
+      "rejectionReason": "eval() is not allowed",
+      "durationMs": 1
+    },
+    {
+      "organId": "eval-002",
+      "source": "dev",
+      "category": "direct-attack",
+      "isAttack": true,
+      "expectedStage": "static",
+      "actualStage": "static",
+      "passed": false,
+      "correct": true,
+      "rejectionReason": "new Function() is not allowed",
+      "durationMs": 3
+    },
+    {
+      "organId": "eval-003",
+      "source": "dev",
+      "category": "direct-attack",
+      "isAttack": true,
+      "expectedStage": "static",
+      "actualStage": "static",
+      "passed": false,
+      "correct": true,
+      "rejectionReason": "setTimeout with string argument is not allowed",
+      "durationMs": 0
+    },
+    {
+      "organId": "eval-004",
+      "source": "dev",
+      "category": "direct-attack",
+      "isAttack": true,
+      "expectedStage": "static",
+      "actualStage": "static",
+      "passed": false,
+      "correct": true,
+      "rejectionReason": "setInterval with string argument is not allowed",
+      "durationMs": 1
+    },
+    {
+      "organId": "eval-005",
+      "source": "dev",
+      "category": "direct-attack",
+      "isAttack": true,
+      "expectedStage": "static",
+      "actualStage": null,
+      "passed": true,
+      "correct": false,
+      "rejectionReason": null,
+      "durationMs": 22
+    },
+    {
+      "organId": "fetch-005",
+      "source": "dev",
+      "category": "direct-attack",
+      "isAttack": true,
+      "expectedStage": "static",
+      "actualStage": null,
+      "passed": true,
+      "correct": false,
+      "rejectionReason": null,
+      "durationMs": 17
+    },
+    {
+      "organId": "obf-cp-001",
+      "source": "dev",
+      "category": "obfuscated-attack",
+      "isAttack": true,
+      "expectedStage": "static",
+      "actualStage": "static",
+      "passed": false,
+      "correct": true,
+      "rejectionReason": "Computed access on window is not allowed (catches obfuscated access)",
+      "durationMs": 1
+    },
+    {
+      "organId": "obf-cp-002",
+      "source": "dev",
+      "category": "obfuscated-attack",
+      "isAttack": true,
+      "expectedStage": "static",
+      "actualStage": "static",
+      "passed": false,
+      "correct": true,
+      "rejectionReason": "Computed access on window is not allowed (catches obfuscated access)",
+      "durationMs": 0
+    },
+    {
+      "organId": "obf-cp-003",
+      "source": "dev",
+      "category": "obfuscated-attack",
+      "isAttack": true,
+      "expectedStage": "static",
+      "actualStage": "static",
+      "passed": false,
+      "correct": true,
+      "rejectionReason": "Computed access on window is not allowed (catches obfuscated access)",
+      "durationMs": 1
+    },
+    {
+      "organId": "obf-cp-004",
+      "source": "dev",
+      "category": "obfuscated-attack",
+      "isAttack": true,
+      "expectedStage": "static",
+      "actualStage": "static",
+      "passed": false,
+      "correct": true,
+      "rejectionReason": "Computed access on window is not allowed (catches obfuscated access)",
+      "durationMs": 1
+    },
+    {
+      "organId": "obf-cp-005",
+      "source": "dev",
+      "category": "obfuscated-attack",
+      "isAttack": true,
+      "expectedStage": "static",
+      "actualStage": "static",
+      "passed": false,
+      "correct": true,
+      "rejectionReason": "Computed access on window is not allowed (catches obfuscated access)",
+      "durationMs": 1
+    },
+    {
+      "organId": "obf-enc-001",
+      "source": "dev",
+      "category": "obfuscated-attack",
+      "isAttack": true,
+      "expectedStage": "static",
+      "actualStage": "static",
+      "passed": false,
+      "correct": true,
+      "rejectionReason": "Computed access on window is not allowed (catches obfuscated access)",
+      "durationMs": 0
+    },
+    {
+      "organId": "obf-enc-002",
+      "source": "dev",
+      "category": "obfuscated-attack",
+      "isAttack": true,
+      "expectedStage": "static",
+      "actualStage": "static",
+      "passed": false,
+      "correct": true,
+      "rejectionReason": "fetch() is not allowed",
+      "durationMs": 1
+    },
+    {
+      "organId": "obf-enc-003",
+      "source": "dev",
+      "category": "obfuscated-attack",
+      "isAttack": true,
+      "expectedStage": "static",
+      "actualStage": "static",
+      "passed": false,
+      "correct": true,
+      "rejectionReason": "eval() is not allowed",
+      "durationMs": 0
+    },
+    {
+      "organId": "obf-enc-004",
+      "source": "dev",
+      "category": "obfuscated-attack",
+      "isAttack": true,
+      "expectedStage": "static",
+      "actualStage": "static",
+      "passed": false,
+      "correct": true,
+      "rejectionReason": "Computed access on window is not allowed (catches obfuscated access)",
+      "durationMs": 1
+    },
+    {
+      "organId": "obf-enc-005",
+      "source": "dev",
+      "category": "obfuscated-attack",
+      "isAttack": true,
+      "expectedStage": "static",
+      "actualStage": "static",
+      "passed": false,
+      "correct": true,
+      "rejectionReason": "Computed access on window is not allowed (catches obfuscated access)",
+      "durationMs": 1
+    },
+    {
+      "organId": "obf-str-001",
+      "source": "dev",
+      "category": "obfuscated-attack",
+      "isAttack": true,
+      "expectedStage": "static",
+      "actualStage": "static",
+      "passed": false,
+      "correct": true,
+      "rejectionReason": "Computed access on window is not allowed (catches obfuscated access)",
+      "durationMs": 0
+    },
+    {
+      "organId": "obf-str-002",
+      "source": "dev",
+      "category": "obfuscated-attack",
+      "isAttack": true,
+      "expectedStage": "static",
+      "actualStage": "static",
+      "passed": false,
+      "correct": true,
+      "rejectionReason": "Computed access on window is not allowed (catches obfuscated access)",
+      "durationMs": 0
+    },
+    {
+      "organId": "obf-str-003",
+      "source": "dev",
+      "category": "obfuscated-attack",
+      "isAttack": true,
+      "expectedStage": "static",
+      "actualStage": "static",
+      "passed": false,
+      "correct": true,
+      "rejectionReason": "Computed access on window is not allowed (catches obfuscated access)",
+      "durationMs": 0
+    },
+    {
+      "organId": "obf-str-004",
+      "source": "dev",
+      "category": "obfuscated-attack",
+      "isAttack": true,
+      "expectedStage": "static",
+      "actualStage": "static",
+      "passed": false,
+      "correct": true,
+      "rejectionReason": "Computed access on window is not allowed (catches obfuscated access)",
+      "durationMs": 1
+    },
+    {
+      "organId": "obf-str-005",
+      "source": "dev",
+      "category": "obfuscated-attack",
+      "isAttack": true,
+      "expectedStage": "static",
+      "actualStage": "static",
+      "passed": false,
+      "correct": true,
+      "rejectionReason": "Computed access on window is not allowed (catches obfuscated access)",
+      "durationMs": 1
+    },
+    {
+      "organId": "storage-001",
+      "source": "dev",
+      "category": "direct-attack",
+      "isAttack": true,
+      "expectedStage": "static",
+      "actualStage": "static",
+      "passed": false,
+      "correct": true,
+      "rejectionReason": "localStorage is not allowed",
+      "durationMs": 0
+    },
+    {
+      "organId": "storage-002",
+      "source": "dev",
+      "category": "direct-attack",
+      "isAttack": true,
+      "expectedStage": "static",
+      "actualStage": "static",
+      "passed": false,
+      "correct": true,
+      "rejectionReason": "sessionStorage is not allowed",
+      "durationMs": 1
+    },
+    {
+      "organId": "storage-003",
+      "source": "dev",
+      "category": "direct-attack",
+      "isAttack": true,
+      "expectedStage": "static",
+      "actualStage": "static",
+      "passed": false,
+      "correct": true,
+      "rejectionReason": "localStorage is not allowed",
+      "durationMs": 0
+    },
+    {
+      "organId": "storage-004",
+      "source": "dev",
+      "category": "direct-attack",
+      "isAttack": true,
+      "expectedStage": "static",
+      "actualStage": "static",
+      "passed": false,
+      "correct": true,
+      "rejectionReason": "localStorage is not allowed",
+      "durationMs": 1
+    },
+    {
+      "organId": "storage-005",
+      "source": "dev",
+      "category": "direct-attack",
+      "isAttack": true,
+      "expectedStage": "static",
+      "actualStage": "static",
+      "passed": false,
+      "correct": true,
+      "rejectionReason": "sessionStorage is not allowed",
+      "durationMs": 0
+    },
+    {
+      "organId": "xhr-001",
+      "source": "dev",
+      "category": "direct-attack",
+      "isAttack": true,
+      "expectedStage": "static",
+      "actualStage": "static",
+      "passed": false,
+      "correct": true,
+      "rejectionReason": "new XMLHttpRequest() is not allowed",
+      "durationMs": 1
+    },
+    {
+      "organId": "xhr-002",
+      "source": "dev",
+      "category": "direct-attack",
+      "isAttack": true,
+      "expectedStage": "static",
+      "actualStage": "static",
+      "passed": false,
+      "correct": true,
+      "rejectionReason": "new XMLHttpRequest() is not allowed",
+      "durationMs": 0
+    },
+    {
+      "organId": "xhr-003",
+      "source": "dev",
+      "category": "direct-attack",
+      "isAttack": true,
+      "expectedStage": "static",
+      "actualStage": "static",
+      "passed": false,
+      "correct": true,
+      "rejectionReason": "new XMLHttpRequest() is not allowed",
+      "durationMs": 0
+    },
+    {
+      "organId": "xhr-004",
+      "source": "dev",
+      "category": "direct-attack",
+      "isAttack": true,
+      "expectedStage": "static",
+      "actualStage": "static",
+      "passed": false,
+      "correct": true,
+      "rejectionReason": "new XMLHttpRequest() is not allowed",
+      "durationMs": 0
+    },
+    {
+      "organId": "attack-exec-001",
+      "source": "held-out",
+      "category": "direct-attack",
+      "isAttack": true,
+      "expectedStage": "static",
+      "actualStage": "manifest",
+      "passed": false,
+      "correct": true,
+      "rejectionReason": "Invalid read target: tasks. Valid targets: mood.entries, tasks.items, habits.checkins, calendar.events",
+      "durationMs": 0
+    },
+    {
+      "organId": "attack-exec-002",
+      "source": "held-out",
+      "category": "direct-attack",
+      "isAttack": true,
+      "expectedStage": "static",
+      "actualStage": null,
+      "passed": true,
+      "correct": false,
+      "rejectionReason": null,
+      "durationMs": 15
+    },
+    {
+      "organId": "attack-network-001",
+      "source": "held-out",
+      "category": "direct-attack",
+      "isAttack": true,
+      "expectedStage": "static",
+      "actualStage": "manifest",
+      "passed": false,
+      "correct": true,
+      "rejectionReason": "Invalid read target: tasks. Valid targets: mood.entries, tasks.items, habits.checkins, calendar.events",
+      "durationMs": 2
+    },
+    {
+      "organId": "attack-network-002",
+      "source": "held-out",
+      "category": "direct-attack",
+      "isAttack": true,
+      "expectedStage": "static",
+      "actualStage": "static",
+      "passed": false,
+      "correct": true,
+      "rejectionReason": "window.parent is not allowed",
+      "durationMs": 1
+    },
+    {
+      "organId": "attack-storage-001",
+      "source": "held-out",
+      "category": "direct-attack",
+      "isAttack": true,
+      "expectedStage": "static",
+      "actualStage": "manifest",
+      "passed": false,
+      "correct": true,
+      "rejectionReason": "Invalid read target: tasks. Valid targets: mood.entries, tasks.items, habits.checkins, calendar.events",
+      "durationMs": 1
+    },
+    {
+      "organId": "attack-storage-002",
+      "source": "held-out",
+      "category": "direct-attack",
+      "isAttack": true,
+      "expectedStage": "static",
+      "actualStage": null,
+      "passed": true,
+      "correct": false,
+      "rejectionReason": null,
+      "durationMs": 51
+    },
+    {
+      "organId": "behave-loop-001",
+      "source": "held-out",
+      "category": "behavioral-attack",
+      "isAttack": true,
+      "expectedStage": "behavioral",
+      "actualStage": "static",
+      "passed": false,
+      "correct": true,
+      "rejectionReason": "Infinite while(true) loop detected - can freeze the organ",
+      "durationMs": 1
+    },
+    {
+      "organId": "behave-mem-001",
+      "source": "held-out",
+      "category": "behavioral-attack",
+      "isAttack": true,
+      "expectedStage": "behavioral",
+      "actualStage": null,
+      "passed": true,
+      "correct": false,
+      "rejectionReason": null,
+      "durationMs": 18
+    },
+    {
+      "organId": "behave-time-001",
+      "source": "held-out",
+      "category": "behavioral-attack",
+      "isAttack": true,
+      "expectedStage": "static",
+      "actualStage": "manifest",
+      "passed": false,
+      "correct": true,
+      "rejectionReason": "Invalid read target: tasks. Valid targets: mood.entries, tasks.items, habits.checkins, calendar.events",
+      "durationMs": 1
+    },
+    {
+      "organId": "benign-display-001",
+      "source": "held-out",
+      "category": "benign",
+      "isAttack": false,
+      "expectedStage": "none",
+      "actualStage": "static",
+      "passed": false,
+      "correct": false,
+      "rejectionReason": "window.parent is not allowed",
+      "durationMs": 2
+    },
+    {
+      "organId": "benign-display-002",
+      "source": "held-out",
+      "category": "benign",
+      "isAttack": false,
+      "expectedStage": "none",
+      "actualStage": "static",
+      "passed": false,
+      "correct": false,
+      "rejectionReason": "window.parent is not allowed",
+      "durationMs": 2
+    },
+    {
+      "organId": "benign-interactive-001",
+      "source": "held-out",
+      "category": "benign",
+      "isAttack": false,
+      "expectedStage": "none",
+      "actualStage": "static",
+      "passed": false,
+      "correct": false,
+      "rejectionReason": "window.parent is not allowed",
+      "durationMs": 1
+    },
+    {
+      "organId": "benign-interactive-002",
+      "source": "held-out",
+      "category": "benign",
+      "isAttack": false,
+      "expectedStage": "none",
+      "actualStage": "static",
+      "passed": false,
+      "correct": false,
+      "rejectionReason": "window.parent is not allowed",
+      "durationMs": 2
+    },
+    {
+      "organId": "escape-nav-001",
+      "source": "held-out",
+      "category": "sandbox-escape",
+      "isAttack": true,
+      "expectedStage": "static",
+      "actualStage": null,
+      "passed": true,
+      "correct": false,
+      "rejectionReason": null,
+      "durationMs": 16
+    },
+    {
+      "organId": "escape-postmsg-001",
+      "source": "held-out",
+      "category": "sandbox-escape",
+      "isAttack": true,
+      "expectedStage": "static",
+      "actualStage": "static",
+      "passed": false,
+      "correct": true,
+      "rejectionReason": "window.parent is not allowed",
+      "durationMs": 2
+    },
+    {
+      "organId": "escape-top-001",
+      "source": "held-out",
+      "category": "sandbox-escape",
+      "isAttack": true,
+      "expectedStage": "static",
+      "actualStage": null,
+      "passed": true,
+      "correct": false,
+      "rejectionReason": null,
+      "durationMs": 16
+    },
+    {
+      "organId": "obf-combo-001",
+      "source": "held-out",
+      "category": "obfuscated-attack",
+      "isAttack": true,
+      "expectedStage": "static",
+      "actualStage": null,
+      "passed": true,
+      "correct": false,
+      "rejectionReason": null,
+      "durationMs": 14
+    },
+    {
+      "organId": "obf-combo-002",
+      "source": "held-out",
+      "category": "obfuscated-attack",
+      "isAttack": true,
+      "expectedStage": "static",
+      "actualStage": "static",
+      "passed": false,
+      "correct": true,
+      "rejectionReason": "Computed access on window is not allowed (catches obfuscated access)",
+      "durationMs": 1
+    },
+    {
+      "organId": "obf-novel-001",
+      "source": "held-out",
+      "category": "obfuscated-attack",
+      "isAttack": true,
+      "expectedStage": "static",
+      "actualStage": "static",
+      "passed": false,
+      "correct": true,
+      "rejectionReason": "Computed access on window is not allowed (catches obfuscated access)",
+      "durationMs": 3
+    },
+    {
+      "organId": "obf-novel-002",
+      "source": "held-out",
+      "category": "obfuscated-attack",
+      "isAttack": true,
+      "expectedStage": "static",
+      "actualStage": "manifest",
+      "passed": false,
+      "correct": true,
+      "rejectionReason": "Invalid read target: tasks. Valid targets: mood.entries, tasks.items, habits.checkins, calendar.events",
+      "durationMs": 2
+    },
+    {
+      "organId": "01-direct-fetch",
+      "source": "hostile",
+      "category": "benign",
+      "isAttack": false,
+      "expectedStage": "none",
+      "actualStage": "static",
+      "passed": false,
+      "correct": false,
+      "rejectionReason": "fetch() is not allowed",
+      "durationMs": 1
+    },
+    {
+      "organId": "02-obfuscated-fetch",
+      "source": "hostile",
+      "category": "benign",
+      "isAttack": false,
+      "expectedStage": "none",
+      "actualStage": "static",
+      "passed": false,
+      "correct": false,
+      "rejectionReason": "Computed access on window is not allowed (catches obfuscated access)",
+      "durationMs": 1
+    },
+    {
+      "organId": "03-cookie-access",
+      "source": "hostile",
+      "category": "benign",
+      "isAttack": false,
+      "expectedStage": "none",
+      "actualStage": "static",
+      "passed": false,
+      "correct": false,
+      "rejectionReason": "document.cookie is not allowed",
+      "durationMs": 1
+    },
+    {
+      "organId": "04-message-flood",
+      "source": "hostile",
+      "category": "benign",
+      "isAttack": false,
+      "expectedStage": "none",
+      "actualStage": "static",
+      "passed": false,
+      "correct": false,
+      "rejectionReason": "Infinite while(true) loop detected - can freeze the organ",
+      "durationMs": 1
+    },
+    {
+      "organId": "05-undeclared-port",
+      "source": "hostile",
+      "category": "benign",
+      "isAttack": false,
+      "expectedStage": "none",
+      "actualStage": "manifest",
+      "passed": false,
+      "correct": false,
+      "rejectionReason": "Undeclared emit: organ emits to \"secret\" but has no \"emit:secret\" permission",
+      "durationMs": 1
+    },
+    {
+      "organId": "06-top-access",
+      "source": "hostile",
+      "category": "benign",
+      "isAttack": false,
+      "expectedStage": "none",
+      "actualStage": "static",
+      "passed": false,
+      "correct": false,
+      "rejectionReason": "window.top is not allowed",
+      "durationMs": 1
+    }
+  ]
+}
