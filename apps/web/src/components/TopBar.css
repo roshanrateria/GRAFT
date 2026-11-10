@@ -2,7 +2,12 @@
  * TopBar Styles
  *
  * Victorian anatomical theatre aesthetic with brass accents.
+ * Features animated ECG heartbeat line with three states.
  */
+
+/* ==========================================================================
+   1. Top Bar Container
+   ========================================================================== */
 
 .top-bar {
   display: flex;
@@ -13,6 +18,10 @@
   border-bottom: 1px solid var(--color-border);
   gap: var(--space-6);
 }
+
+/* ==========================================================================
+   2. Logo
+   ========================================================================== */
 
 .top-bar__logo {
   flex-shrink: 0;
@@ -43,6 +52,10 @@
   text-transform: uppercase;
 }
 
+/* ==========================================================================
+   3. Heartbeat / ECG
+   ========================================================================== */
+
 .top-bar__heartbeat {
   display: flex;
   align-items: center;
@@ -64,36 +77,43 @@
   transition: stroke var(--transition-normal);
 }
 
-/* Steady heartbeat - healthy state */
+/* Steady heartbeat - healthy state (green, regular pulse) */
 .top-bar__ecg-line--steady {
   stroke: var(--color-vein-green);
-  animation: pulse-ecg 2s ease-in-out infinite;
+  animation: ecg-pulse-steady 2s ease-in-out infinite;
+  filter: drop-shadow(0 0 2px var(--color-vein-green));
 }
 
-/* Erratic heartbeat - attention needed */
+/* Erratic heartbeat - attention needed (amber, irregular pulse) */
 .top-bar__ecg-line--erratic {
   stroke: var(--color-brass);
-  animation: pulse-ecg-erratic 0.8s ease-in-out infinite;
+  animation: ecg-pulse-erratic 0.8s ease-in-out infinite;
+  filter: drop-shadow(0 0 2px var(--color-brass));
 }
 
-/* Flatline - quarantined organ */
+/* Flatline - quarantined organ (red, flat line with alert) */
 .top-bar__ecg-line--flatline {
   stroke: var(--color-alert);
   animation: none;
+  filter: drop-shadow(0 0 2px var(--color-alert));
 }
 
-@keyframes pulse-ecg {
+/* Alert pulse for flatline state */
+.top-bar__ecg-alert-pulse {
+  animation: alert-pulse 1s ease-in-out infinite;
+}
+
+@keyframes ecg-pulse-steady {
   0%, 100% {
     opacity: 1;
-    stroke-dasharray: 0;
+    stroke-dashoffset: 0;
   }
   50% {
-    opacity: 0.8;
-    stroke-dasharray: 2 1;
+    opacity: 0.85;
   }
 }
 
-@keyframes pulse-ecg-erratic {
+@keyframes ecg-pulse-erratic {
   0%, 100% {
     opacity: 1;
     transform: translateY(0);
@@ -112,15 +132,155 @@
   }
 }
 
-/* Reduced motion support */
+@keyframes alert-pulse {
+  0%, 100% {
+    opacity: 1;
+    r: 4;
+  }
+  50% {
+    opacity: 0.5;
+    r: 6;
+  }
+}
+
+/* ==========================================================================
+   4. Static ECG (Reduced Motion)
+   ========================================================================== */
+
+.top-bar__ecg-static {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  width: 100%;
+  height: 40px;
+  padding: 0 var(--space-3);
+  background-color: rgba(14, 11, 11, 0.3);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border);
+}
+
+.top-bar__ecg-indicator {
+  width: 12px;
+  height: 12px;
+  border-radius: var(--radius-full);
+}
+
+.top-bar__ecg-indicator--steady {
+  background-color: var(--color-vein-green);
+  box-shadow: 0 0 4px var(--color-vein-green);
+}
+
+.top-bar__ecg-indicator--erratic {
+  background-color: var(--color-brass);
+  box-shadow: 0 0 4px var(--color-brass);
+}
+
+.top-bar__ecg-indicator--flatline {
+  background-color: var(--color-alert);
+  box-shadow: 0 0 4px var(--color-alert);
+  animation: alert-pulse-static 1s ease-in-out infinite;
+}
+
+@keyframes alert-pulse-static {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.top-bar__ecg-label {
+  font-family: var(--font-ledger);
+  font-size: var(--text-sm);
+  font-weight: 500;
+  letter-spacing: 0.05em;
+}
+
+.top-bar__ecg-indicator--steady + .top-bar__ecg-label {
+  color: var(--color-vein-green);
+}
+
+.top-bar__ecg-indicator--erratic + .top-bar__ecg-label {
+  color: var(--color-brass);
+}
+
+.top-bar__ecg-indicator--flatline + .top-bar__ecg-label {
+  color: var(--color-alert);
+}
+
+/* ==========================================================================
+   5. Status Stats
+   ========================================================================== */
+
+.top-bar__stats {
+  display: flex;
+  gap: var(--space-2);
+  flex-shrink: 0;
+}
+
+.top-bar__stat {
+  font-family: var(--font-ledger);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  min-width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-full);
+  padding: 0 var(--space-2);
+}
+
+.top-bar__stat--healthy {
+  background-color: rgba(111, 154, 125, 0.2);
+  color: var(--color-vein-green);
+  border: 1px solid rgba(111, 154, 125, 0.3);
+}
+
+.top-bar__stat--attention {
+  background-color: rgba(176, 141, 87, 0.2);
+  color: var(--color-brass);
+  border: 1px solid rgba(176, 141, 87, 0.3);
+}
+
+.top-bar__stat--quarantined {
+  background-color: rgba(196, 71, 47, 0.2);
+  color: var(--color-alert);
+  border: 1px solid rgba(196, 71, 47, 0.3);
+  animation: stat-alert-pulse 1s ease-in-out infinite;
+}
+
+@keyframes stat-alert-pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+/* ==========================================================================
+   6. Reduced Motion Support
+   ========================================================================== */
+
 @media (prefers-reduced-motion: reduce) {
   .top-bar__ecg-line--steady,
   .top-bar__ecg-line--erratic {
     animation: none;
   }
+
+  .top-bar__ecg-alert-pulse,
+  .top-bar__ecg-indicator--flatline,
+  .top-bar__stat--quarantined {
+    animation: none;
+  }
 }
 
-/* Responsive */
+/* ==========================================================================
+   7. Responsive
+   ========================================================================== */
+
 @media (max-width: 768px) {
   .top-bar {
     padding: var(--space-3) var(--space-4);
@@ -136,4 +296,25 @@
   .top-bar__ecg {
     height: 30px;
   }
+
+  .top-bar__ecg-static {
+    height: 30px;
+  }
+
+  .top-bar__stats {
+    order: 2;
+  }
+}
+
+/* Screen reader only utility */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
 }
