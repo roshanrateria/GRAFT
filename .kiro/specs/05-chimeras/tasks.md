@@ -26,10 +26,10 @@
 - [ ] Write tests
 
 ### Task 5.5: Link Cleanup on Amputation
-- [ ] Update `apps/web/src/AmputationService.ts` from Task 4.5
-- [ ] Remove all links involving amputated organ
-- [ ] Write CHIMERA_LINKED ledger entries for removal
-- [ ] Verify CHI-03
+- [x] Update `apps/web/src/AmputationService.ts` from Task 4.5
+- [x] Remove all links involving amputated organ
+- [x] Write CHIMERA_LINKED ledger entries for removal
+- [x] Verify CHI-03
 
 ### Task 5.6: Chimera UI - Mouse
 - [ ] Create `apps/web/src/ChimeraThread.tsx` for drag interaction

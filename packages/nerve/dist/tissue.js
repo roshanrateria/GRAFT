@@ -122,8 +122,14 @@ export const Tissue = {
         const maxVal = Math.max(...values);
         const range = maxVal - minVal || 1;
         const points = data.map((d, i) => {
-            const x = padding + (i / (data.length - 1 || 1)) * chartWidth;
-            const y = padding + chartHeight - ((d.value - minVal) / range) * chartHeight;
+            // For single point, center it; otherwise spread across chart width
+            const x = data.length === 1
+                ? width / 2
+                : padding + (i / (data.length - 1)) * chartWidth;
+            // For single point, center vertically; otherwise use value-based position
+            const y = data.length === 1
+                ? height / 2
+                : padding + chartHeight - ((d.value - minVal) / range) * chartHeight;
             return { x, y, ...d };
         });
         const pathD = points

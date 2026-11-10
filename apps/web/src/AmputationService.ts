@@ -241,6 +241,24 @@ export class AmputationService {
       // Step 6: Remove all links involving this organ (chimera mode)
       const organLinks = await this.linkStorage.getLinksForOrgan(organId);
       for (const link of organLinks) {
+        // Write CHIMERA_LINKED ledger entry for link removal (CHI-03)
+        await this.ledgerService.append({
+          id: `${transactionId}-link-${link.id}`,
+          ts: Date.now(),
+          organ_id: organId,
+          event: 'CHIMERA_LINKED' as EventType,
+          payload_json: JSON.stringify({
+            action: 'removed',
+            linkId: link.id,
+            sourceOrganId: link.sourceOrganId,
+            sourcePort: link.sourcePort,
+            targetOrganId: link.targetOrganId,
+            targetPort: link.targetPort,
+            reason: 'amputation',
+          }),
+          prev_hash: '', // Will be computed by ledger service
+        });
+        
         await this.linkStorage.removeLink(link.id);
       }
 

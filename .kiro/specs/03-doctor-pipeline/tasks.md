@@ -32,9 +32,9 @@
 
 ### Task 3.5: Doctor Gateway
 - [ ] Create `apps/server/src/doctor/gateway.ts`
-- [ ] Implement provider selection via `DOCTOR_PROVIDER` env
+- [x] Implement provider selection via `DOCTOR_PROVIDER` env (llm | crew | replay)
 - [ ] Implement streaming endpoint (WebSocket or SSE)
-- [ ] Add event logging
+- [x] Add event logging (via LLM adapter)
 - [ ] Write tests
 
 ### Task 3.6: Doctor UI Components
@@ -61,7 +61,26 @@
 
 - [x] DOC-01: Spec with ≤8 requirements before build
 - [x] DOC-02: ≥3 properties per organ
-- [x] DOC-03: Max 2 repair rounds
-- [ ] DOC-04: Never install without consent click
+- [x] DOC-03: Max 2 repair rounds (repair-loop.ts implemented)
+- [ ] DOC-04: Never install without consent click (UI pending)
 - [x] DOC-05: Replay labeled in UI
-- [ ] 3 demo wishes pass live
+- [ ] 3 demo wishes pass live (requires LLM_API_KEY)
+
+## Phase 3 Status (2026-11-10)
+
+**Completed:**
+- ✅ Task 3.1-3.4: Doctor interface and providers (llm, crew stub, replay)
+- ✅ Property stage U1-U7 with fast-check
+- ✅ Hostile organ rejection suite (6/6 passing)
+- ✅ Repair loop with max 2 rounds
+- ✅ Crew bot configuration documented
+- ✅ Scheduled checkup enhancement
+
+**Pending:**
+- Task 3.5: Doctor Gateway (streaming endpoint)
+- Task 3.6: Doctor UI Components (consent dialog)
+- Task 3.7: Demo Wish Recordings
+
+**Blockers:**
+- Crew integration requires running Gateway with auth token
+- Live wish testing requires LLM_API_KEY environment variable

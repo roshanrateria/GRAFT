@@ -7,5 +7,7 @@
  * @packageDocumentation
  */
 // Providers
-export { ReplayDoctorProvider, createReplayProvider, createReplayProviderFromFixture, } from './providers/index.js';
+export { ReplayDoctorProvider, createReplayProvider, createReplayProviderFromFixture, LLMDdoctorProvider, createLLMProvider, } from './providers/index.js';
+// Repair Loop
+export { runRepairLoop, buildWithRepairLoop, MAX_REPAIR_ROUNDS, } from './repair-loop.js';
 //# sourceMappingURL=index.js.map

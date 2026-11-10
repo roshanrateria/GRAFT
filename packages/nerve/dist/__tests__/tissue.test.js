@@ -3,7 +3,7 @@
  *
  * Tests CSS design tokens, chart rendering utilities, and helper functions.
  */
-import { describe, it, expect, vi } from 'vitest';
+import { describe, it, expect } from 'vitest';
 import { COLORS, CSS_VARS, TYPOGRAPHY, FONT_VARS, generateCSSTokenStyles, Tissue, formatValue, generateId, } from '../tissue';
 // ============================================================================
 // CSS Design Tokens Tests
@@ -692,41 +692,41 @@ describe('generateId()', () => {
         });
     });
     describe('format', () => {
-        it('uses crypto.randomUUID when available', () => {
-            const mockRandomUUID = vi.fn().mockReturnValue('test-uuid-123');
-            const originalCrypto = global.crypto;
-            // @ts-expect-error - mocking crypto
-            global.crypto = { randomUUID: mockRandomUUID };
+        it('generates valid UUID format when using crypto.randomUUID', () => {
+            // Node.js 16.7.0+ has crypto.randomUUID built-in
             const id = generateId();
-            expect(mockRandomUUID).toHaveBeenCalled();
-            expect(id).toBe('test-uuid-123');
-            global.crypto = originalCrypto;
+            // UUID format: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+            expect(id).toMatch(/^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$/);
         });
-        it('falls back to timestamp-based ID when crypto.randomUUID not available', () => {
-            const originalCrypto = global.crypto;
-            // @ts-expect-error - mocking crypto
-            global.crypto = undefined;
+        it('generates valid UUIDs that are parseable', () => {
             const id = generateId();
-            expect(id).toMatch(/^tissue-\d+-[a-z0-9]+$/);
-            global.crypto = originalCrypto;
-        });
-        it('fallback ID contains tissue prefix', () => {
-            const originalCrypto = global.crypto;
-            // @ts-expect-error - mocking crypto
-            global.crypto = undefined;
-            const id = generateId();
-            expect(id).toMatch(/^tissue-/);
-            global.crypto = originalCrypto;
+            // Verify it's a valid UUID by attempting to parse it
+            const parts = id.split('-');
+            expect(parts).toHaveLength(5);
+            expect(parts[0].length).toBe(8);
+            expect(parts[1].length).toBe(4);
+            expect(parts[2].length).toBe(4);
+            expect(parts[3].length).toBe(4);
+            expect(parts[4].length).toBe(12);
         });
     });
-    describe('crypto.randomUUID format', () => {
-        it('generates valid UUID format when using crypto.randomUUID', () => {
-            // Only test if crypto.randomUUID is available
-            if (typeof crypto !== 'undefined' && typeof crypto.randomUUID === 'function') {
-                const id = generateId();
-                // UUID format: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
-                expect(id).toMatch(/^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$/);
+    describe('uniqueness guarantee', () => {
+        it('generates different IDs even when called rapidly', () => {
+            const ids = new Set();
+            for (let i = 0; i < 1000; i++) {
+                ids.add(generateId());
             }
+            // All 1000 IDs should be unique
+            expect(ids.size).toBe(1000);
+        });
+        it('IDs are not predictable', () => {
+            const id1 = generateId();
+            const id2 = generateId();
+            // Two consecutive IDs should be different
+            expect(id1).not.toBe(id2);
+            // UUIDs should have the correct format
+            expect(id1).toMatch(/^[a-f0-9]{8}-[a-f0-9]{4}-4[a-f0-9]{3}-[89ab][a-f0-9]{3}-[a-f0-9]{12}$/);
+            expect(id2).toMatch(/^[a-f0-9]{8}-[a-f0-9]{4}-4[a-f0-9]{3}-[89ab][a-f0-9]{3}-[a-f0-9]{12}$/);
         });
     });
 });

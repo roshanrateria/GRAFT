@@ -352,6 +352,19 @@ describe('AmputationService', () => {
       // Verify link is removed
       const remainingLinks = await linkStorage.getAllLinks();
       expect(remainingLinks).toHaveLength(0);
+
+      // Verify CHIMERA_LINKED ledger entry was written for link removal
+      const history = await mockLedgerService.getHistory();
+      const chimeraEntries = history.filter(e => e.event === 'CHIMERA_LINKED');
+      expect(chimeraEntries).toHaveLength(1);
+      expect(chimeraEntries[0].organ_id).toBe('organ-1');
+      
+      const payload = JSON.parse(chimeraEntries[0].payload_json);
+      expect(payload.action).toBe('removed');
+      expect(payload.linkId).toBe('link-1');
+      expect(payload.sourceOrganId).toBe('organ-1');
+      expect(payload.targetOrganId).toBe('organ-2');
+      expect(payload.reason).toBe('amputation');
     });
 
     it('fails when organ not found', async () => {
