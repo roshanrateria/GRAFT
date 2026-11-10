@@ -52,8 +52,8 @@
 
 ## Acceptance Criteria
 
-- [ ] PBT LED-01 passes: any mutation detected
-- [ ] PBT REV-01 passes: transplant+amputation restores state
-- [ ] PBT REV-02 passes: failure leaves no partial state
-- [ ] LED-02: ledger entry written before state change
-- [ ] "Verify chain" button works in UI
+- [x] PBT LED-01 passes: any mutation detected
+- [x] PBT REV-01 passes: transplant+amputation restores state
+- [x] PBT REV-02 passes: failure leaves no partial state
+- [x] LED-02: ledger entry written before state change
+- [x] "Verify chain" button works in UI

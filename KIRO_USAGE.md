@@ -1667,3 +1667,24 @@ ev-02-property.test.ts\
   - **Spec updates**: .kiro/specs/03-doctor-pipeline/tasks.md updated with status
   - **KIRO_USAGE.md**: Updated with Phase 3 entry
   - **Acceptance criteria**: DOC-01, DOC-02, DOC-03, DOC-05 met; DOC-04 (consent UI) and live wishes pending
+
+## Entry: 2026-11-10 CHI-03 Implementation
+- Kiro surface used: IDE
+- Feature(s) used: PBT, spec
+- What I asked / how I structured it:
+  - User requested "Phase 5: Ledger Integration and Reversibility"
+  - Clarified that Phase 4 (Accountability) from project-brief includes Ledger, Amputation, and Chimeras
+  - Discovered that LED-01, REV-01, REV-02 were already passing from previous work
+  - Found missing requirement: CHI-03 needs CHIMERA_LINKED ledger entries for link removal
+- What worked:
+  - **Quick diagnosis**: grep_search revealed link removal was implemented but no ledger entries
+  - **Small targeted change**: Added 14 lines to AmputationService.ts to write CHIMERA_LINKED entries
+  - **Test-first verification**: Added test assertion for CHIMERA_LINKED payload structure
+  - **All 402 tests still passing**: No regressions from the change
+- What failed or surprised me:
+  - **Phase numbering confusion**: User said "Phase 5" but it's actually Phase 4 work
+  - **Implementation almost complete**: Most work was done in previous session, only ledger entries missing
+- Evidence:
+  - Commit: f34dbb1
+  - Test: apps/web/src/__tests__/AmputationService.test.ts > "removes all links involving organ (chimera mode)"
+  - 402 tests passing
