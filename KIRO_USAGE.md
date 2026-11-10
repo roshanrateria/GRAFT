@@ -1991,3 +1991,35 @@ ev-02-property.test.ts\
   - **Commit**: 04c82c7 "docs: update KIRO_USAGE for Phase 5"
   - **File updated**: KIRO_USAGE.md with Phase 5 Theatre UI entry
   - **Hook automation**: journal-on-stop hook correctly triggered journal append
+
+---
+
+## Entry: 2026-01-13 Phase 5 Theatre UI Branch Merge
+- Kiro surface used: IDE (workflow subagent)
+- Feature(s) used: workflow | execute_pwsh | read_file | send_message
+- What I asked / how I structured it:
+  - Workflow step to merge phase-5-theatre-ui branch into master
+  - Rebase branch onto master, run tests, merge with --ff-only, clean up worktree
+  - Fix any issues encountered during merge process
+- What worked:
+  - **Clean rebase**: 8 commits rebased successfully onto master
+  - **Test verification**: All 402 tests pass (excluding ledger tests requiring native module)
+  - **Fast-forward merge**: Clean merge with --ff-only, no conflicts
+  - **JSX fix applied**: Renamed accessibility.test.ts to .tsx for proper transform
+  - **Worktree cleanup**: Branch deleted, directory removed
+- What failed or surprised me:
+  - **Branch name mismatch**: Instructions said "mainline" but actual branch is "master"
+  - **Native module issues**: better-sqlite3 couldn't build in worktree (node-gyp missing)
+  - **JSX transform error**: accessibility.test.ts with JSX needed .tsx extension
+  - **Tests from main repo**: Had to run tests from main repo due to native module issues
+- What I would change:
+  - **Verify branch names first**: Should have run `git branch -a` before assuming branch names
+  - **Test worktree dependencies**: Should ensure native modules can build in worktree
+  - **Use .tsx for all test files with JSX**: TypeScript files with JSX should always use .tsx extension
+  - **Consider pnpm worktree install issues**: Native modules need special handling in worktrees
+- Evidence:
+  - **Merged commit SHA**: 1a76531
+  - **Test results**: 18 test files passed, 402 tests passed, 1 skipped
+  - **Files changed**: 20 files, 3470 insertions
+  - **Branch cleanup**: phase-5-theatre-ui branch deleted, worktree removed
+  - **Fix commit**: 1a76531 "fix: rename accessibility.test.ts to .tsx for JSX support"
