@@ -3,54 +3,61 @@
  *
  * The host application layout with the slot grid.
  * Victorian anatomical theatre aesthetic with dark theme.
+ * This is "The Specimen" - the center of the surgical theatre.
  */
 
 .creature {
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
+  flex: 1;
+  min-height: 100%;
   background-color: var(--color-background);
 }
 
 .creature__body {
   flex: 1;
   display: flex;
-  padding: var(--space-6);
+  padding: var(--space-4);
   justify-content: center;
   align-items: flex-start;
+  overflow: auto;
 }
 
 /* Slot grid layout */
 .creature__slots-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  grid-template-rows: repeat(3, minmax(200px, auto));
-  gap: var(--space-4);
+  grid-template-rows: repeat(3, minmax(180px, auto));
+  gap: var(--space-3);
   width: 100%;
-  max-width: 1200px;
+  max-width: 900px;
 }
 
-/* Grid lines for stitched seams effect */
+/* Stitched seams effect between slots */
 .creature__slots-grid::before {
   content: '';
   position: absolute;
   inset: 0;
   pointer-events: none;
-  /* Subtle stitch pattern could be added here */
+  /* Subtle stitch pattern could be added here with SVG */
 }
 
 /* Responsive grid - tablet */
 @media (max-width: 1024px) {
+  .creature__body {
+    padding: var(--space-3);
+  }
+
   .creature__slots-grid {
     grid-template-columns: repeat(2, 1fr);
-    grid-template-rows: repeat(4, minmax(180px, auto));
+    grid-template-rows: repeat(4, minmax(160px, auto));
   }
 }
 
 /* Responsive grid - mobile */
 @media (max-width: 640px) {
   .creature__body {
-    padding: var(--space-4);
+    padding: var(--space-3);
   }
 
   .creature__slots-grid {

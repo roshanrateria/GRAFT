@@ -1,0 +1,150 @@
+/**
+ * App Layout Styles
+ *
+ * Victorian anatomical theatre three-column layout.
+ * Dark, candlelit atmosphere with clean modern structure.
+ */
+
+/* ==========================================================================
+   1. App Container
+   ========================================================================== */
+
+.app {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--color-background);
+}
+
+/* ==========================================================================
+   2. Three-Column Layout
+   ========================================================================== */
+
+.app__layout {
+  display: flex;
+  flex-direction: row;
+  flex: 1;
+  min-height: 0;
+  width: 100%;
+}
+
+.app__main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0; /* Allow shrinking */
+  overflow: auto;
+}
+
+/* ==========================================================================
+   3. Panel Sizing
+   ========================================================================== */
+
+/* Left panel (Doctor's Notes) - narrower */
+.app__layout > .doctor-notes {
+  width: 320px;
+  min-width: 280px;
+  max-width: 400px;
+  flex-shrink: 0;
+}
+
+/* Right panel (The Chart) - narrower */
+.app__layout > .chart-panel {
+  width: 320px;
+  min-width: 280px;
+  max-width: 400px;
+  flex-shrink: 0;
+}
+
+/* ==========================================================================
+   4. Responsive - Tablet (768px - 1024px)
+   ========================================================================== */
+
+@media (max-width: 1024px) {
+  .app__layout {
+    flex-wrap: wrap;
+  }
+
+  .app__layout > .doctor-notes {
+    width: 100%;
+    max-width: 100%;
+    min-width: 100%;
+    order: 1;
+    border-right: none;
+    border-bottom: 1px solid var(--color-border);
+    max-height: 250px;
+    overflow-y: auto;
+  }
+
+  .app__main {
+    order: 2;
+    flex: 1 1 60%;
+    min-width: 300px;
+  }
+
+  .app__layout > .chart-panel {
+    order: 3;
+    flex: 1 1 40%;
+    min-width: 280px;
+    border-left: none;
+    border-top: 1px solid var(--color-border);
+  }
+}
+
+/* ==========================================================================
+   5. Responsive - Mobile (below 768px)
+   ========================================================================== */
+
+@media (max-width: 768px) {
+  .app__layout {
+    flex-direction: column;
+  }
+
+  .app__layout > .doctor-notes {
+    flex: 0 0 auto;
+    max-height: 200px;
+  }
+
+  .app__main {
+    flex: 1;
+    min-width: 100%;
+  }
+
+  .app__layout > .chart-panel {
+    flex: 0 0 auto;
+    min-width: 100%;
+    max-height: 300px;
+  }
+}
+
+/* ==========================================================================
+   6. Focus Management
+   ========================================================================== */
+
+.app__layout:focus-within {
+  /* Visual indicator when focus is within the layout */
+}
+
+/* Ensure visible focus for all interactive elements */
+.app__layout *:focus-visible {
+  outline: 2px solid var(--color-brass);
+  outline-offset: 2px;
+}
+
+/* ==========================================================================
+   7. Reduced Motion Support
+   ========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .app__layout * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+[data-reduced-motion="true"] .app__layout * {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+}

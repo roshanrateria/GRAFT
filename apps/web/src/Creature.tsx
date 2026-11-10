@@ -19,6 +19,7 @@ import './styles/Creature.css';
 /**
  * The Creature host application.
  * Renders a slot grid for organs in the Victorian anatomical theatre aesthetic.
+ * This is "The Specimen" - the center of the surgical theatre.
  */
 export function Creature() {
   const { slots } = useCreatureStore();
@@ -29,8 +30,8 @@ export function Creature() {
       <TopBar />
 
       {/* Main content - The Specimen */}
-      <section className="creature__body" aria-label="Organ slots">
-        <div className="creature__slots-grid" role="grid">
+      <section className="creature__body" aria-label="The Specimen - Organ slots">
+        <div className="creature__slots-grid" role="grid" aria-label="Organ slot grid">
           {slots.map((slot) => (
             <OrganSlot
               key={slot.id}
