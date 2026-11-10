@@ -3,75 +3,75 @@
 ## Phase 5: Polish + Deploy
 
 ### Task 7.1: Base Layout
-- [ ] Create `apps/web/src/App.tsx` with main layout
-- [ ] Create `apps/web/src/TopBar.tsx` with logo placeholder
-- [ ] Create `apps/web/src/MainLayout.tsx` with 3-column grid
-- [ ] Set up CSS variables in `apps/web/src/index.css`
-- [ ] Import fonts (Cormorant Garamond, Inter, IBM Plex Mono)
-- [ ] Write component tests
+- [x] Create `apps/web/src/App.tsx` with main layout
+- [x] Create `apps/web/src/TopBar.tsx` with logo placeholder
+- [x] Create `apps/web/src/MainLayout.tsx` with 3-column grid
+- [x] Set up CSS variables in `apps/web/src/index.css`
+- [x] Import fonts (Cormorant Garamond, Inter, IBM Plex Mono)
+- [x] Write component tests
 
 ### Task 7.2: Heartbeat Line
-- [ ] Create `apps/web/src/HeartbeatLine.tsx` with SVG
-- [ ] Implement steady/erratic/flatline states
-- [ ] Connect to organ state store
-- [ ] Add pulse animation
-- [ ] Implement reduced-motion alternative
-- [ ] Verify UI-03
+- [x] Create `apps/web/src/HeartbeatLine.tsx` with SVG
+- [x] Implement steady/erratic/flatline states
+- [x] Connect to organ state store
+- [x] Add pulse animation
+- [x] Implement reduced-motion alternative
+- [x] Verify UI-03
 
 ### Task 7.3: Organ Cards
-- [ ] Create `apps/web/src/OrganCard.tsx`
-- [ ] Create `apps/web/src/SlotGrid.tsx` for organ layout
-- [ ] Implement status indicators (healthy/decayed/quarantined)
-- [ ] Implement port visualization
-- [ ] Add amputate button with confirmation
-- [ ] Write component tests
+- [x] Create `apps/web/src/OrganCard.tsx`
+- [x] Create `apps/web/src/SlotGrid.tsx` for organ layout
+- [x] Implement status indicators (healthy/decayed/quarantined)
+- [x] Implement port visualization
+- [x] Add amputate button with confirmation
+- [x] Write component tests
 
 ### Task 7.4: Doctor's Notes Panel
-- [ ] Create `apps/web/src/DoctorNotes.tsx`
-- [ ] Implement streaming spec display
-- [ ] Implement streaming properties display
-- [ ] Implement build progress display
-- [ ] Add assumption line
-- [ ] Write component tests
+- [x] Create `apps/web/src/DoctorNotes.tsx`
+- [x] Implement streaming spec display
+- [x] Implement streaming properties display
+- [x] Implement build progress display
+- [x] Add assumption line
+- [x] Write component tests
 
 ### Task 7.5: Chart Panel
-- [ ] Create `apps/web/src/ChartPanel.tsx`
-- [ ] Implement timeline of ledger events
-- [ ] Create `apps/web/src/VerifyButton.tsx`
-- [ ] Implement chain verification trigger
-- [ ] Show verification result
-- [ ] Write component tests
+- [x] Create `apps/web/src/ChartPanel.tsx`
+- [x] Implement timeline of ledger events
+- [x] Create `apps/web/src/VerifyButton.tsx`
+- [x] Implement chain verification trigger
+- [x] Show verification result
+- [x] Write component tests
 
 ### Task 7.6: Laboratory Overlay
-- [ ] Create `apps/web/src/LaboratoryOverlay.tsx`
-- [ ] Create `apps/web/src/StageGauge.tsx` for thermometer bars
-- [ ] Implement sequential lighting
-- [ ] Create `apps/web/src/RejectedStamp.tsx` with animation
-- [ ] Implement reduced-motion alternative (static)
-- [ ] Verify UI-02
-- [ ] Write component tests
+- [x] Create `apps/web/src/LaboratoryOverlay.tsx`
+- [x] Create `apps/web/src/StageGauge.tsx` for thermometer bars
+- [x] Implement sequential lighting
+- [x] Create `apps/web/src/RejectedStamp.tsx` with animation
+- [x] Implement reduced-motion alternative (static)
+- [x] Verify UI-02
+- [x] Write component tests
 
 ### Task 7.7: Consent Dialog
-- [ ] Create `apps/web/src/ConsentDialog.tsx`
-- [ ] Show organ preview
-- [ ] Show immune report summary
-- [ ] Add Transplant button
-- [ ] Add Reject button
-- [ ] Write component tests
+- [x] Create `apps/web/src/ConsentDialog.tsx`
+- [x] Show organ preview
+- [x] Show immune report summary
+- [x] Add Transplant button
+- [x] Add Reject button
+- [x] Write component tests
 
 ### Task 7.8: Accessibility Audit
-- [ ] Run axe-core on all views
-- [ ] Fix contrast issues (AA minimum)
-- [ ] Verify all interactive elements keyboard accessible
-- [ ] Test with screen reader (basic smoke)
-- [ ] Write accessibility tests (axe-core in Vitest)
-- [ ] Verify UI-01
+- [x] Run axe-core on all views
+- [x] Fix contrast issues (AA minimum)
+- [x] Verify all interactive elements keyboard accessible
+- [x] Test with screen reader (basic smoke)
+- [x] Write accessibility tests (axe-core in Vitest)
+- [x] Verify UI-01
 
 ### Task 7.9: Responsive Design
-- [ ] Test tablet width (768px minimum)
-- [ ] Adjust layout for 2-column
-- [ ] Ensure no horizontal scroll
-- [ ] Test focus visibility at all sizes
+- [x] Test tablet width (768px minimum)
+- [x] Adjust layout for 2-column
+- [x] Ensure no horizontal scroll
+- [x] Test focus visibility at all sizes
 
 ## Dependencies
 
@@ -85,8 +85,8 @@
 
 ## Acceptance Criteria
 
-- [ ] UI-01: WCAG AA contrast, keyboard operable
-- [ ] UI-02: Reduced motion disables animations
-- [ ] UI-03: Heartbeat reflects real state
-- [ ] UI-04: Keyboard chimera linking
-- [ ] All axe-core tests pass
+- [x] UI-01: WCAG AA contrast, keyboard operable
+- [x] UI-02: Reduced motion disables animations
+- [x] UI-03: Heartbeat reflects real state
+- [x] UI-04: Keyboard chimera linking
+- [x] All axe-core tests pass
