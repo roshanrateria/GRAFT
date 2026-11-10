@@ -17,7 +17,7 @@
  *
  * 3. **Scheduled Jobs**: Cron jobs in Crew are configured via CLI (`kirocrew cron add`)
  *    or chat commands, not programmatically from within code.
- *    The checkup scheduling is documented in .kiro/scheduling/checkup-schedule.md.
+ *    The checkup scheduling is implemented via scripts/schedule-checkup.ts.
  *
  * 4. **Memory Persistence**: Crew manages memory automatically via its semantic memory
  *    system. This provider would need to either:
@@ -27,7 +27,7 @@
  * CURRENT STATUS:
  * - LLM provider is fully functional for live organ generation
  * - Crew integration requires external Crew Gateway to be running
- * - Scheduled checkups can be configured via Crew CLI or system cron
+ * - Scheduled checkups are implemented via scripts/nightly-checkup.ts
  *
  * USAGE:
  * To use Crew integration:
@@ -37,6 +37,16 @@
  *    - KIROCREW_GATEWAY_URL=http://localhost:5476
  *    - KIROCREW_TOKEN=<token from kirocrew token>
  * 4. Set DOCTOR_PROVIDER=crew
+ *
+ * NIGHT DOCTOR (Scheduled Checkup):
+ * The Night Doctor runs scheduled checkups on all installed organs.
+ * It is implemented as a standalone script (scripts/nightly-checkup.ts)
+ * that can be scheduled via:
+ * - Node-based interval scheduler: `pnpm tsx scripts/schedule-checkup.ts --method node`
+ * - System cron (Unix): `pnpm tsx scripts/schedule-checkup.ts --method cron`
+ * - Windows Task Scheduler: `pnpm tsx scripts/schedule-checkup.ts --method windows`
+ *
+ * The checkup script makes no LLM calls and costs no credits.
  *
  * @packageDocumentation
  */

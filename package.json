@@ -11,7 +11,10 @@
     "test:immune": "cd packages/immune && pnpm test",
     "test:a11y": "vitest run --filter @graft/web --reporter=verbose",
     "preflight": "bash scripts/preflight.sh",
-    "immune": "pnpm --filter @graft/immune-cli run-cli"
+    "immune": "pnpm --filter @graft/immune-cli run-cli",
+    "checkup": "tsx scripts/nightly-checkup.ts",
+    "checkup:dry": "tsx scripts/nightly-checkup.ts --dry-run",
+    "checkup:schedule": "tsx scripts/schedule-checkup.ts"
   },
   "devDependencies": {
     "@types/node": "^22.9.1",

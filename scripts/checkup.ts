@@ -2,16 +2,18 @@
 /**
  * Re-verify all installed organs
  *
- * This script runs the immune system on every installed organ.
- * It is a plain script that makes no LLM calls (costs no credits).
+ * This script is a thin wrapper around the nightly-checkup.ts script.
+ * It exists for backwards compatibility and convenience.
  *
  * Triggered by:
  * - Scheduled by Crew bot (kirocrew cron)
  * - Manual "Fast-forward the night" demo button
  * - System cron
+ * - pnpm checkup command
  *
  * Usage:
- *   tsx scripts/checkup.ts
+ *   pnpm checkup
+ *   pnpm tsx scripts/checkup.ts [--dry-run] [--organ <id>]
  *
  * Exit codes:
  *   0 - All organs passed checkup
@@ -19,9 +21,8 @@
  *   2 - Checkup script error (configuration issue)
  */
 
-import { createRequire } from 'module';
-import { resolve, dirname } from 'path';
-import { fileURLToPath } from 'url';
+// Re-export and run the nightly checkup
+import './nightly-checkup.js';
 
 // ============================================================================
 // Types
