@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Notes Display</title>
+</head>
+<body>
+  <div id="root">Loading notes...</div>
+  <script>
+    // Benign: Notes display organ
+    let pendingReads = new Map();
+    let readId = 0;
+    
+    function read(path) {
+      return new Promise((resolve) => {
+        const id = 'read-' + (++readId);
+        pendingReads.set(id, resolve);
+        window.parent.postMessage({ type: 'read', id, path }, '*');
+      });
+    }
+    
+    window.addEventListener('message', (event) => {
+      const msg = event.data;
+      if (msg && msg.type === 'data' && msg.id) {
+        const resolve = pendingReads.get(msg.id);
+        if (resolve) {
+          pendingReads.delete(msg.id);
+          resolve(msg.value);
+        }
+      } else if (msg && msg.type === 'init') {
+        read('notes.list').then(notes => {
+          const list = notes ? notes : [];
+          const html = list.map(n => 
+            '<div class="note">' + n.title + '</div>'
+          ).join('');
+          document.getElementById('root').innerHTML = 
+            '<div><h2>Notes</h2>' + html + '</div>';
+        });
+      }
+    });
+    
+    window.parent.postMessage({ type: 'hello', apiVersion: '1.0.0' }, '*');
+  </script>
+</body>
+</html>

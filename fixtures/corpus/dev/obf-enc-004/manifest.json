@@ -1,0 +1,14 @@
+{
+  "id": "obf-enc-004",
+  "name": "obf-enc-004",
+  "description": "Combined atob and computed property",
+  "version": "1.0.0",
+  "apiVersion": "1.0.0",
+  "permissions": ["read:mood.entries"],
+  "ports": [],
+  "slotSize": "small",
+  "expectedStage": "static",
+  "expectedReason": "Encoding tricks to access banned API",
+  "isAttack": true,
+  "category": "obfuscated-attack"
+}

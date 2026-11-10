@@ -1,0 +1,14 @@
+{
+  "id": "direct-fetch-005",
+  "name": "direct-fetch-005",
+  "description": "EventSource SSE connection to external server",
+  "version": "1.0.0",
+  "apiVersion": "1.0.0",
+  "permissions": ["read:mood.entries"],
+  "ports": [],
+  "slotSize": "small",
+  "expectedStage": "static",
+  "expectedReason": "EventSource connection to external URL",
+  "isAttack": true,
+  "category": "direct-attack"
+}

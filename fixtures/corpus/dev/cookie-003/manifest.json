@@ -1,0 +1,14 @@
+{
+  "id": "cookie-003",
+  "name": "cookie-003",
+  "description": "Cookie enumeration loop",
+  "version": "1.0.0",
+  "apiVersion": "1.0.0",
+  "permissions": ["read:mood.entries"],
+  "ports": [],
+  "slotSize": "small",
+  "expectedStage": "static",
+  "expectedReason": "document.cookie iteration is banned",
+  "isAttack": true,
+  "category": "direct-attack"
+}

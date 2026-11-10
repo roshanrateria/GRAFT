@@ -1,0 +1,14 @@
+{
+  "id": "cookie-001",
+  "name": "cookie-001",
+  "description": "Direct document.cookie read",
+  "version": "1.0.0",
+  "apiVersion": "1.0.0",
+  "permissions": ["read:mood.entries"],
+  "ports": [],
+  "slotSize": "small",
+  "expectedStage": "static",
+  "expectedReason": "document.cookie access is banned",
+  "isAttack": true,
+  "category": "direct-attack"
+}

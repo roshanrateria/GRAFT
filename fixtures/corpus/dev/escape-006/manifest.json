@@ -1,0 +1,14 @@
+{
+  "id": "escape-006",
+  "name": "escape-006",
+  "description": "postMessage with wildcard origin",
+  "version": "1.0.0",
+  "apiVersion": "1.0.0",
+  "permissions": ["read:mood.entries"],
+  "ports": [],
+  "slotSize": "small",
+  "expectedStage": "static",
+  "expectedReason": "postMessage to '*' origin is banned",
+  "isAttack": true,
+  "category": "sandbox-escape"
+}

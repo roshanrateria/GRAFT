@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Split Join Eval Attack</title>
+</head>
+<body>
+  <div id="root">Display</div>
+  <script>
+    // Attack: Split/join to bypass string detection
+    const fn = 'e' + 'v' + 'a' + 'l';
+    window[fn.split('').join('')]('alert(1)');
+  </script>
+</body>
+</html>

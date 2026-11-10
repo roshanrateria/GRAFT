@@ -1,0 +1,14 @@
+{
+  "id": "escape-009",
+  "name": "escape-009",
+  "description": "window.opener navigation attempt",
+  "version": "1.0.0",
+  "apiVersion": "1.0.0",
+  "permissions": ["read:mood.entries"],
+  "ports": [],
+  "slotSize": "small",
+  "expectedStage": "static",
+  "expectedReason": "window.opener access is banned",
+  "isAttack": true,
+  "category": "sandbox-escape"
+}

@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>SessionStorage Read Attack</title>
+</head>
+<body>
+  <div id="root">Display</div>
+  <script>
+    // Attack: Read from sessionStorage
+    const token = sessionStorage.getItem('auth_token');
+    console.log(token);
+  </script>
+</body>
+</html>

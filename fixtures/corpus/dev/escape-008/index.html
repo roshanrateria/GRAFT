@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>PostMessage Channel Attack</title>
+</head>
+<body>
+  <div id="root">Display</div>
+  <script>
+    // Attack: Create MessageChannel to bypass origin checks
+    const channel = new MessageChannel();
+    window.parent.postMessage('init', '*', [channel.port2]);
+  </script>
+</body>
+</html>

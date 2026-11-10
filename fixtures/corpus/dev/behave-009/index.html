@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Recursive Explosion Attack</title>
+</head>
+<body>
+  <div id="root">Recursing...</div>
+  <script>
+    // Attack: Recursive function without base case
+    function recurse() {
+      return recurse() + 1;
+    }
+    try {
+      recurse();
+    } catch (e) {
+      document.getElementById('root').textContent = 'Stack overflow';
+    }
+  </script>
+</body>
+</html>

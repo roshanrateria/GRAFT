@@ -1,0 +1,14 @@
+{
+  "id": "obf-str-003",
+  "name": "obf-str-003",
+  "description": "Substring extraction for eval",
+  "version": "1.0.0",
+  "apiVersion": "1.0.0",
+  "permissions": ["read:mood.entries"],
+  "ports": [],
+  "slotSize": "small",
+  "expectedStage": "static",
+  "expectedReason": "String manipulation to access banned API",
+  "isAttack": true,
+  "category": "obfuscated-attack"
+}

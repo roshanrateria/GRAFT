@@ -1,0 +1,14 @@
+{
+  "id": "behave-008",
+  "name": "behave-008",
+  "description": "CPU busy loop with blocking operations",
+  "version": "1.0.0",
+  "apiVersion": "1.0.0",
+  "permissions": ["read:mood.entries"],
+  "ports": [],
+  "slotSize": "small",
+  "expectedStage": "behavioral",
+  "expectedReason": "CPU exhaustion detected",
+  "isAttack": true,
+  "category": "behavioral-attack"
+}

@@ -1,0 +1,14 @@
+{
+  "id": "escape-007",
+  "name": "escape-007",
+  "description": "postMessage with code injection payload",
+  "version": "1.0.0",
+  "apiVersion": "1.0.0",
+  "permissions": ["read:mood.entries"],
+  "ports": [],
+  "slotSize": "small",
+  "expectedStage": "static",
+  "expectedReason": "postMessage with code payload is suspicious",
+  "isAttack": true,
+  "category": "sandbox-escape"
+}

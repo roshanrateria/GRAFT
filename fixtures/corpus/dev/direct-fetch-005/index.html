@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>EventSource Attack</title>
+</head>
+<body>
+  <div id="root">Listening...</div>
+  <script>
+    // Attack: EventSource for persistent connection
+    const es = new EventSource('https://evil.example.com/stream');
+    es.onmessage = (e) => console.log(e.data);
+  </script>
+</body>
+</html>

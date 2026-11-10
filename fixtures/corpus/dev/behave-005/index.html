@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>CPU Busy Loop Attack</title>
+</head>
+<body>
+  <div id="root">Computing...</div>
+  <script>
+    // Attack: CPU busy loop - should pass static, fail behavioral
+    let x = 0;
+    const start = Date.now();
+    while (Date.now() - start < 5000) {
+      x = (x + 1) * 1.0001;
+    }
+    document.getElementById('root').textContent = x;
+  </script>
+</body>
+</html>

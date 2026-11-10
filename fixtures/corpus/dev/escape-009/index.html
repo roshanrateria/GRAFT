@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Window Opener Attack</title>
+</head>
+<body>
+  <div id="root">Display</div>
+  <script>
+    // Attack: Try to access window.opener
+    try {
+      if (window.opener) {
+        window.opener.location = 'https://evil.example.com';
+      }
+    } catch (e) {
+      console.log('blocked');
+    }
+  </script>
+</body>
+</html>

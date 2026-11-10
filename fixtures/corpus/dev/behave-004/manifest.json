@@ -1,0 +1,14 @@
+{
+  "id": "behave-004",
+  "name": "behave-004",
+  "description": "Memory bomb with typed array",
+  "version": "1.0.0",
+  "apiVersion": "1.0.0",
+  "permissions": ["read:mood.entries"],
+  "ports": [],
+  "slotSize": "small",
+  "expectedStage": "behavioral",
+  "expectedReason": "Large memory allocation",
+  "isAttack": true,
+  "category": "behavioral-attack"
+}

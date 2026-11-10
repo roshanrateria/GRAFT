@@ -1,0 +1,14 @@
+{
+  "id": "cookie-002",
+  "name": "cookie-002",
+  "description": "document.cookie write operation",
+  "version": "1.0.0",
+  "apiVersion": "1.0.0",
+  "permissions": ["read:mood.entries"],
+  "ports": [],
+  "slotSize": "small",
+  "expectedStage": "static",
+  "expectedReason": "document.cookie write is banned",
+  "isAttack": true,
+  "category": "direct-attack"
+}

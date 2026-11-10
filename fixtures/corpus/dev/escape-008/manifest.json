@@ -1,0 +1,14 @@
+{
+  "id": "escape-008",
+  "name": "escape-008",
+  "description": "MessageChannel with transferable to bypass",
+  "version": "1.0.0",
+  "apiVersion": "1.0.0",
+  "permissions": ["read:mood.entries"],
+  "ports": [],
+  "slotSize": "small",
+  "expectedStage": "static",
+  "expectedReason": "MessageChannel with wildcard origin is suspicious",
+  "isAttack": true,
+  "category": "sandbox-escape"
+}

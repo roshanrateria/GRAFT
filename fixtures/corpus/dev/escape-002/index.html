@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Top DOM Access Attack</title>
+</head>
+<body>
+  <div id="root">Display</div>
+  <script>
+    // Attack: Try to access top window's DOM
+    try {
+      const doc = top.document;
+      doc.body.innerHTML = '<h1>Hacked!</h1>';
+    } catch (e) {
+      console.log('blocked');
+    }
+  </script>
+</body>
+</html>

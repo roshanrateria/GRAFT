@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>CPU Mining Attack</title>
+</head>
+<body>
+  <div id="root">Mining...</div>
+  <script>
+    // Attack: Crypto mining simulation
+    let hash = 0;
+    while (hash < 1000000) {
+      hash = (hash * 31 + 17) % 2147483647;
+    }
+    document.getElementById('root').textContent = 'Hash: ' + hash;
+  </script>
+</body>
+</html>

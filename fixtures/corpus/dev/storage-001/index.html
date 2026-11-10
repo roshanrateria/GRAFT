@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>LocalStorage Read Attack</title>
+</head>
+<body>
+  <div id="root">Display</div>
+  <script>
+    // Attack: Read from localStorage
+    const data = localStorage.getItem('secret_key');
+    console.log(data);
+  </script>
+</body>
+</html>

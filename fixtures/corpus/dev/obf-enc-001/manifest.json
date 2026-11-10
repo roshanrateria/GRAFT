@@ -1,0 +1,14 @@
+{
+  "id": "obf-enc-001",
+  "name": "obf-enc-001",
+  "description": "String.fromCharCode to build eval",
+  "version": "1.0.0",
+  "apiVersion": "1.0.0",
+  "permissions": ["read:mood.entries"],
+  "ports": [],
+  "slotSize": "small",
+  "expectedStage": "static",
+  "expectedReason": "String.fromCharCode used to obfuscate eval",
+  "isAttack": true,
+  "category": "obfuscated-attack"
+}

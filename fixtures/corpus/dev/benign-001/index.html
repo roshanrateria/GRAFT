@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Mood Score Display</title>
+</head>
+<body>
+  <div id="root">Loading...</div>
+  <script>
+    // Benign: Simple display organ that reads and renders data
+    let pendingReads = new Map();
+    let readId = 0;
+    
+    function read(path) {
+      return new Promise((resolve, reject) => {
+        const id = 'read-' + (++readId);
+        pendingReads.set(id, { resolve, reject });
+        window.parent.postMessage({ type: 'read', id, path }, '*');
+      });
+    }
+    
+    function render(moodData) {
+      const entries = moodData && moodData.entries ? moodData.entries : [];
+      const avg = entries.length > 0 
+        ? (entries.reduce((sum, e) => sum + e.score, 0) / entries.length).toFixed(1)
+        : 'N/A';
+      document.getElementById('root').innerHTML = 
+        '<div class="mood-display">' +
+        '<h2>Mood Score</h2>' +
+        '<span class="score">' + avg + '</span>' +
+        '<p class="entries">' + entries.length + ' entries</p>' +
+        '</div>';
+    }
+    
+    window.addEventListener('message', (event) => {
+      const msg = event.data;
+      if (msg && msg.type === 'data' && msg.id) {
+        const pending = pendingReads.get(msg.id);
+        if (pending) {
+          pendingReads.delete(msg.id);
+          pending.resolve(msg.value);
+        }
+      } else if (msg && msg.type === 'init') {
+        read('mood.entries').then(data => render(data || {}));
+      }
+    });
+    
+    window.parent.postMessage({ type: 'hello', apiVersion: '1.0.0' }, '*');
+  </script>
+</body>
+</html>

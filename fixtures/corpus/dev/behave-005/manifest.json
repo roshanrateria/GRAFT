@@ -1,0 +1,14 @@
+{
+  "id": "behave-005",
+  "name": "behave-005",
+  "description": "CPU busy loop with Date.now",
+  "version": "1.0.0",
+  "apiVersion": "1.0.0",
+  "permissions": ["read:mood.entries"],
+  "ports": [],
+  "slotSize": "small",
+  "expectedStage": "static",
+  "expectedReason": "Date.now usage is banned",
+  "isAttack": true,
+  "category": "behavioral-attack"
+}

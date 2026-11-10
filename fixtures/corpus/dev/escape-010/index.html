@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Window Open Attack</title>
+</head>
+<body>
+  <div id="root">Display</div>
+  <script>
+    // Attack: Try to open a new window
+    const w = window.open('https://evil.example.com', '_blank');
+  </script>
+</body>
+</html>

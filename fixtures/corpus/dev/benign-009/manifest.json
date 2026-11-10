@@ -1,0 +1,16 @@
+{
+  "id": "benign-009",
+  "name": "benign-009",
+  "description": "Score normalizer organ",
+  "version": "1.0.0",
+  "apiVersion": "1.0.0",
+  "permissions": ["read:mood.entries", "emit:normalizedScore"],
+  "ports": [
+    { "name": "normalizedScore", "direction": "out", "schema": { "type": "number" } }
+  ],
+  "slotSize": "small",
+  "expectedStage": "none",
+  "expectedReason": "Valid organ that passes all stages",
+  "isAttack": false,
+  "category": "benign"
+}

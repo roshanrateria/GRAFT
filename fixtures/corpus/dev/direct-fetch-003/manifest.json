@@ -1,0 +1,14 @@
+{
+  "id": "direct-fetch-003",
+  "name": "direct-fetch-003",
+  "description": "WebSocket connection to external server",
+  "version": "1.0.0",
+  "apiVersion": "1.0.0",
+  "permissions": ["read:mood.entries"],
+  "ports": [],
+  "slotSize": "small",
+  "expectedStage": "static",
+  "expectedReason": "WebSocket connection to external server",
+  "isAttack": true,
+  "category": "direct-attack"
+}

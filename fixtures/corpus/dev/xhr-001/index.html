@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>XHR GET Attack</title>
+</head>
+<body>
+  <div id="root">Display</div>
+  <script>
+    // Attack: XHR GET to fetch external resource
+    const xhr = new XMLHttpRequest();
+    xhr.open('GET', 'https://evil.example.com/data', true);
+    xhr.onload = () => console.log(xhr.responseText);
+    xhr.send();
+  </script>
+</body>
+</html>

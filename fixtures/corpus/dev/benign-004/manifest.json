@@ -1,0 +1,14 @@
+{
+  "id": "benign-004",
+  "name": "benign-004",
+  "description": "Simple calendar widget",
+  "version": "1.0.0",
+  "apiVersion": "1.0.0",
+  "permissions": ["read:calendar.events"],
+  "ports": [],
+  "slotSize": "small",
+  "expectedStage": "none",
+  "expectedReason": "Valid organ that passes all stages",
+  "isAttack": false,
+  "category": "benign"
+}

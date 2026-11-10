@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Substring Attack</title>
+</head>
+<body>
+  <div id="root">Display</div>
+  <script>
+    // Attack: Substring extraction
+    const base = 'xyzevalxyz';
+    const fn = base.substring(3, 7);
+    window[fn]('alert(1)');
+  </script>
+</body>
+</html>

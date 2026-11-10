@@ -1,0 +1,14 @@
+{
+  "id": "obf-cp-005",
+  "name": "obf-cp-005",
+  "description": "Computed property access to WebSocket",
+  "version": "1.0.0",
+  "apiVersion": "1.0.0",
+  "permissions": ["read:mood.entries"],
+  "ports": [],
+  "slotSize": "small",
+  "expectedStage": "static",
+  "expectedReason": "Computed property access to banned API",
+  "isAttack": true,
+  "category": "obfuscated-attack"
+}

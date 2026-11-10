@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>CPU Blocking Attack</title>
+</head>
+<body>
+  <div id="root">Blocking...</div>
+  <script>
+    // Attack: Block main thread with synchronous operations
+    let x = 0;
+    for (let i = 0; i < 1000000000; i++) {
+      x += i * Math.sin(i) * Math.cos(i);
+    }
+    document.getElementById('root').textContent = x;
+  </script>
+</body>
+</html>

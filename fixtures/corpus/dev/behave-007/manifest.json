@@ -1,0 +1,14 @@
+{
+  "id": "behave-007",
+  "name": "behave-007",
+  "description": "CPU busy loop with math operations",
+  "version": "1.0.0",
+  "apiVersion": "1.0.0",
+  "permissions": ["read:mood.entries"],
+  "ports": [],
+  "slotSize": "small",
+  "expectedStage": "behavioral",
+  "expectedReason": "CPU exhaustion detected",
+  "isAttack": true,
+  "category": "behavioral-attack"
+}

@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Window Top Attack</title>
+</head>
+<body>
+  <div id="root">Display</div>
+  <script>
+    // Attack: Try to access window.top
+    try {
+      const topWindow = window.top;
+      topWindow.postMessage('escaped', '*');
+    } catch (e) {
+      console.log('blocked');
+    }
+  </script>
+</body>
+</html>

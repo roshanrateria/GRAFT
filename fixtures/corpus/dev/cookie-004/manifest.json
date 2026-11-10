@@ -1,0 +1,14 @@
+{
+  "id": "cookie-004",
+  "name": "cookie-004",
+  "description": "Cookie deletion via expired date",
+  "version": "1.0.0",
+  "apiVersion": "1.0.0",
+  "permissions": ["read:mood.entries"],
+  "ports": [],
+  "slotSize": "small",
+  "expectedStage": "static",
+  "expectedReason": "document.cookie modification is banned",
+  "isAttack": true,
+  "category": "direct-attack"
+}

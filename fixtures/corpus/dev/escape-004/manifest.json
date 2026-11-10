@@ -1,0 +1,14 @@
+{
+  "id": "escape-004",
+  "name": "escape-004",
+  "description": "Parent location navigation attempt",
+  "version": "1.0.0",
+  "apiVersion": "1.0.0",
+  "permissions": ["read:mood.entries"],
+  "ports": [],
+  "slotSize": "small",
+  "expectedStage": "static",
+  "expectedReason": "parent.location access is banned",
+  "isAttack": true,
+  "category": "sandbox-escape"
+}

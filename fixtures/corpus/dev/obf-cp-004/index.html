@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Bracket Notation localStorage Attack</title>
+</head>
+<body>
+  <div id="root">Display</div>
+  <script>
+    // Attack: Bracket notation to access localStorage
+    const storage = window['loc' + 'al' + 'Stor' + 'age'];
+    storage.setItem('x', 'y');
+  </script>
+</body>
+</html>

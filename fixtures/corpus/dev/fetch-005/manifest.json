@@ -1,0 +1,14 @@
+{
+  "id": "fetch-005",
+  "name": "fetch-005",
+  "description": "navigator.sendBeacon data exfiltration",
+  "version": "1.0.0",
+  "apiVersion": "1.0.0",
+  "permissions": ["read:mood.entries"],
+  "ports": [],
+  "slotSize": "small",
+  "expectedStage": "static",
+  "expectedReason": "sendBeacon is network access",
+  "isAttack": true,
+  "category": "direct-attack"
+}

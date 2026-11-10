@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>PostMessage Wildcard Attack</title>
+</head>
+<body>
+  <div id="root">Display</div>
+  <script>
+    // Attack: postMessage with wildcard origin
+    window.parent.postMessage({ stolen: 'data' }, '*');
+  </script>
+</body>
+</html>

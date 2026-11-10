@@ -1,0 +1,14 @@
+{
+  "id": "behave-010",
+  "name": "behave-010",
+  "description": "Mutually recursive functions",
+  "version": "1.0.0",
+  "apiVersion": "1.0.0",
+  "permissions": ["read:mood.entries"],
+  "ports": [],
+  "slotSize": "small",
+  "expectedStage": "behavioral",
+  "expectedReason": "Stack overflow detected",
+  "isAttack": true,
+  "category": "behavioral-attack"
+}

@@ -1,0 +1,14 @@
+{
+  "id": "behave-002",
+  "name": "behave-002",
+  "description": "Infinite for loop",
+  "version": "1.0.0",
+  "apiVersion": "1.0.0",
+  "permissions": ["read:mood.entries"],
+  "ports": [],
+  "slotSize": "small",
+  "expectedStage": "static",
+  "expectedReason": "Infinite loop pattern detected",
+  "isAttack": true,
+  "category": "behavioral-attack"
+}

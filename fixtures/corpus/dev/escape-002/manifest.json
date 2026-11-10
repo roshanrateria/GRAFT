@@ -1,0 +1,14 @@
+{
+  "id": "escape-002",
+  "name": "escape-002",
+  "description": "top.document access attempt",
+  "version": "1.0.0",
+  "apiVersion": "1.0.0",
+  "permissions": ["read:mood.entries"],
+  "ports": [],
+  "slotSize": "small",
+  "expectedStage": "static",
+  "expectedReason": "top.document access is banned",
+  "isAttack": true,
+  "category": "sandbox-escape"
+}

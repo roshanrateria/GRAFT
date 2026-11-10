@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Combined Encoding Attack</title>
+</head>
+<body>
+  <div id="root">Display</div>
+  <script>
+    // Attack: Combined encoding - atob then fromCharCode
+    const encoded = atob('ZXZhbA==');
+    const fn = window[encoded];
+    fn('alert(1)');
+  </script>
+</body>
+</html>

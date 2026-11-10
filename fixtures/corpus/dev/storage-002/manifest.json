@@ -1,0 +1,14 @@
+{
+  "id": "storage-002",
+  "name": "storage-002",
+  "description": "sessionStorage read operation",
+  "version": "1.0.0",
+  "apiVersion": "1.0.0",
+  "permissions": ["read:mood.entries"],
+  "ports": [],
+  "slotSize": "small",
+  "expectedStage": "static",
+  "expectedReason": "sessionStorage access is banned",
+  "isAttack": true,
+  "category": "direct-attack"
+}

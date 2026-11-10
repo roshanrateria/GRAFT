@@ -1,0 +1,655 @@
+{
+  "name": "GRAFT Dev Corpus",
+  "version": "1.0.0",
+  "description": "Development corpus of 70 organs for immune system testing",
+  "generatedAt": "2024-11-22",
+  "stats": {
+    "total": 70,
+    "attacks": 60,
+    "benign": 10,
+    "byCategory": {
+      "direct-attack": 25,
+      "obfuscated-attack": 15,
+      "sandbox-escape": 10,
+      "behavioral-attack": 10,
+      "benign": 10
+    },
+    "byExpectedStage": {
+      "static": 57,
+      "behavioral": 3,
+      "none": 10
+    }
+  },
+  "organs": [
+    {
+      "id": "direct-fetch-001",
+      "name": "direct-fetch-001",
+      "description": "Direct fetch call to external server",
+      "expectedStage": "static",
+      "expectedReason": "Direct fetch() call to external URL",
+      "isAttack": true,
+      "category": "direct-attack"
+    },
+    {
+      "id": "direct-fetch-002",
+      "name": "direct-fetch-002",
+      "description": "XMLHttpRequest to external server",
+      "expectedStage": "static",
+      "expectedReason": "XMLHttpRequest to external URL",
+      "isAttack": true,
+      "category": "direct-attack"
+    },
+    {
+      "id": "direct-fetch-003",
+      "name": "direct-fetch-003",
+      "description": "WebSocket connection to external server",
+      "expectedStage": "static",
+      "expectedReason": "WebSocket connection to external server",
+      "isAttack": true,
+      "category": "direct-attack"
+    },
+    {
+      "id": "direct-fetch-004",
+      "name": "direct-fetch-004",
+      "description": "fetch with GET to steal data",
+      "expectedStage": "static",
+      "expectedReason": "fetch() call to external URL",
+      "isAttack": true,
+      "category": "direct-attack"
+    },
+    {
+      "id": "direct-fetch-005",
+      "name": "direct-fetch-005",
+      "description": "EventSource SSE connection to external server",
+      "expectedStage": "static",
+      "expectedReason": "EventSource connection to external URL",
+      "isAttack": true,
+      "category": "direct-attack"
+    },
+    {
+      "id": "eval-001",
+      "name": "eval-001",
+      "description": "Direct eval() call with code string",
+      "expectedStage": "static",
+      "expectedReason": "eval() is banned",
+      "isAttack": true,
+      "category": "direct-attack"
+    },
+    {
+      "id": "eval-002",
+      "name": "eval-002",
+      "description": "new Function() constructor abuse",
+      "expectedStage": "static",
+      "expectedReason": "Function constructor is banned",
+      "isAttack": true,
+      "category": "direct-attack"
+    },
+    {
+      "id": "eval-003",
+      "name": "eval-003",
+      "description": "setTimeout with string argument (eval variant)",
+      "expectedStage": "static",
+      "expectedReason": "setTimeout with string argument acts as eval",
+      "isAttack": true,
+      "category": "direct-attack"
+    },
+    {
+      "id": "eval-004",
+      "name": "eval-004",
+      "description": "setInterval with string argument",
+      "expectedStage": "static",
+      "expectedReason": "setInterval with string argument acts as eval",
+      "isAttack": true,
+      "category": "direct-attack"
+    },
+    {
+      "id": "eval-005",
+      "name": "eval-005",
+      "description": "indirect eval call via (0, eval)",
+      "expectedStage": "static",
+      "expectedReason": "Indirect eval() is still eval",
+      "isAttack": true,
+      "category": "direct-attack"
+    },
+    {
+      "id": "cookie-001",
+      "name": "cookie-001",
+      "description": "Direct document.cookie read",
+      "expectedStage": "static",
+      "expectedReason": "document.cookie access is banned",
+      "isAttack": true,
+      "category": "direct-attack"
+    },
+    {
+      "id": "cookie-002",
+      "name": "cookie-002",
+      "description": "document.cookie write operation",
+      "expectedStage": "static",
+      "expectedReason": "document.cookie write is banned",
+      "isAttack": true,
+      "category": "direct-attack"
+    },
+    {
+      "id": "cookie-003",
+      "name": "cookie-003",
+      "description": "Cookie enumeration loop",
+      "expectedStage": "static",
+      "expectedReason": "document.cookie iteration is banned",
+      "isAttack": true,
+      "category": "direct-attack"
+    },
+    {
+      "id": "cookie-004",
+      "name": "cookie-004",
+      "description": "Cookie deletion via expired date",
+      "expectedStage": "static",
+      "expectedReason": "document.cookie modification is banned",
+      "isAttack": true,
+      "category": "direct-attack"
+    },
+    {
+      "id": "cookie-005",
+      "name": "cookie-005",
+      "description": "Cookie exfiltration to external server",
+      "expectedStage": "static",
+      "expectedReason": "document.cookie access and fetch() are banned",
+      "isAttack": true,
+      "category": "direct-attack"
+    },
+    {
+      "id": "storage-001",
+      "name": "storage-001",
+      "description": "localStorage read operation",
+      "expectedStage": "static",
+      "expectedReason": "localStorage access is banned",
+      "isAttack": true,
+      "category": "direct-attack"
+    },
+    {
+      "id": "storage-002",
+      "name": "storage-002",
+      "description": "sessionStorage read operation",
+      "expectedStage": "static",
+      "expectedReason": "sessionStorage access is banned",
+      "isAttack": true,
+      "category": "direct-attack"
+    },
+    {
+      "id": "storage-003",
+      "name": "storage-003",
+      "description": "localStorage write operation",
+      "expectedStage": "static",
+      "expectedReason": "localStorage write is banned",
+      "isAttack": true,
+      "category": "direct-attack"
+    },
+    {
+      "id": "storage-004",
+      "name": "storage-004",
+      "description": "localStorage enumeration via key() loop",
+      "expectedStage": "static",
+      "expectedReason": "localStorage iteration is banned",
+      "isAttack": true,
+      "category": "direct-attack"
+    },
+    {
+      "id": "storage-005",
+      "name": "storage-005",
+      "description": "sessionStorage.clear() destructive operation",
+      "expectedStage": "static",
+      "expectedReason": "sessionStorage access is banned",
+      "isAttack": true,
+      "category": "direct-attack"
+    },
+    {
+      "id": "xhr-001",
+      "name": "xhr-001",
+      "description": "XMLHttpRequest GET to external server",
+      "expectedStage": "static",
+      "expectedReason": "XMLHttpRequest to external URL is banned",
+      "isAttack": true,
+      "category": "direct-attack"
+    },
+    {
+      "id": "xhr-002",
+      "name": "xhr-002",
+      "description": "XMLHttpRequest synchronous POST",
+      "expectedStage": "static",
+      "expectedReason": "XMLHttpRequest to external URL is banned",
+      "isAttack": true,
+      "category": "direct-attack"
+    },
+    {
+      "id": "xhr-003",
+      "name": "xhr-003",
+      "description": "XMLHttpRequest PUT method",
+      "expectedStage": "static",
+      "expectedReason": "XMLHttpRequest to external URL is banned",
+      "isAttack": true,
+      "category": "direct-attack"
+    },
+    {
+      "id": "xhr-004",
+      "name": "xhr-004",
+      "description": "XMLHttpRequest DELETE to external server",
+      "expectedStage": "static",
+      "expectedReason": "XMLHttpRequest to external URL is banned",
+      "isAttack": true,
+      "category": "direct-attack"
+    },
+    {
+      "id": "fetch-005",
+      "name": "fetch-005",
+      "description": "navigator.sendBeacon data exfiltration",
+      "expectedStage": "static",
+      "expectedReason": "sendBeacon is network access",
+      "isAttack": true,
+      "category": "direct-attack"
+    },
+    {
+      "id": "obf-cp-001",
+      "name": "obf-cp-001",
+      "description": "Computed property access to fetch()",
+      "expectedStage": "static",
+      "expectedReason": "Computed property access to banned API",
+      "isAttack": true,
+      "category": "obfuscated-attack"
+    },
+    {
+      "id": "obf-cp-002",
+      "name": "obf-cp-002",
+      "description": "Computed property access to eval()",
+      "expectedStage": "static",
+      "expectedReason": "Computed property access to banned API",
+      "isAttack": true,
+      "category": "obfuscated-attack"
+    },
+    {
+      "id": "obf-cp-003",
+      "name": "obf-cp-003",
+      "description": "Computed property access to document.cookie",
+      "expectedStage": "static",
+      "expectedReason": "Computed property access to banned API",
+      "isAttack": true,
+      "category": "obfuscated-attack"
+    },
+    {
+      "id": "obf-cp-004",
+      "name": "obf-cp-004",
+      "description": "Computed property access to localStorage",
+      "expectedStage": "static",
+      "expectedReason": "Computed property access to banned API",
+      "isAttack": true,
+      "category": "obfuscated-attack"
+    },
+    {
+      "id": "obf-cp-005",
+      "name": "obf-cp-005",
+      "description": "Computed property access to WebSocket",
+      "expectedStage": "static",
+      "expectedReason": "Computed property access to banned API",
+      "isAttack": true,
+      "category": "obfuscated-attack"
+    },
+    {
+      "id": "obf-enc-001",
+      "name": "obf-enc-001",
+      "description": "String.fromCharCode to build eval",
+      "expectedStage": "static",
+      "expectedReason": "String.fromCharCode used to obfuscate eval",
+      "isAttack": true,
+      "category": "obfuscated-attack"
+    },
+    {
+      "id": "obf-enc-002",
+      "name": "obf-enc-002",
+      "description": "atob to decode fetch URL",
+      "expectedStage": "static",
+      "expectedReason": "atob used to obfuscate network access",
+      "isAttack": true,
+      "category": "obfuscated-attack"
+    },
+    {
+      "id": "obf-enc-003",
+      "name": "obf-enc-003",
+      "description": "String.fromCharCode to build code string for eval",
+      "expectedStage": "static",
+      "expectedReason": "String.fromCharCode used with eval",
+      "isAttack": true,
+      "category": "obfuscated-attack"
+    },
+    {
+      "id": "obf-enc-004",
+      "name": "obf-enc-004",
+      "description": "Combined atob and computed property",
+      "expectedStage": "static",
+      "expectedReason": "Encoding tricks to access banned API",
+      "isAttack": true,
+      "category": "obfuscated-attack"
+    },
+    {
+      "id": "obf-enc-005",
+      "name": "obf-enc-005",
+      "description": "decodeURIComponent to obfuscate fetch",
+      "expectedStage": "static",
+      "expectedReason": "URI encoding used to access banned API",
+      "isAttack": true,
+      "category": "obfuscated-attack"
+    },
+    {
+      "id": "obf-str-001",
+      "name": "obf-str-001",
+      "description": "String split/reverse/join for fetch",
+      "expectedStage": "static",
+      "expectedReason": "String manipulation to access banned API",
+      "isAttack": true,
+      "category": "obfuscated-attack"
+    },
+    {
+      "id": "obf-str-002",
+      "name": "obf-str-002",
+      "description": "Split/join manipulation for eval",
+      "expectedStage": "static",
+      "expectedReason": "String manipulation to access banned API",
+      "isAttack": true,
+      "category": "obfuscated-attack"
+    },
+    {
+      "id": "obf-str-003",
+      "name": "obf-str-003",
+      "description": "Substring extraction for eval",
+      "expectedStage": "static",
+      "expectedReason": "String manipulation to access banned API",
+      "isAttack": true,
+      "category": "obfuscated-attack"
+    },
+    {
+      "id": "obf-str-004",
+      "name": "obf-str-004",
+      "description": "Array join to build localStorage",
+      "expectedStage": "static",
+      "expectedReason": "String manipulation to access banned API",
+      "isAttack": true,
+      "category": "obfuscated-attack"
+    },
+    {
+      "id": "obf-str-005",
+      "name": "obf-str-005",
+      "description": "String replace to obfuscate fetch",
+      "expectedStage": "static",
+      "expectedReason": "String manipulation to access banned API",
+      "isAttack": true,
+      "category": "obfuscated-attack"
+    },
+    {
+      "id": "escape-001",
+      "name": "escape-001",
+      "description": "window.top access attempt",
+      "expectedStage": "static",
+      "expectedReason": "window.top access is banned",
+      "isAttack": true,
+      "category": "sandbox-escape"
+    },
+    {
+      "id": "escape-002",
+      "name": "escape-002",
+      "description": "top.document access attempt",
+      "expectedStage": "static",
+      "expectedReason": "top.document access is banned",
+      "isAttack": true,
+      "category": "sandbox-escape"
+    },
+    {
+      "id": "escape-003",
+      "name": "escape-003",
+      "description": "top.location navigation attempt",
+      "expectedStage": "static",
+      "expectedReason": "top.location access is banned",
+      "isAttack": true,
+      "category": "sandbox-escape"
+    },
+    {
+      "id": "escape-004",
+      "name": "escape-004",
+      "description": "Parent location navigation attempt",
+      "expectedStage": "static",
+      "expectedReason": "parent.location access is banned",
+      "isAttack": true,
+      "category": "sandbox-escape"
+    },
+    {
+      "id": "escape-005",
+      "name": "escape-005",
+      "description": "parent.frames access attempt",
+      "expectedStage": "static",
+      "expectedReason": "parent.frames access is banned",
+      "isAttack": true,
+      "category": "sandbox-escape"
+    },
+    {
+      "id": "escape-006",
+      "name": "escape-006",
+      "description": "postMessage with wildcard origin",
+      "expectedStage": "static",
+      "expectedReason": "postMessage to '*' origin is banned",
+      "isAttack": true,
+      "category": "sandbox-escape"
+    },
+    {
+      "id": "escape-007",
+      "name": "escape-007",
+      "description": "postMessage with code injection payload",
+      "expectedStage": "static",
+      "expectedReason": "postMessage with code payload is suspicious",
+      "isAttack": true,
+      "category": "sandbox-escape"
+    },
+    {
+      "id": "escape-008",
+      "name": "escape-008",
+      "description": "MessageChannel with transferable to bypass",
+      "expectedStage": "static",
+      "expectedReason": "MessageChannel with wildcard origin is suspicious",
+      "isAttack": true,
+      "category": "sandbox-escape"
+    },
+    {
+      "id": "escape-009",
+      "name": "escape-009",
+      "description": "window.opener navigation attempt",
+      "expectedStage": "static",
+      "expectedReason": "window.opener access is banned",
+      "isAttack": true,
+      "category": "sandbox-escape"
+    },
+    {
+      "id": "escape-010",
+      "name": "escape-010",
+      "description": "window.open navigation attempt",
+      "expectedStage": "static",
+      "expectedReason": "window.open is banned",
+      "isAttack": true,
+      "category": "sandbox-escape"
+    },
+    {
+      "id": "behave-001",
+      "name": "behave-001",
+      "description": "Infinite while loop",
+      "expectedStage": "static",
+      "expectedReason": "Infinite loop pattern detected",
+      "isAttack": true,
+      "category": "behavioral-attack"
+    },
+    {
+      "id": "behave-002",
+      "name": "behave-002",
+      "description": "Infinite for loop",
+      "expectedStage": "static",
+      "expectedReason": "Infinite loop pattern detected",
+      "isAttack": true,
+      "category": "behavioral-attack"
+    },
+    {
+      "id": "behave-003",
+      "name": "behave-003",
+      "description": "Memory bomb with large array",
+      "expectedStage": "behavioral",
+      "expectedReason": "Large memory allocation",
+      "isAttack": true,
+      "category": "behavioral-attack"
+    },
+    {
+      "id": "behave-004",
+      "name": "behave-004",
+      "description": "Memory bomb with typed array",
+      "expectedStage": "behavioral",
+      "expectedReason": "Large memory allocation",
+      "isAttack": true,
+      "category": "behavioral-attack"
+    },
+    {
+      "id": "behave-005",
+      "name": "behave-005",
+      "description": "CPU busy loop with Date.now",
+      "expectedStage": "static",
+      "expectedReason": "Date.now usage is banned",
+      "isAttack": true,
+      "category": "behavioral-attack"
+    },
+    {
+      "id": "behave-006",
+      "name": "behave-006",
+      "description": "Crypto mining simulation",
+      "expectedStage": "behavioral",
+      "expectedReason": "CPU exhaustion detected",
+      "isAttack": true,
+      "category": "behavioral-attack"
+    },
+    {
+      "id": "behave-007",
+      "name": "behave-007",
+      "description": "CPU busy loop with math operations",
+      "expectedStage": "behavioral",
+      "expectedReason": "CPU exhaustion detected",
+      "isAttack": true,
+      "category": "behavioral-attack"
+    },
+    {
+      "id": "behave-008",
+      "name": "behave-008",
+      "description": "CPU busy loop with blocking operations",
+      "expectedStage": "behavioral",
+      "expectedReason": "CPU exhaustion detected",
+      "isAttack": true,
+      "category": "behavioral-attack"
+    },
+    {
+      "id": "behave-009",
+      "name": "behave-009",
+      "description": "Recursive function without base case",
+      "expectedStage": "behavioral",
+      "expectedReason": "Stack overflow detected",
+      "isAttack": true,
+      "category": "behavioral-attack"
+    },
+    {
+      "id": "behave-010",
+      "name": "behave-010",
+      "description": "Mutually recursive functions",
+      "expectedStage": "behavioral",
+      "expectedReason": "Stack overflow detected",
+      "isAttack": true,
+      "category": "behavioral-attack"
+    },
+    {
+      "id": "benign-001",
+      "name": "benign-001",
+      "description": "Simple mood score display organ",
+      "expectedStage": "none",
+      "expectedReason": "Valid organ that passes all stages",
+      "isAttack": false,
+      "category": "benign"
+    },
+    {
+      "id": "benign-002",
+      "name": "benign-002",
+      "description": "Simple task counter display organ",
+      "expectedStage": "none",
+      "expectedReason": "Valid organ that passes all stages",
+      "isAttack": false,
+      "category": "benign"
+    },
+    {
+      "id": "benign-003",
+      "name": "benign-003",
+      "description": "Habit streak display organ",
+      "expectedStage": "none",
+      "expectedReason": "Valid organ that passes all stages",
+      "isAttack": false,
+      "category": "benign"
+    },
+    {
+      "id": "benign-004",
+      "name": "benign-004",
+      "description": "Simple calendar widget",
+      "expectedStage": "none",
+      "expectedReason": "Valid organ that passes all stages",
+      "isAttack": false,
+      "category": "benign"
+    },
+    {
+      "id": "benign-005",
+      "name": "benign-005",
+      "description": "Simple notes display organ",
+      "expectedStage": "none",
+      "expectedReason": "Valid organ that passes all stages",
+      "isAttack": false,
+      "category": "benign"
+    },
+    {
+      "id": "benign-006",
+      "name": "benign-006",
+      "description": "Mood score emitter organ",
+      "expectedStage": "none",
+      "expectedReason": "Valid organ that passes all stages",
+      "isAttack": false,
+      "category": "benign"
+    },
+    {
+      "id": "benign-007",
+      "name": "benign-007",
+      "description": "Task count emitter organ",
+      "expectedStage": "none",
+      "expectedReason": "Valid organ that passes all stages",
+      "isAttack": false,
+      "category": "benign"
+    },
+    {
+      "id": "benign-008",
+      "name": "benign-008",
+      "description": "Task count emitter organ",
+      "expectedStage": "none",
+      "expectedReason": "Valid organ that passes all stages",
+      "isAttack": false,
+      "category": "benign"
+    },
+    {
+      "id": "benign-009",
+      "name": "benign-009",
+      "description": "Score normalizer organ",
+      "expectedStage": "none",
+      "expectedReason": "Valid organ that passes all stages",
+      "isAttack": false,
+      "category": "benign"
+    },
+    {
+      "id": "benign-010",
+      "name": "benign-010",
+      "description": "Score transformer organ",
+      "expectedStage": "none",
+      "expectedReason": "Valid organ that passes all stages",
+      "isAttack": false,
+      "category": "benign"
+    }
+  ]
+}

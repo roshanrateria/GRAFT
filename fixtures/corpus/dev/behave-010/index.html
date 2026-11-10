@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Recursive Chain Attack</title>
+</head>
+<body>
+  <div id="root">Recursing...</div>
+  <script>
+    // Attack: Mutually recursive functions
+    function a() { return b() + 1; }
+    function b() { return a() + 1; }
+    try {
+      a();
+    } catch (e) {
+      document.getElementById('root').textContent = 'Stack overflow';
+    }
+  </script>
+</body>
+</html>

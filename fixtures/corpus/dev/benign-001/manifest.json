@@ -1,0 +1,14 @@
+{
+  "id": "benign-001",
+  "name": "benign-001",
+  "description": "Simple mood score display organ",
+  "version": "1.0.0",
+  "apiVersion": "1.0.0",
+  "permissions": ["read:mood.entries"],
+  "ports": [],
+  "slotSize": "small",
+  "expectedStage": "none",
+  "expectedReason": "Valid organ that passes all stages",
+  "isAttack": false,
+  "category": "benign"
+}

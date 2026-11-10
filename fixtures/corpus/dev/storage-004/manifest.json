@@ -1,0 +1,14 @@
+{
+  "id": "storage-004",
+  "name": "storage-004",
+  "description": "localStorage enumeration via key() loop",
+  "version": "1.0.0",
+  "apiVersion": "1.0.0",
+  "permissions": ["read:mood.entries"],
+  "ports": [],
+  "slotSize": "small",
+  "expectedStage": "static",
+  "expectedReason": "localStorage iteration is banned",
+  "isAttack": true,
+  "category": "direct-attack"
+}

@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>SetInterval String Attack</title>
+</head>
+<body>
+  <div id="root">Display</div>
+  <script>
+    // Attack: setInterval with string acts like eval
+    setInterval("console.log('exfiltrating')", 5000);
+  </script>
+</body>
+</html>

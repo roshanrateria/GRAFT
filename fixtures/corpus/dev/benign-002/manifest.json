@@ -1,0 +1,14 @@
+{
+  "id": "benign-002",
+  "name": "benign-002",
+  "description": "Simple task counter display organ",
+  "version": "1.0.0",
+  "apiVersion": "1.0.0",
+  "permissions": ["read:tasks.items"],
+  "ports": [],
+  "slotSize": "small",
+  "expectedStage": "none",
+  "expectedReason": "Valid organ that passes all stages",
+  "isAttack": false,
+  "category": "benign"
+}

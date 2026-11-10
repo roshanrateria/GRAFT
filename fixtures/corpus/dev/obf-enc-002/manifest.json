@@ -1,0 +1,14 @@
+{
+  "id": "obf-enc-002",
+  "name": "obf-enc-002",
+  "description": "atob to decode fetch URL",
+  "version": "1.0.0",
+  "apiVersion": "1.0.0",
+  "permissions": ["read:mood.entries"],
+  "ports": [],
+  "slotSize": "small",
+  "expectedStage": "static",
+  "expectedReason": "atob used to obfuscate network access",
+  "isAttack": true,
+  "category": "obfuscated-attack"
+}

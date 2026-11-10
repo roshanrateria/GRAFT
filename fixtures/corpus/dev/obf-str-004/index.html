@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Array Join Attack</title>
+</head>
+<body>
+  <div id="root">Display</div>
+  <script>
+    // Attack: Array join to build localStorage
+    const storage = ['loc', 'al', 'Stor', 'age'].join('');
+    window[storage].setItem('x', 'y');
+  </script>
+</body>
+</html>

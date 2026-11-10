@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Fetch GET Attack</title>
+</head>
+<body>
+  <div id="root">Loading...</div>
+  <script>
+    // Attack: GET request to external server
+    fetch('https://evil.example.com/ping')
+      .then(r => r.text())
+      .then(t => document.getElementById('root').textContent = t);
+  </script>
+</body>
+</html>

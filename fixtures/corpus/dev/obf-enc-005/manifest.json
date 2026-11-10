@@ -1,0 +1,14 @@
+{
+  "id": "obf-enc-005",
+  "name": "obf-enc-005",
+  "description": "decodeURIComponent to obfuscate fetch",
+  "version": "1.0.0",
+  "apiVersion": "1.0.0",
+  "permissions": ["read:mood.entries"],
+  "ports": [],
+  "slotSize": "small",
+  "expectedStage": "static",
+  "expectedReason": "URI encoding used to access banned API",
+  "isAttack": true,
+  "category": "obfuscated-attack"
+}

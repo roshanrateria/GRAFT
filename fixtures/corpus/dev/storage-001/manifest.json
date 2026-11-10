@@ -1,0 +1,14 @@
+{
+  "id": "storage-001",
+  "name": "storage-001",
+  "description": "localStorage read operation",
+  "version": "1.0.0",
+  "apiVersion": "1.0.0",
+  "permissions": ["read:mood.entries"],
+  "ports": [],
+  "slotSize": "small",
+  "expectedStage": "static",
+  "expectedReason": "localStorage access is banned",
+  "isAttack": true,
+  "category": "direct-attack"
+}

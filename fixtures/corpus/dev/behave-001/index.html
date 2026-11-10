@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Infinite Loop Attack</title>
+</head>
+<body>
+  <div id="root">Loading...</div>
+  <script>
+    // Attack: Infinite while loop - may be caught by static or behavioral
+    let x = 0;
+    while (true) {
+      x++;
+    }
+  </script>
+</body>
+</html>

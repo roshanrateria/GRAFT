@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Computed Property Eval Attack</title>
+</head>
+<body>
+  <div id="root">Display</div>
+  <script>
+    // Attack: Computed property access to eval
+    const fn = 'ev' + 'al';
+    window[fn]("alert('XSS')");
+  </script>
+</body>
+</html>

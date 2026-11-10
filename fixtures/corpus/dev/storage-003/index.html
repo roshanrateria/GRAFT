@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>LocalStorage Write Attack</title>
+</head>
+<body>
+  <div id="root">Display</div>
+  <script>
+    // Attack: Write to localStorage
+    localStorage.setItem('malicious_key', 'malicious_value');
+  </script>
+</body>
+</html>

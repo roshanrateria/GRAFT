@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Parent Frames Access Attack</title>
+</head>
+<body>
+  <div id="root">Display</div>
+  <script>
+    // Attack: Try to access parent frames
+    try {
+      const frames = parent.frames;
+      for (let i = 0; i < frames.length; i++) {
+        frames[i].postMessage('injected', '*');
+      }
+    } catch (e) {
+      console.log('blocked');
+    }
+  </script>
+</body>
+</html>

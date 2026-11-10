@@ -1,0 +1,14 @@
+{
+  "id": "behave-009",
+  "name": "behave-009",
+  "description": "Recursive function without base case",
+  "version": "1.0.0",
+  "apiVersion": "1.0.0",
+  "permissions": ["read:mood.entries"],
+  "ports": [],
+  "slotSize": "small",
+  "expectedStage": "behavioral",
+  "expectedReason": "Stack overflow detected",
+  "isAttack": true,
+  "category": "behavioral-attack"
+}

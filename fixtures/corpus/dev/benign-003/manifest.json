@@ -1,0 +1,14 @@
+{
+  "id": "benign-003",
+  "name": "benign-003",
+  "description": "Habit streak display organ",
+  "version": "1.0.0",
+  "apiVersion": "1.0.0",
+  "permissions": ["read:habits.checkins"],
+  "ports": [],
+  "slotSize": "small",
+  "expectedStage": "none",
+  "expectedReason": "Valid organ that passes all stages",
+  "isAttack": false,
+  "category": "benign"
+}

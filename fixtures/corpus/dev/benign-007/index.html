@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Task Count Emitter</title>
+</head>
+<body>
+  <div id="root">Processing...</div>
+  <script>
+    // Benign: Reads tasks and emits count
+    let pendingReads = new Map();
+    let readId = 0;
+    
+    function read(path) {
+      return new Promise((resolve) => {
+        const id = 'read-' + (++readId);
+        pendingReads.set(id, resolve);
+        window.parent.postMessage({ type: 'read', id, path }, '*');
+      });
+    }
+    
+    function emit(port, payload) {
+      window.parent.postMessage({ type: 'emit', port, payload }, '*');
+    }
+    
+    window.addEventListener('message', (event) => {
+      const msg = event.data;
+      if (msg && msg.type === 'data' && msg.id) {
+        const resolve = pendingReads.get(msg.id);
+        if (resolve) {
+          pendingReads.delete(msg.id);
+          resolve(msg.value);
+        }
+      } else if (msg && msg.type === 'init') {
+        read('tasks.items').then(tasks => {
+          const count = tasks ? tasks.length : 0;
+          document.getElementById('root').textContent = 'Tasks: ' + count;
+          emit('taskCount', count);
+        });
+      }
+    });
+    
+    window.parent.postMessage({ type: 'hello', apiVersion: '1.0.0' }, '*');
+  </script>
+</body>
+</html>
