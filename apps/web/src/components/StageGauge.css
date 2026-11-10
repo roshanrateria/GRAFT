@@ -1,0 +1,170 @@
+/**
+ * StageGauge Styles
+ *
+ * Thermometer-style gauges for immune system stages.
+ * Victorian anatomical theatre aesthetic with brass and vein-green accents.
+ */
+
+/* ==========================================================================
+   1. Container
+   ========================================================================== */
+
+.stage-gauge {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: var(--space-4);
+}
+
+.stage-gauge--active .stage-gauge__bar {
+  animation: gauge-activate 0.3s ease-out;
+}
+
+@keyframes gauge-activate {
+  0% {
+    opacity: 0.5;
+    transform: scale(0.95);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* ==========================================================================
+   2. Gauge Bars
+   ========================================================================== */
+
+.stage-gauge__bar {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  transition: all var(--transition-fast);
+}
+
+.stage-gauge__fill {
+  flex: 1;
+  height: 8px;
+  background-color: rgba(14, 11, 11, 0.3);
+  border-radius: var(--radius-full);
+  border: 1px solid var(--color-border);
+  position: relative;
+  overflow: hidden;
+}
+
+.stage-gauge__fill::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 0;
+  border-radius: var(--radius-full);
+  transition: width var(--transition-normal);
+}
+
+.stage-gauge__label {
+  font-family: var(--font-ledger);
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+  min-width: 70px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* ==========================================================================
+   3. Stage States
+   ========================================================================== */
+
+/* Pending - not yet run */
+.stage-gauge__bar--pending .stage-gauge__fill::after {
+  width: 0;
+}
+
+.stage-gauge__bar--pending .stage-gauge__label {
+  color: var(--color-text-muted);
+  opacity: 0.5;
+}
+
+/* Running - currently executing */
+.stage-gauge__bar--running .stage-gauge__fill::after {
+  width: 50%;
+  background-color: var(--color-brass);
+  animation: gauge-pulse 1s ease-in-out infinite;
+}
+
+.stage-gauge__bar--running .stage-gauge__label {
+  color: var(--color-brass);
+  font-weight: 600;
+}
+
+@keyframes gauge-pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+/* Passed - completed successfully */
+.stage-gauge__bar--passed .stage-gauge__fill::after {
+  width: 100%;
+  background-color: var(--color-vein-green);
+}
+
+.stage-gauge__bar--passed .stage-gauge__label {
+  color: var(--color-vein-green);
+}
+
+/* Failed - rejected */
+.stage-gauge__bar--failed .stage-gauge__fill::after {
+  width: 100%;
+  background-color: var(--color-alert);
+  animation: gauge-failed 0.5s ease-out;
+}
+
+.stage-gauge__bar--failed .stage-gauge__label {
+  color: var(--color-alert);
+  font-weight: 600;
+}
+
+@keyframes gauge-failed {
+  0% {
+    background-color: var(--color-brass);
+  }
+  100% {
+    background-color: var(--color-alert);
+  }
+}
+
+/* ==========================================================================
+   4. Reduced Motion Support
+   ========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .stage-gauge--active .stage-gauge__bar,
+  .stage-gauge__bar--running .stage-gauge__fill::after,
+  .stage-gauge__bar--failed .stage-gauge__fill::after {
+    animation: none;
+  }
+
+  .stage-gauge__fill::after {
+    transition: none;
+  }
+}
+
+/* ==========================================================================
+   5. Responsive
+   ========================================================================== */
+
+@media (max-width: 768px) {
+  .stage-gauge {
+    padding: var(--space-3);
+  }
+
+  .stage-gauge__label {
+    min-width: 60px;
+    font-size: 0.6rem;
+  }
+}

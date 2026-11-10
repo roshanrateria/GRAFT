@@ -1,0 +1,274 @@
+/**
+ * LaboratoryOverlay Styles
+ *
+ * Full-screen overlay for immune system verification.
+ * Victorian anatomical theatre aesthetic with dark, candlelit atmosphere.
+ */
+
+/* ==========================================================================
+   1. Overlay Container
+   ========================================================================== */
+
+.laboratory-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-overlay);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-8);
+  background-color: rgba(14, 11, 11, 0.95);
+  backdrop-filter: blur(4px);
+  animation: overlay-fade-in 0.3s ease-out;
+}
+
+@keyframes overlay-fade-in {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+/* ==========================================================================
+   2. Content Container
+   ========================================================================== */
+
+.laboratory-overlay__content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-8);
+  max-width: 600px;
+  width: 100%;
+}
+
+/* ==========================================================================
+   3. Header
+   ========================================================================== */
+
+.laboratory-overlay__header {
+  text-align: center;
+}
+
+.laboratory-overlay__title {
+  font-family: var(--font-heading);
+  font-size: var(--text-2xl);
+  font-weight: 600;
+  color: var(--color-bone);
+  margin: 0 0 var(--space-2) 0;
+  letter-spacing: 0.1em;
+}
+
+.laboratory-overlay__subtitle {
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+}
+
+/* ==========================================================================
+   4. Gauges Container
+   ========================================================================== */
+
+.laboratory-overlay__gauges {
+  width: 100%;
+  padding: var(--space-6);
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+}
+
+/* ==========================================================================
+   5. Success State - Awaiting Consent
+   ========================================================================== */
+
+.laboratory-overlay__success {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-4);
+  text-align: center;
+}
+
+.laboratory-overlay__success-badge {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-5);
+  background-color: rgba(111, 154, 125, 0.2);
+  border: 2px solid var(--color-vein-green);
+  border-radius: var(--radius-full);
+  animation: success-pulse 2s ease-in-out infinite;
+}
+
+@keyframes success-pulse {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(111, 154, 125, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 12px 4px rgba(111, 154, 125, 0.2);
+  }
+}
+
+.laboratory-overlay__success-icon {
+  font-size: var(--text-xl);
+  color: var(--color-vein-green);
+}
+
+.laboratory-overlay__success-text {
+  font-family: var(--font-heading);
+  font-size: var(--text-lg);
+  font-weight: 600;
+  color: var(--color-vein-green);
+}
+
+.laboratory-overlay__success-hint {
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+}
+
+/* ==========================================================================
+   6. Organ Preview
+   ========================================================================== */
+
+.laboratory-overlay__preview {
+  width: 100%;
+  padding: var(--space-4);
+  background-color: rgba(14, 11, 11, 0.3);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border);
+}
+
+.laboratory-overlay__preview-name {
+  font-family: var(--font-heading);
+  font-size: var(--text-base);
+  font-weight: 600;
+  color: var(--color-bone);
+  margin-bottom: var(--space-2);
+}
+
+.laboratory-overlay__preview-desc {
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
+}
+
+/* ==========================================================================
+   7. Close Button
+   ========================================================================== */
+
+.laboratory-overlay__close {
+  position: absolute;
+  top: var(--space-6);
+  right: var(--space-6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-full);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.laboratory-overlay__close:hover {
+  background-color: rgba(196, 71, 47, 0.2);
+  border-color: var(--color-alert);
+}
+
+.laboratory-overlay__close:focus-visible {
+  outline: 2px solid var(--color-brass);
+  outline-offset: 2px;
+}
+
+.laboratory-overlay__close-icon {
+  width: 16px;
+  height: 16px;
+  color: var(--color-text-secondary);
+}
+
+.laboratory-overlay__close:hover .laboratory-overlay__close-icon {
+  color: var(--color-alert);
+}
+
+/* ==========================================================================
+   8. Loading State
+   ========================================================================== */
+
+.laboratory-overlay__loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.laboratory-overlay__spinner {
+  width: 48px;
+  height: 48px;
+  border: 3px solid var(--color-border);
+  border-top-color: var(--color-brass);
+  border-radius: var(--radius-full);
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.laboratory-overlay__loading-text {
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+}
+
+/* ==========================================================================
+   9. Reduced Motion Support
+   ========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .laboratory-overlay {
+    animation: none;
+  }
+
+  .laboratory-overlay__success-badge {
+    animation: none;
+  }
+
+  .laboratory-overlay__spinner {
+    animation: none;
+    border-top-color: var(--color-brass);
+    border-right-color: var(--color-brass);
+  }
+}
+
+/* ==========================================================================
+   10. Responsive
+   ========================================================================== */
+
+@media (max-width: 768px) {
+  .laboratory-overlay {
+    padding: var(--space-4);
+  }
+
+  .laboratory-overlay__title {
+    font-size: var(--text-xl);
+  }
+
+  .laboratory-overlay__gauges {
+    padding: var(--space-4);
+  }
+
+  .laboratory-overlay__close {
+    top: var(--space-4);
+    right: var(--space-4);
+    width: 36px;
+    height: 36px;
+  }
+}
