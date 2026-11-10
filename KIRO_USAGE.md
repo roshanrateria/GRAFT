@@ -1966,3 +1966,28 @@ ev-02-property.test.ts\
 - What worked: Incremental task commits, design steering file, existing component reuse
 - What failed or surprised me: None - clean implementation following established patterns
 - Evidence: Phase 5 commits, axe-core tests passing
+
+---
+
+## Entry: 2026-01-13 Phase 5 KIRO_USAGE Update
+- Kiro surface used: IDE (workflow subagent)
+- Feature(s) used: workflow | str_replace | execute_pwsh | send_message
+- What I asked / how I structured it:
+  - Workflow step to append Phase 5 completion entry to KIRO_USAGE.md
+  - Read existing file to find end location
+  - Append entry using template from kiro-journal.md steering
+  - Commit with conventional message
+- What worked:
+  - **File offset reading**: Used offset parameter to read end of large file efficiently
+  - **Template compliance**: Entry follows kiro-journal.md template structure
+  - **Clean commit**: 04c82c7 "docs: update KIRO_USAGE for Phase 5"
+- What failed or surprised me:
+  - **File was already truncated**: Initial read hit 30000-char limit, required multiple offset reads
+  - **Hook triggered after commit**: journal-on-stop hook fired, requesting this additional entry
+- What I would change:
+  - **Single append operation**: Could have combined the Phase 5 entry with more detail in one operation
+  - **Read file length first**: Should have checked total lines before attempting to read end
+- Evidence:
+  - **Commit**: 04c82c7 "docs: update KIRO_USAGE for Phase 5"
+  - **File updated**: KIRO_USAGE.md with Phase 5 Theatre UI entry
+  - **Hook automation**: journal-on-stop hook correctly triggered journal append
