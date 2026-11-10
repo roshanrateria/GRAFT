@@ -204,13 +204,35 @@ This file tracks Kiro usage throughout the GRAFT project development. Each entry
 (The strategy that mattered most)
 
 ### MCP
-(What became possible with MCP integration)
+**Configured MCP Servers:**
+- **Context7**: Live documentation for React, Fastify, fast-check, Playwright, Vitest, Zod
+  - Enables looking up API signatures, examples, and best practices
+  - Reduces reliance on potentially outdated training data
+  - Provides current version-specific documentation
+- **Playwright**: Visual verification and E2E testing
+  - Browser automation for visual regression tests
+  - Screenshot capture for accessibility audits
+  - E2E testing against the live Creature UI
+
+**Note:** MCP config must be created manually at `.kiro/settings/mcp.json` (directory is protected by permission rules).
 
 ### PBT
 (Counterexamples found that unit tests would have missed)
 
 ### Powers
-(Which Kiro powers were used and what they changed)
+**Kiro Powers Used:**
+
+1. **Workflow subagent execution**: Enabled parallel task completion during Phase 1-5 implementation. Multiple spec tasks could be dispatched simultaneously, and the workflow orchestrator tracked progress through task_list/task_update tools.
+
+2. **File system operations (fs_write/str_replace)**: Efficient batch file creation for corpus generation (141 files across 70 directories), code modifications across packages, and documentation updates.
+
+3. **Steering documents**: Project-level constraints (product.md, tech.md, laws-of-anatomy.md, testing-pbt.md) loaded automatically into context, ensuring consistent implementation across all workflow steps.
+
+4. **Hooks**: Automated validation triggered on file changes:
+   - `immune-on-change`: Re-runs immune tests when organ code changes
+   - `spec-property-gap`: Checks for missing PBT tests when specs change
+   - `a11y-on-ui-change`: Runs accessibility audit on UI modifications
+   - `preflight`: Validates repo before submission
 
 ---
 
