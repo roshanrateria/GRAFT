@@ -1,0 +1,2261 @@
+{
+  "timestamp": "2026-11-10T09:08:48.491Z",
+  "corpus": {
+    "dev": 70,
+    "heldOut": 20,
+    "total": 90
+  },
+  "sandboxOnly": {
+    "catchRate": 47.368421052631575,
+    "misses": [
+      "behave-001",
+      "behave-002",
+      "behave-003",
+      "behave-004",
+      "behave-005",
+      "behave-006",
+      "behave-007",
+      "behave-008",
+      "behave-009",
+      "behave-010",
+      "direct-fetch-005",
+      "escape-002",
+      "escape-003",
+      "escape-004",
+      "escape-005",
+      "escape-009",
+      "escape-010",
+      "eval-004",
+      "eval-005",
+      "fetch-005",
+      "obf-cp-001",
+      "obf-cp-002",
+      "obf-enc-001",
+      "obf-enc-004",
+      "obf-enc-005",
+      "obf-str-001",
+      "obf-str-002",
+      "obf-str-003",
+      "obf-str-005",
+      "attack-exec-001",
+      "attack-exec-002",
+      "attack-network-001",
+      "attack-storage-002",
+      "behave-loop-001",
+      "behave-mem-001",
+      "behave-time-001",
+      "escape-nav-001",
+      "obf-combo-001",
+      "obf-combo-002",
+      "obf-novel-001"
+    ],
+    "avgTimeMs": 0,
+    "totalAttacks": 76,
+    "caughtAttacks": 36
+  },
+  "fullImmune": {
+    "catchRate": 73.68421052631578,
+    "misses": [
+      "behave-003",
+      "behave-004",
+      "behave-006",
+      "behave-007",
+      "behave-008",
+      "behave-009",
+      "behave-010",
+      "escape-002",
+      "escape-003",
+      "escape-004",
+      "escape-005",
+      "escape-010",
+      "eval-005",
+      "fetch-005",
+      "attack-exec-002",
+      "attack-storage-002",
+      "behave-mem-001",
+      "escape-nav-001",
+      "escape-top-001",
+      "obf-combo-001"
+    ],
+    "avgTimeMs": 4.565789473684211,
+    "totalAttacks": 76,
+    "caughtAttacks": 56
+  },
+  "layerContributions": {
+    "static": {
+      "caught": 51,
+      "unique": 51
+    },
+    "manifest": {
+      "caught": 5,
+      "unique": 5
+    },
+    "behavioral": {
+      "caught": 0,
+      "unique": 0
+    },
+    "property": {
+      "caught": 0,
+      "unique": 0
+    }
+  },
+  "comparison": {
+    "immuneOnlyCatch": [
+      "behave-001",
+      "behave-002",
+      "behave-005",
+      "direct-fetch-005",
+      "escape-009",
+      "eval-004",
+      "obf-cp-001",
+      "obf-cp-002",
+      "obf-enc-001",
+      "obf-enc-004",
+      "obf-enc-005",
+      "obf-str-001",
+      "obf-str-002",
+      "obf-str-003",
+      "obf-str-005",
+      "attack-exec-001",
+      "attack-network-001",
+      "behave-loop-001",
+      "behave-time-001",
+      "obf-combo-002",
+      "obf-novel-001"
+    ],
+    "sandboxOnlyCatch": [
+      "escape-top-001"
+    ],
+    "bothCatch": [
+      "cookie-001",
+      "cookie-002",
+      "cookie-003",
+      "cookie-004",
+      "cookie-005",
+      "direct-fetch-001",
+      "direct-fetch-002",
+      "direct-fetch-003",
+      "direct-fetch-004",
+      "escape-001",
+      "escape-006",
+      "escape-007",
+      "escape-008",
+      "eval-001",
+      "eval-002",
+      "eval-003",
+      "obf-cp-003",
+      "obf-cp-004",
+      "obf-cp-005",
+      "obf-enc-002",
+      "obf-enc-003",
+      "obf-str-004",
+      "storage-001",
+      "storage-002",
+      "storage-003",
+      "storage-004",
+      "storage-005",
+      "xhr-001",
+      "xhr-002",
+      "xhr-003",
+      "xhr-004",
+      "attack-network-002",
+      "attack-storage-001",
+      "escape-postmsg-001",
+      "obf-novel-002"
+    ],
+    "neitherCatch": [
+      "behave-003",
+      "behave-004",
+      "behave-006",
+      "behave-007",
+      "behave-008",
+      "behave-009",
+      "behave-010",
+      "escape-002",
+      "escape-003",
+      "escape-004",
+      "escape-005",
+      "escape-010",
+      "eval-005",
+      "fetch-005",
+      "attack-exec-002",
+      "attack-storage-002",
+      "behave-mem-001",
+      "escape-nav-001",
+      "obf-combo-001"
+    ]
+  },
+  "recommendation": "=== LAYER CONTRIBUTION ANALYSIS ===\n\n1. STATIC ANALYSIS (Stage 1):\n   Catches 51 attacks (51 unique)\n   Catches: eval, new Function, direct fetch/XHR, cookie access, storage access\n   Benefit: Prevents code from ever reaching the browser\n\n2. MANIFEST VALIDATION (Stage 2):\n   Catches 5 attacks (5 unique)\n   Catches: undeclared ports, permission mismatches\n   Benefit: Enforces declarative security contract\n\n3. BEHAVIORAL CHECK (Stage 3):\n   Catches 0 attacks (0 unique)\n   Catches: runtime CSP violations, infinite loops, memory bombs\n   Benefit: Detects attacks that bypass static analysis\n\n4. PROPERTY FUZZING (Stage 4):\n   Catches 0 attacks (0 unique)\n   Catches: edge cases, determinism violations, idempotency failures\n   Benefit: Catches subtle bugs and invariant violations\n\n=== SANDBOX+CSP LIMITATIONS ===\n- Catches 40 attacks that immune system catches\n- Cannot prevent code delivery (only limits execution)\n- No proactive detection of behavioral attacks\n- No manifest validation or permission enforcement\n\n=== RECOMMENDATION ===\nUse the full immune system. The layered approach provides:\n- Proactive threat detection before code execution\n- Defense in depth (each layer catches different attack types)\n- Declarative security through manifest validation\n- Behavioral and property-based testing for edge cases\n\nOverall improvement: +26.3% catch rate",
+  "results": [
+    {
+      "organId": "behave-001",
+      "source": "dev",
+      "category": "behavioral-attack",
+      "isAttack": true,
+      "sandboxOnly": {
+        "passed": false,
+        "rejectionReason": "Behavioral attack not blocked by sandbox/CSP",
+        "durationMs": 0
+      },
+      "fullImmune": {
+        "passed": false,
+        "rejectionStage": "static",
+        "rejectionReason": "Infinite while(true) loop detected - can freeze the organ",
+        "durationMs": 12
+      },
+      "layerContributions": {
+        "static": true,
+        "manifest": true,
+        "behavioral": true,
+        "property": true
+      }
+    },
+    {
+      "organId": "behave-002",
+      "source": "dev",
+      "category": "behavioral-attack",
+      "isAttack": true,
+      "sandboxOnly": {
+        "passed": false,
+        "rejectionReason": "Behavioral attack not blocked by sandbox/CSP",
+        "durationMs": 0
+      },
+      "fullImmune": {
+        "passed": false,
+        "rejectionStage": "static",
+        "rejectionReason": "Infinite for(;;) loop detected - can freeze the organ",
+        "durationMs": 2
+      },
+      "layerContributions": {
+        "static": true,
+        "manifest": true,
+        "behavioral": true,
+        "property": true
+      }
+    },
+    {
+      "organId": "behave-003",
+      "source": "dev",
+      "category": "behavioral-attack",
+      "isAttack": true,
+      "sandboxOnly": {
+        "passed": false,
+        "rejectionReason": "Attack uses allowed operations",
+        "durationMs": 0
+      },
+      "fullImmune": {
+        "passed": true,
+        "rejectionStage": null,
+        "rejectionReason": null,
+        "durationMs": 50
+      },
+      "layerContributions": {
+        "static": false,
+        "manifest": false,
+        "behavioral": false,
+        "property": false
+      }
+    },
+    {
+      "organId": "behave-004",
+      "source": "dev",
+      "category": "behavioral-attack",
+      "isAttack": true,
+      "sandboxOnly": {
+        "passed": false,
+        "rejectionReason": "Attack uses allowed operations",
+        "durationMs": 0
+      },
+      "fullImmune": {
+        "passed": true,
+        "rejectionStage": null,
+        "rejectionReason": null,
+        "durationMs": 15
+      },
+      "layerContributions": {
+        "static": false,
+        "manifest": false,
+        "behavioral": false,
+        "property": false
+      }
+    },
+    {
+      "organId": "behave-005",
+      "source": "dev",
+      "category": "behavioral-attack",
+      "isAttack": true,
+      "sandboxOnly": {
+        "passed": false,
+        "rejectionReason": "Attack uses allowed operations",
+        "durationMs": 0
+      },
+      "fullImmune": {
+        "passed": false,
+        "rejectionStage": "static",
+        "rejectionReason": "Direct Date usage is not allowed. Use nerve.now() instead",
+        "durationMs": 2
+      },
+      "layerContributions": {
+        "static": true,
+        "manifest": true,
+        "behavioral": true,
+        "property": true
+      }
+    },
+    {
+      "organId": "behave-006",
+      "source": "dev",
+      "category": "behavioral-attack",
+      "isAttack": true,
+      "sandboxOnly": {
+        "passed": false,
+        "rejectionReason": "Attack uses allowed operations",
+        "durationMs": 0
+      },
+      "fullImmune": {
+        "passed": true,
+        "rejectionStage": null,
+        "rejectionReason": null,
+        "durationMs": 16
+      },
+      "layerContributions": {
+        "static": false,
+        "manifest": false,
+        "behavioral": false,
+        "property": false
+      }
+    },
+    {
+      "organId": "behave-007",
+      "source": "dev",
+      "category": "behavioral-attack",
+      "isAttack": true,
+      "sandboxOnly": {
+        "passed": false,
+        "rejectionReason": "Attack uses allowed operations",
+        "durationMs": 0
+      },
+      "fullImmune": {
+        "passed": true,
+        "rejectionStage": null,
+        "rejectionReason": null,
+        "durationMs": 16
+      },
+      "layerContributions": {
+        "static": false,
+        "manifest": false,
+        "behavioral": false,
+        "property": false
+      }
+    },
+    {
+      "organId": "behave-008",
+      "source": "dev",
+      "category": "behavioral-attack",
+      "isAttack": true,
+      "sandboxOnly": {
+        "passed": false,
+        "rejectionReason": "Attack uses allowed operations",
+        "durationMs": 0
+      },
+      "fullImmune": {
+        "passed": true,
+        "rejectionStage": null,
+        "rejectionReason": null,
+        "durationMs": 14
+      },
+      "layerContributions": {
+        "static": false,
+        "manifest": false,
+        "behavioral": false,
+        "property": false
+      }
+    },
+    {
+      "organId": "behave-009",
+      "source": "dev",
+      "category": "behavioral-attack",
+      "isAttack": true,
+      "sandboxOnly": {
+        "passed": false,
+        "rejectionReason": "Attack uses allowed operations",
+        "durationMs": 0
+      },
+      "fullImmune": {
+        "passed": true,
+        "rejectionStage": null,
+        "rejectionReason": null,
+        "durationMs": 14
+      },
+      "layerContributions": {
+        "static": false,
+        "manifest": false,
+        "behavioral": false,
+        "property": false
+      }
+    },
+    {
+      "organId": "behave-010",
+      "source": "dev",
+      "category": "behavioral-attack",
+      "isAttack": true,
+      "sandboxOnly": {
+        "passed": false,
+        "rejectionReason": "Attack uses allowed operations",
+        "durationMs": 0
+      },
+      "fullImmune": {
+        "passed": true,
+        "rejectionStage": null,
+        "rejectionReason": null,
+        "durationMs": 16
+      },
+      "layerContributions": {
+        "static": false,
+        "manifest": false,
+        "behavioral": false,
+        "property": false
+      }
+    },
+    {
+      "organId": "benign-001",
+      "source": "dev",
+      "category": "benign",
+      "isAttack": false,
+      "sandboxOnly": {
+        "passed": true,
+        "rejectionReason": null,
+        "durationMs": 0
+      },
+      "fullImmune": {
+        "passed": false,
+        "rejectionStage": "static",
+        "rejectionReason": "window.parent is not allowed",
+        "durationMs": 3
+      },
+      "layerContributions": {
+        "static": true,
+        "manifest": true,
+        "behavioral": true,
+        "property": true
+      }
+    },
+    {
+      "organId": "benign-002",
+      "source": "dev",
+      "category": "benign",
+      "isAttack": false,
+      "sandboxOnly": {
+        "passed": true,
+        "rejectionReason": null,
+        "durationMs": 0
+      },
+      "fullImmune": {
+        "passed": false,
+        "rejectionStage": "static",
+        "rejectionReason": "window.parent is not allowed",
+        "durationMs": 2
+      },
+      "layerContributions": {
+        "static": true,
+        "manifest": true,
+        "behavioral": true,
+        "property": true
+      }
+    },
+    {
+      "organId": "benign-003",
+      "source": "dev",
+      "category": "benign",
+      "isAttack": false,
+      "sandboxOnly": {
+        "passed": true,
+        "rejectionReason": null,
+        "durationMs": 0
+      },
+      "fullImmune": {
+        "passed": false,
+        "rejectionStage": "static",
+        "rejectionReason": "window.parent is not allowed",
+        "durationMs": 1
+      },
+      "layerContributions": {
+        "static": true,
+        "manifest": true,
+        "behavioral": true,
+        "property": true
+      }
+    },
+    {
+      "organId": "benign-004",
+      "source": "dev",
+      "category": "benign",
+      "isAttack": false,
+      "sandboxOnly": {
+        "passed": true,
+        "rejectionReason": null,
+        "durationMs": 0
+      },
+      "fullImmune": {
+        "passed": false,
+        "rejectionStage": "static",
+        "rejectionReason": "window.parent is not allowed",
+        "durationMs": 1
+      },
+      "layerContributions": {
+        "static": true,
+        "manifest": true,
+        "behavioral": true,
+        "property": true
+      }
+    },
+    {
+      "organId": "benign-005",
+      "source": "dev",
+      "category": "benign",
+      "isAttack": false,
+      "sandboxOnly": {
+        "passed": true,
+        "rejectionReason": null,
+        "durationMs": 0
+      },
+      "fullImmune": {
+        "passed": false,
+        "rejectionStage": "static",
+        "rejectionReason": "window.parent is not allowed",
+        "durationMs": 1
+      },
+      "layerContributions": {
+        "static": true,
+        "manifest": true,
+        "behavioral": true,
+        "property": true
+      }
+    },
+    {
+      "organId": "benign-006",
+      "source": "dev",
+      "category": "benign",
+      "isAttack": false,
+      "sandboxOnly": {
+        "passed": true,
+        "rejectionReason": null,
+        "durationMs": 0
+      },
+      "fullImmune": {
+        "passed": false,
+        "rejectionStage": "static",
+        "rejectionReason": "window.parent is not allowed",
+        "durationMs": 2
+      },
+      "layerContributions": {
+        "static": true,
+        "manifest": true,
+        "behavioral": true,
+        "property": true
+      }
+    },
+    {
+      "organId": "benign-007",
+      "source": "dev",
+      "category": "benign",
+      "isAttack": false,
+      "sandboxOnly": {
+        "passed": true,
+        "rejectionReason": null,
+        "durationMs": 0
+      },
+      "fullImmune": {
+        "passed": false,
+        "rejectionStage": "static",
+        "rejectionReason": "window.parent is not allowed",
+        "durationMs": 2
+      },
+      "layerContributions": {
+        "static": true,
+        "manifest": true,
+        "behavioral": true,
+        "property": true
+      }
+    },
+    {
+      "organId": "benign-008",
+      "source": "dev",
+      "category": "benign",
+      "isAttack": false,
+      "sandboxOnly": {
+        "passed": true,
+        "rejectionReason": null,
+        "durationMs": 0
+      },
+      "fullImmune": {
+        "passed": false,
+        "rejectionStage": "static",
+        "rejectionReason": "window.parent is not allowed",
+        "durationMs": 1
+      },
+      "layerContributions": {
+        "static": true,
+        "manifest": true,
+        "behavioral": true,
+        "property": true
+      }
+    },
+    {
+      "organId": "benign-009",
+      "source": "dev",
+      "category": "benign",
+      "isAttack": false,
+      "sandboxOnly": {
+        "passed": true,
+        "rejectionReason": null,
+        "durationMs": 0
+      },
+      "fullImmune": {
+        "passed": false,
+        "rejectionStage": "static",
+        "rejectionReason": "window.parent is not allowed",
+        "durationMs": 3
+      },
+      "layerContributions": {
+        "static": true,
+        "manifest": true,
+        "behavioral": true,
+        "property": true
+      }
+    },
+    {
+      "organId": "benign-010",
+      "source": "dev",
+      "category": "benign",
+      "isAttack": false,
+      "sandboxOnly": {
+        "passed": true,
+        "rejectionReason": null,
+        "durationMs": 0
+      },
+      "fullImmune": {
+        "passed": false,
+        "rejectionStage": "static",
+        "rejectionReason": "window.parent is not allowed",
+        "durationMs": 1
+      },
+      "layerContributions": {
+        "static": true,
+        "manifest": true,
+        "behavioral": true,
+        "property": true
+      }
+    },
+    {
+      "organId": "cookie-001",
+      "source": "dev",
+      "category": "direct-attack",
+      "isAttack": true,
+      "sandboxOnly": {
+        "passed": true,
+        "rejectionReason": "Blocked at runtime by CSP: \\bdocument\\.cookie\\b",
+        "durationMs": 0
+      },
+      "fullImmune": {
+        "passed": false,
+        "rejectionStage": "static",
+        "rejectionReason": "document.cookie is not allowed",
+        "durationMs": 1
+      },
+      "layerContributions": {
+        "static": true,
+        "manifest": true,
+        "behavioral": true,
+        "property": true
+      }
+    },
+    {
+      "organId": "cookie-002",
+      "source": "dev",
+      "category": "direct-attack",
+      "isAttack": true,
+      "sandboxOnly": {
+        "passed": true,
+        "rejectionReason": "Blocked at runtime by CSP: \\bdocument\\.cookie\\b",
+        "durationMs": 0
+      },
+      "fullImmune": {
+        "passed": false,
+        "rejectionStage": "static",
+        "rejectionReason": "document.cookie is not allowed",
+        "durationMs": 0
+      },
+      "layerContributions": {
+        "static": true,
+        "manifest": true,
+        "behavioral": true,
+        "property": true
+      }
+    },
+    {
+      "organId": "cookie-003",
+      "source": "dev",
+      "category": "direct-attack",
+      "isAttack": true,
+      "sandboxOnly": {
+        "passed": true,
+        "rejectionReason": "Blocked at runtime by CSP: \\bdocument\\.cookie\\b",
+        "durationMs": 0
+      },
+      "fullImmune": {
+        "passed": false,
+        "rejectionStage": "static",
+        "rejectionReason": "document.cookie is not allowed",
+        "durationMs": 1
+      },
+      "layerContributions": {
+        "static": true,
+        "manifest": true,
+        "behavioral": true,
+        "property": true
+      }
+    },
+    {
+      "organId": "cookie-004",
+      "source": "dev",
+      "category": "direct-attack",
+      "isAttack": true,
+      "sandboxOnly": {
+        "passed": true,
+        "rejectionReason": "Blocked at runtime by CSP: \\bdocument\\.cookie\\b",
+        "durationMs": 0
+      },
+      "fullImmune": {
+        "passed": false,
+        "rejectionStage": "static",
+        "rejectionReason": "document.cookie is not allowed",
+        "durationMs": 0
+      },
+      "layerContributions": {
+        "static": true,
+        "manifest": true,
+        "behavioral": true,
+        "property": true
+      }
+    },
+    {
+      "organId": "cookie-005",
+      "source": "dev",
+      "category": "direct-attack",
+      "isAttack": true,
+      "sandboxOnly": {
+        "passed": true,
+        "rejectionReason": "Blocked at runtime by CSP: \\bfetch\\s*\\(, \\bdocument\\.cookie\\b",
+        "durationMs": 0
+      },
+      "fullImmune": {
+        "passed": false,
+        "rejectionStage": "static",
+        "rejectionReason": "document.cookie is not allowed",
+        "durationMs": 1
+      },
+      "layerContributions": {
+        "static": true,
+        "manifest": true,
+        "behavioral": true,
+        "property": true
+      }
+    },
+    {
+      "organId": "direct-fetch-001",
+      "source": "dev",
+      "category": "direct-attack",
+      "isAttack": true,
+      "sandboxOnly": {
+        "passed": true,
+        "rejectionReason": "Blocked at runtime by CSP: \\bfetch\\s*\\(",
+        "durationMs": 0
+      },
+      "fullImmune": {
+        "passed": false,
+        "rejectionStage": "static",
+        "rejectionReason": "fetch() is not allowed",
+        "durationMs": 0
+      },
+      "layerContributions": {
+        "static": true,
+        "manifest": true,
+        "behavioral": true,
+        "property": true
+      }
+    },
+    {
+      "organId": "direct-fetch-002",
+      "source": "dev",
+      "category": "direct-attack",
+      "isAttack": true,
+      "sandboxOnly": {
+        "passed": true,
+        "rejectionReason": "Blocked at runtime by CSP: \\bXMLHttpRequest\\b",
+        "durationMs": 0
+      },
+      "fullImmune": {
+        "passed": false,
+        "rejectionStage": "static",
+        "rejectionReason": "new XMLHttpRequest() is not allowed",
+        "durationMs": 0
+      },
+      "layerContributions": {
+        "static": true,
+        "manifest": true,
+        "behavioral": true,
+        "property": true
+      }
+    },
+    {
+      "organId": "direct-fetch-003",
+      "source": "dev",
+      "category": "direct-attack",
+      "isAttack": true,
+      "sandboxOnly": {
+        "passed": true,
+        "rejectionReason": "Blocked at runtime by CSP: \\bWebSocket\\b",
+        "durationMs": 0
+      },
+      "fullImmune": {
+        "passed": false,
+        "rejectionStage": "static",
+        "rejectionReason": "new WebSocket() is not allowed",
+        "durationMs": 0
+      },
+      "layerContributions": {
+        "static": true,
+        "manifest": true,
+        "behavioral": true,
+        "property": true
+      }
+    },
+    {
+      "organId": "direct-fetch-004",
+      "source": "dev",
+      "category": "direct-attack",
+      "isAttack": true,
+      "sandboxOnly": {
+        "passed": true,
+        "rejectionReason": "Blocked at runtime by CSP: \\bfetch\\s*\\(",
+        "durationMs": 0
+      },
+      "fullImmune": {
+        "passed": false,
+        "rejectionStage": "static",
+        "rejectionReason": "fetch() is not allowed",
+        "durationMs": 1
+      },
+      "layerContributions": {
+        "static": true,
+        "manifest": true,
+        "behavioral": true,
+        "property": true
+      }
+    },
+    {
+      "organId": "direct-fetch-005",
+      "source": "dev",
+      "category": "direct-attack",
+      "isAttack": true,
+      "sandboxOnly": {
+        "passed": false,
+        "rejectionReason": "Attack uses allowed operations",
+        "durationMs": 0
+      },
+      "fullImmune": {
+        "passed": false,
+        "rejectionStage": "static",
+        "rejectionReason": "new EventSource() is not allowed",
+        "durationMs": 0
+      },
+      "layerContributions": {
+        "static": true,
+        "manifest": true,
+        "behavioral": true,
+        "property": true
+      }
+    },
+    {
+      "organId": "escape-001",
+      "source": "dev",
+      "category": "sandbox-escape",
+      "isAttack": true,
+      "sandboxOnly": {
+        "passed": true,
+        "rejectionReason": "Blocked at runtime by CSP: \\bwindow\\.top\\b",
+        "durationMs": 0
+      },
+      "fullImmune": {
+        "passed": false,
+        "rejectionStage": "static",
+        "rejectionReason": "window.top is not allowed",
+        "durationMs": 1
+      },
+      "layerContributions": {
+        "static": true,
+        "manifest": true,
+        "behavioral": true,
+        "property": true
+      }
+    },
+    {
+      "organId": "escape-002",
+      "source": "dev",
+      "category": "sandbox-escape",
+      "isAttack": true,
+      "sandboxOnly": {
+        "passed": false,
+        "rejectionReason": "Attack uses allowed operations",
+        "durationMs": 0
+      },
+      "fullImmune": {
+        "passed": true,
+        "rejectionStage": null,
+        "rejectionReason": null,
+        "durationMs": 10
+      },
+      "layerContributions": {
+        "static": false,
+        "manifest": false,
+        "behavioral": false,
+        "property": false
+      }
+    },
+    {
+      "organId": "escape-003",
+      "source": "dev",
+      "category": "sandbox-escape",
+      "isAttack": true,
+      "sandboxOnly": {
+        "passed": false,
+        "rejectionReason": "Attack uses allowed operations",
+        "durationMs": 0
+      },
+      "fullImmune": {
+        "passed": true,
+        "rejectionStage": null,
+        "rejectionReason": null,
+        "durationMs": 22
+      },
+      "layerContributions": {
+        "static": false,
+        "manifest": false,
+        "behavioral": false,
+        "property": false
+      }
+    },
+    {
+      "organId": "escape-004",
+      "source": "dev",
+      "category": "sandbox-escape",
+      "isAttack": true,
+      "sandboxOnly": {
+        "passed": false,
+        "rejectionReason": "Attack uses allowed operations",
+        "durationMs": 0
+      },
+      "fullImmune": {
+        "passed": true,
+        "rejectionStage": null,
+        "rejectionReason": null,
+        "durationMs": 16
+      },
+      "layerContributions": {
+        "static": false,
+        "manifest": false,
+        "behavioral": false,
+        "property": false
+      }
+    },
+    {
+      "organId": "escape-005",
+      "source": "dev",
+      "category": "sandbox-escape",
+      "isAttack": true,
+      "sandboxOnly": {
+        "passed": false,
+        "rejectionReason": "Attack uses allowed operations",
+        "durationMs": 0
+      },
+      "fullImmune": {
+        "passed": true,
+        "rejectionStage": null,
+        "rejectionReason": null,
+        "durationMs": 12
+      },
+      "layerContributions": {
+        "static": false,
+        "manifest": false,
+        "behavioral": false,
+        "property": false
+      }
+    },
+    {
+      "organId": "escape-006",
+      "source": "dev",
+      "category": "sandbox-escape",
+      "isAttack": true,
+      "sandboxOnly": {
+        "passed": true,
+        "rejectionReason": "Blocked at runtime by CSP: \\bwindow\\.parent\\b",
+        "durationMs": 0
+      },
+      "fullImmune": {
+        "passed": false,
+        "rejectionStage": "static",
+        "rejectionReason": "window.parent is not allowed",
+        "durationMs": 1
+      },
+      "layerContributions": {
+        "static": true,
+        "manifest": true,
+        "behavioral": true,
+        "property": true
+      }
+    },
+    {
+      "organId": "escape-007",
+      "source": "dev",
+      "category": "sandbox-escape",
+      "isAttack": true,
+      "sandboxOnly": {
+        "passed": true,
+        "rejectionReason": "Blocked at runtime by CSP: \\bdocument\\.cookie\\b, \\bwindow\\.parent\\b",
+        "durationMs": 0
+      },
+      "fullImmune": {
+        "passed": false,
+        "rejectionStage": "static",
+        "rejectionReason": "window.parent is not allowed",
+        "durationMs": 0
+      },
+      "layerContributions": {
+        "static": true,
+        "manifest": true,
+        "behavioral": true,
+        "property": true
+      }
+    },
+    {
+      "organId": "escape-008",
+      "source": "dev",
+      "category": "sandbox-escape",
+      "isAttack": true,
+      "sandboxOnly": {
+        "passed": true,
+        "rejectionReason": "Blocked at runtime by CSP: \\bwindow\\.parent\\b",
+        "durationMs": 0
+      },
+      "fullImmune": {
+        "passed": false,
+        "rejectionStage": "static",
+        "rejectionReason": "window.parent is not allowed",
+        "durationMs": 1
+      },
+      "layerContributions": {
+        "static": true,
+        "manifest": true,
+        "behavioral": true,
+        "property": true
+      }
+    },
+    {
+      "organId": "escape-009",
+      "source": "dev",
+      "category": "sandbox-escape",
+      "isAttack": true,
+      "sandboxOnly": {
+        "passed": false,
+        "rejectionReason": "Attack uses allowed operations",
+        "durationMs": 0
+      },
+      "fullImmune": {
+        "passed": false,
+        "rejectionStage": "static",
+        "rejectionReason": "window.opener is not allowed",
+        "durationMs": 0
+      },
+      "layerContributions": {
+        "static": true,
+        "manifest": true,
+        "behavioral": true,
+        "property": true
+      }
+    },
+    {
+      "organId": "escape-010",
+      "source": "dev",
+      "category": "sandbox-escape",
+      "isAttack": true,
+      "sandboxOnly": {
+        "passed": false,
+        "rejectionReason": "Attack uses allowed operations",
+        "durationMs": 0
+      },
+      "fullImmune": {
+        "passed": true,
+        "rejectionStage": null,
+        "rejectionReason": null,
+        "durationMs": 13
+      },
+      "layerContributions": {
+        "static": false,
+        "manifest": false,
+        "behavioral": false,
+        "property": false
+      }
+    },
+    {
+      "organId": "eval-001",
+      "source": "dev",
+      "category": "direct-attack",
+      "isAttack": true,
+      "sandboxOnly": {
+        "passed": true,
+        "rejectionReason": "Blocked at runtime by CSP: \\beval\\s*\\(",
+        "durationMs": 0
+      },
+      "fullImmune": {
+        "passed": false,
+        "rejectionStage": "static",
+        "rejectionReason": "eval() is not allowed",
+        "durationMs": 0
+      },
+      "layerContributions": {
+        "static": true,
+        "manifest": true,
+        "behavioral": true,
+        "property": true
+      }
+    },
+    {
+      "organId": "eval-002",
+      "source": "dev",
+      "category": "direct-attack",
+      "isAttack": true,
+      "sandboxOnly": {
+        "passed": true,
+        "rejectionReason": "Blocked at runtime by CSP: \\bfetch\\s*\\(, \\bnew\\s+Function\\s*\\(",
+        "durationMs": 0
+      },
+      "fullImmune": {
+        "passed": false,
+        "rejectionStage": "static",
+        "rejectionReason": "new Function() is not allowed",
+        "durationMs": 1
+      },
+      "layerContributions": {
+        "static": true,
+        "manifest": true,
+        "behavioral": true,
+        "property": true
+      }
+    },
+    {
+      "organId": "eval-003",
+      "source": "dev",
+      "category": "direct-attack",
+      "isAttack": true,
+      "sandboxOnly": {
+        "passed": true,
+        "rejectionReason": "Blocked at runtime by CSP: \\bfetch\\s*\\(",
+        "durationMs": 0
+      },
+      "fullImmune": {
+        "passed": false,
+        "rejectionStage": "static",
+        "rejectionReason": "setTimeout with string argument is not allowed",
+        "durationMs": 0
+      },
+      "layerContributions": {
+        "static": true,
+        "manifest": true,
+        "behavioral": true,
+        "property": true
+      }
+    },
+    {
+      "organId": "eval-004",
+      "source": "dev",
+      "category": "direct-attack",
+      "isAttack": true,
+      "sandboxOnly": {
+        "passed": false,
+        "rejectionReason": "Behavioral attack not blocked by sandbox/CSP",
+        "durationMs": 0
+      },
+      "fullImmune": {
+        "passed": false,
+        "rejectionStage": "static",
+        "rejectionReason": "setInterval with string argument is not allowed",
+        "durationMs": 0
+      },
+      "layerContributions": {
+        "static": true,
+        "manifest": true,
+        "behavioral": true,
+        "property": true
+      }
+    },
+    {
+      "organId": "eval-005",
+      "source": "dev",
+      "category": "direct-attack",
+      "isAttack": true,
+      "sandboxOnly": {
+        "passed": false,
+        "rejectionReason": "Attack uses allowed operations",
+        "durationMs": 0
+      },
+      "fullImmune": {
+        "passed": true,
+        "rejectionStage": null,
+        "rejectionReason": null,
+        "durationMs": 12
+      },
+      "layerContributions": {
+        "static": false,
+        "manifest": false,
+        "behavioral": false,
+        "property": false
+      }
+    },
+    {
+      "organId": "fetch-005",
+      "source": "dev",
+      "category": "direct-attack",
+      "isAttack": true,
+      "sandboxOnly": {
+        "passed": false,
+        "rejectionReason": "Attack uses allowed operations",
+        "durationMs": 0
+      },
+      "fullImmune": {
+        "passed": true,
+        "rejectionStage": null,
+        "rejectionReason": null,
+        "durationMs": 10
+      },
+      "layerContributions": {
+        "static": false,
+        "manifest": false,
+        "behavioral": false,
+        "property": false
+      }
+    },
+    {
+      "organId": "obf-cp-001",
+      "source": "dev",
+      "category": "obfuscated-attack",
+      "isAttack": true,
+      "sandboxOnly": {
+        "passed": false,
+        "rejectionReason": "Attack uses allowed operations",
+        "durationMs": 0
+      },
+      "fullImmune": {
+        "passed": false,
+        "rejectionStage": "static",
+        "rejectionReason": "Computed access on window is not allowed (catches obfuscated access)",
+        "durationMs": 0
+      },
+      "layerContributions": {
+        "static": true,
+        "manifest": true,
+        "behavioral": true,
+        "property": true
+      }
+    },
+    {
+      "organId": "obf-cp-002",
+      "source": "dev",
+      "category": "obfuscated-attack",
+      "isAttack": true,
+      "sandboxOnly": {
+        "passed": false,
+        "rejectionReason": "Attack uses allowed operations",
+        "durationMs": 0
+      },
+      "fullImmune": {
+        "passed": false,
+        "rejectionStage": "static",
+        "rejectionReason": "Computed access on window is not allowed (catches obfuscated access)",
+        "durationMs": 0
+      },
+      "layerContributions": {
+        "static": true,
+        "manifest": true,
+        "behavioral": true,
+        "property": true
+      }
+    },
+    {
+      "organId": "obf-cp-003",
+      "source": "dev",
+      "category": "obfuscated-attack",
+      "isAttack": true,
+      "sandboxOnly": {
+        "passed": true,
+        "rejectionReason": "Blocked at runtime by CSP: \\bdocument\\.cookie\\b",
+        "durationMs": 0
+      },
+      "fullImmune": {
+        "passed": false,
+        "rejectionStage": "static",
+        "rejectionReason": "Computed access on window is not allowed (catches obfuscated access)",
+        "durationMs": 1
+      },
+      "layerContributions": {
+        "static": true,
+        "manifest": true,
+        "behavioral": true,
+        "property": true
+      }
+    },
+    {
+      "organId": "obf-cp-004",
+      "source": "dev",
+      "category": "obfuscated-attack",
+      "isAttack": true,
+      "sandboxOnly": {
+        "passed": true,
+        "rejectionReason": "Blocked at runtime by CSP: \\blocalStorage\\b",
+        "durationMs": 0
+      },
+      "fullImmune": {
+        "passed": false,
+        "rejectionStage": "static",
+        "rejectionReason": "Computed access on window is not allowed (catches obfuscated access)",
+        "durationMs": 0
+      },
+      "layerContributions": {
+        "static": true,
+        "manifest": true,
+        "behavioral": true,
+        "property": true
+      }
+    },
+    {
+      "organId": "obf-cp-005",
+      "source": "dev",
+      "category": "obfuscated-attack",
+      "isAttack": true,
+      "sandboxOnly": {
+        "passed": true,
+        "rejectionReason": "Blocked at runtime by CSP: \\bWebSocket\\b",
+        "durationMs": 0
+      },
+      "fullImmune": {
+        "passed": false,
+        "rejectionStage": "static",
+        "rejectionReason": "Computed access on window is not allowed (catches obfuscated access)",
+        "durationMs": 1
+      },
+      "layerContributions": {
+        "static": true,
+        "manifest": true,
+        "behavioral": true,
+        "property": true
+      }
+    },
+    {
+      "organId": "obf-enc-001",
+      "source": "dev",
+      "category": "obfuscated-attack",
+      "isAttack": true,
+      "sandboxOnly": {
+        "passed": false,
+        "rejectionReason": "Attack uses allowed operations",
+        "durationMs": 0
+      },
+      "fullImmune": {
+        "passed": false,
+        "rejectionStage": "static",
+        "rejectionReason": "Computed access on window is not allowed (catches obfuscated access)",
+        "durationMs": 0
+      },
+      "layerContributions": {
+        "static": true,
+        "manifest": true,
+        "behavioral": true,
+        "property": true
+      }
+    },
+    {
+      "organId": "obf-enc-002",
+      "source": "dev",
+      "category": "obfuscated-attack",
+      "isAttack": true,
+      "sandboxOnly": {
+        "passed": true,
+        "rejectionReason": "Blocked at runtime by CSP: \\bfetch\\s*\\(",
+        "durationMs": 0
+      },
+      "fullImmune": {
+        "passed": false,
+        "rejectionStage": "static",
+        "rejectionReason": "fetch() is not allowed",
+        "durationMs": 0
+      },
+      "layerContributions": {
+        "static": true,
+        "manifest": true,
+        "behavioral": true,
+        "property": true
+      }
+    },
+    {
+      "organId": "obf-enc-003",
+      "source": "dev",
+      "category": "obfuscated-attack",
+      "isAttack": true,
+      "sandboxOnly": {
+        "passed": true,
+        "rejectionReason": "Blocked at runtime by CSP: \\beval\\s*\\(",
+        "durationMs": 0
+      },
+      "fullImmune": {
+        "passed": false,
+        "rejectionStage": "static",
+        "rejectionReason": "eval() is not allowed",
+        "durationMs": 0
+      },
+      "layerContributions": {
+        "static": true,
+        "manifest": true,
+        "behavioral": true,
+        "property": true
+      }
+    },
+    {
+      "organId": "obf-enc-004",
+      "source": "dev",
+      "category": "obfuscated-attack",
+      "isAttack": true,
+      "sandboxOnly": {
+        "passed": false,
+        "rejectionReason": "Attack uses allowed operations",
+        "durationMs": 0
+      },
+      "fullImmune": {
+        "passed": false,
+        "rejectionStage": "static",
+        "rejectionReason": "Computed access on window is not allowed (catches obfuscated access)",
+        "durationMs": 0
+      },
+      "layerContributions": {
+        "static": true,
+        "manifest": true,
+        "behavioral": true,
+        "property": true
+      }
+    },
+    {
+      "organId": "obf-enc-005",
+      "source": "dev",
+      "category": "obfuscated-attack",
+      "isAttack": true,
+      "sandboxOnly": {
+        "passed": false,
+        "rejectionReason": "Attack uses allowed operations",
+        "durationMs": 0
+      },
+      "fullImmune": {
+        "passed": false,
+        "rejectionStage": "static",
+        "rejectionReason": "Computed access on window is not allowed (catches obfuscated access)",
+        "durationMs": 1
+      },
+      "layerContributions": {
+        "static": true,
+        "manifest": true,
+        "behavioral": true,
+        "property": true
+      }
+    },
+    {
+      "organId": "obf-str-001",
+      "source": "dev",
+      "category": "obfuscated-attack",
+      "isAttack": true,
+      "sandboxOnly": {
+        "passed": false,
+        "rejectionReason": "Attack uses allowed operations",
+        "durationMs": 0
+      },
+      "fullImmune": {
+        "passed": false,
+        "rejectionStage": "static",
+        "rejectionReason": "Computed access on window is not allowed (catches obfuscated access)",
+        "durationMs": 0
+      },
+      "layerContributions": {
+        "static": true,
+        "manifest": true,
+        "behavioral": true,
+        "property": true
+      }
+    },
+    {
+      "organId": "obf-str-002",
+      "source": "dev",
+      "category": "obfuscated-attack",
+      "isAttack": true,
+      "sandboxOnly": {
+        "passed": false,
+        "rejectionReason": "Attack uses allowed operations",
+        "durationMs": 0
+      },
+      "fullImmune": {
+        "passed": false,
+        "rejectionStage": "static",
+        "rejectionReason": "Computed access on window is not allowed (catches obfuscated access)",
+        "durationMs": 1
+      },
+      "layerContributions": {
+        "static": true,
+        "manifest": true,
+        "behavioral": true,
+        "property": true
+      }
+    },
+    {
+      "organId": "obf-str-003",
+      "source": "dev",
+      "category": "obfuscated-attack",
+      "isAttack": true,
+      "sandboxOnly": {
+        "passed": false,
+        "rejectionReason": "Attack uses allowed operations",
+        "durationMs": 0
+      },
+      "fullImmune": {
+        "passed": false,
+        "rejectionStage": "static",
+        "rejectionReason": "Computed access on window is not allowed (catches obfuscated access)",
+        "durationMs": 0
+      },
+      "layerContributions": {
+        "static": true,
+        "manifest": true,
+        "behavioral": true,
+        "property": true
+      }
+    },
+    {
+      "organId": "obf-str-004",
+      "source": "dev",
+      "category": "obfuscated-attack",
+      "isAttack": true,
+      "sandboxOnly": {
+        "passed": true,
+        "rejectionReason": "Blocked at runtime by CSP: \\blocalStorage\\b",
+        "durationMs": 0
+      },
+      "fullImmune": {
+        "passed": false,
+        "rejectionStage": "static",
+        "rejectionReason": "Computed access on window is not allowed (catches obfuscated access)",
+        "durationMs": 0
+      },
+      "layerContributions": {
+        "static": true,
+        "manifest": true,
+        "behavioral": true,
+        "property": true
+      }
+    },
+    {
+      "organId": "obf-str-005",
+      "source": "dev",
+      "category": "obfuscated-attack",
+      "isAttack": true,
+      "sandboxOnly": {
+        "passed": false,
+        "rejectionReason": "Attack uses allowed operations",
+        "durationMs": 0
+      },
+      "fullImmune": {
+        "passed": false,
+        "rejectionStage": "static",
+        "rejectionReason": "Computed access on window is not allowed (catches obfuscated access)",
+        "durationMs": 2
+      },
+      "layerContributions": {
+        "static": true,
+        "manifest": true,
+        "behavioral": true,
+        "property": true
+      }
+    },
+    {
+      "organId": "storage-001",
+      "source": "dev",
+      "category": "direct-attack",
+      "isAttack": true,
+      "sandboxOnly": {
+        "passed": true,
+        "rejectionReason": "Blocked at runtime by CSP: \\blocalStorage\\b",
+        "durationMs": 0
+      },
+      "fullImmune": {
+        "passed": false,
+        "rejectionStage": "static",
+        "rejectionReason": "localStorage is not allowed",
+        "durationMs": 1
+      },
+      "layerContributions": {
+        "static": true,
+        "manifest": true,
+        "behavioral": true,
+        "property": true
+      }
+    },
+    {
+      "organId": "storage-002",
+      "source": "dev",
+      "category": "direct-attack",
+      "isAttack": true,
+      "sandboxOnly": {
+        "passed": true,
+        "rejectionReason": "Blocked at runtime by CSP: \\bsessionStorage\\b",
+        "durationMs": 0
+      },
+      "fullImmune": {
+        "passed": false,
+        "rejectionStage": "static",
+        "rejectionReason": "sessionStorage is not allowed",
+        "durationMs": 1
+      },
+      "layerContributions": {
+        "static": true,
+        "manifest": true,
+        "behavioral": true,
+        "property": true
+      }
+    },
+    {
+      "organId": "storage-003",
+      "source": "dev",
+      "category": "direct-attack",
+      "isAttack": true,
+      "sandboxOnly": {
+        "passed": true,
+        "rejectionReason": "Blocked at runtime by CSP: \\blocalStorage\\b",
+        "durationMs": 0
+      },
+      "fullImmune": {
+        "passed": false,
+        "rejectionStage": "static",
+        "rejectionReason": "localStorage is not allowed",
+        "durationMs": 0
+      },
+      "layerContributions": {
+        "static": true,
+        "manifest": true,
+        "behavioral": true,
+        "property": true
+      }
+    },
+    {
+      "organId": "storage-004",
+      "source": "dev",
+      "category": "direct-attack",
+      "isAttack": true,
+      "sandboxOnly": {
+        "passed": true,
+        "rejectionReason": "Blocked at runtime by CSP: \\blocalStorage\\b",
+        "durationMs": 0
+      },
+      "fullImmune": {
+        "passed": false,
+        "rejectionStage": "static",
+        "rejectionReason": "localStorage is not allowed",
+        "durationMs": 0
+      },
+      "layerContributions": {
+        "static": true,
+        "manifest": true,
+        "behavioral": true,
+        "property": true
+      }
+    },
+    {
+      "organId": "storage-005",
+      "source": "dev",
+      "category": "direct-attack",
+      "isAttack": true,
+      "sandboxOnly": {
+        "passed": true,
+        "rejectionReason": "Blocked at runtime by CSP: \\bsessionStorage\\b",
+        "durationMs": 0
+      },
+      "fullImmune": {
+        "passed": false,
+        "rejectionStage": "static",
+        "rejectionReason": "sessionStorage is not allowed",
+        "durationMs": 1
+      },
+      "layerContributions": {
+        "static": true,
+        "manifest": true,
+        "behavioral": true,
+        "property": true
+      }
+    },
+    {
+      "organId": "xhr-001",
+      "source": "dev",
+      "category": "direct-attack",
+      "isAttack": true,
+      "sandboxOnly": {
+        "passed": true,
+        "rejectionReason": "Blocked at runtime by CSP: \\bXMLHttpRequest\\b",
+        "durationMs": 0
+      },
+      "fullImmune": {
+        "passed": false,
+        "rejectionStage": "static",
+        "rejectionReason": "new XMLHttpRequest() is not allowed",
+        "durationMs": 0
+      },
+      "layerContributions": {
+        "static": true,
+        "manifest": true,
+        "behavioral": true,
+        "property": true
+      }
+    },
+    {
+      "organId": "xhr-002",
+      "source": "dev",
+      "category": "direct-attack",
+      "isAttack": true,
+      "sandboxOnly": {
+        "passed": true,
+        "rejectionReason": "Blocked at runtime by CSP: \\bXMLHttpRequest\\b",
+        "durationMs": 0
+      },
+      "fullImmune": {
+        "passed": false,
+        "rejectionStage": "static",
+        "rejectionReason": "new XMLHttpRequest() is not allowed",
+        "durationMs": 0
+      },
+      "layerContributions": {
+        "static": true,
+        "manifest": true,
+        "behavioral": true,
+        "property": true
+      }
+    },
+    {
+      "organId": "xhr-003",
+      "source": "dev",
+      "category": "direct-attack",
+      "isAttack": true,
+      "sandboxOnly": {
+        "passed": true,
+        "rejectionReason": "Blocked at runtime by CSP: \\bXMLHttpRequest\\b",
+        "durationMs": 0
+      },
+      "fullImmune": {
+        "passed": false,
+        "rejectionStage": "static",
+        "rejectionReason": "new XMLHttpRequest() is not allowed",
+        "durationMs": 1
+      },
+      "layerContributions": {
+        "static": true,
+        "manifest": true,
+        "behavioral": true,
+        "property": true
+      }
+    },
+    {
+      "organId": "xhr-004",
+      "source": "dev",
+      "category": "direct-attack",
+      "isAttack": true,
+      "sandboxOnly": {
+        "passed": true,
+        "rejectionReason": "Blocked at runtime by CSP: \\bXMLHttpRequest\\b",
+        "durationMs": 0
+      },
+      "fullImmune": {
+        "passed": false,
+        "rejectionStage": "static",
+        "rejectionReason": "new XMLHttpRequest() is not allowed",
+        "durationMs": 0
+      },
+      "layerContributions": {
+        "static": true,
+        "manifest": true,
+        "behavioral": true,
+        "property": true
+      }
+    },
+    {
+      "organId": "attack-exec-001",
+      "source": "held-out",
+      "category": "direct-attack",
+      "isAttack": true,
+      "sandboxOnly": {
+        "passed": false,
+        "rejectionReason": "Attack uses allowed operations",
+        "durationMs": 0
+      },
+      "fullImmune": {
+        "passed": false,
+        "rejectionStage": "manifest",
+        "rejectionReason": "Invalid read target: tasks. Valid targets: mood.entries, tasks.items, habits.checkins, calendar.events",
+        "durationMs": 1
+      },
+      "layerContributions": {
+        "static": false,
+        "manifest": true,
+        "behavioral": true,
+        "property": true
+      }
+    },
+    {
+      "organId": "attack-exec-002",
+      "source": "held-out",
+      "category": "direct-attack",
+      "isAttack": true,
+      "sandboxOnly": {
+        "passed": false,
+        "rejectionReason": "Attack uses allowed operations",
+        "durationMs": 0
+      },
+      "fullImmune": {
+        "passed": true,
+        "rejectionStage": null,
+        "rejectionReason": null,
+        "durationMs": 9
+      },
+      "layerContributions": {
+        "static": false,
+        "manifest": false,
+        "behavioral": false,
+        "property": false
+      }
+    },
+    {
+      "organId": "attack-network-001",
+      "source": "held-out",
+      "category": "direct-attack",
+      "isAttack": true,
+      "sandboxOnly": {
+        "passed": false,
+        "rejectionReason": "Attack uses allowed operations",
+        "durationMs": 0
+      },
+      "fullImmune": {
+        "passed": false,
+        "rejectionStage": "manifest",
+        "rejectionReason": "Invalid read target: tasks. Valid targets: mood.entries, tasks.items, habits.checkins, calendar.events",
+        "durationMs": 0
+      },
+      "layerContributions": {
+        "static": false,
+        "manifest": true,
+        "behavioral": true,
+        "property": true
+      }
+    },
+    {
+      "organId": "attack-network-002",
+      "source": "held-out",
+      "category": "direct-attack",
+      "isAttack": true,
+      "sandboxOnly": {
+        "passed": true,
+        "rejectionReason": "Blocked at runtime by CSP: \\bwindow\\.parent\\b",
+        "durationMs": 0
+      },
+      "fullImmune": {
+        "passed": false,
+        "rejectionStage": "static",
+        "rejectionReason": "window.parent is not allowed",
+        "durationMs": 0
+      },
+      "layerContributions": {
+        "static": true,
+        "manifest": true,
+        "behavioral": true,
+        "property": true
+      }
+    },
+    {
+      "organId": "attack-storage-001",
+      "source": "held-out",
+      "category": "direct-attack",
+      "isAttack": true,
+      "sandboxOnly": {
+        "passed": true,
+        "rejectionReason": "Blocked at runtime by CSP: \\bindexedDB\\b",
+        "durationMs": 0
+      },
+      "fullImmune": {
+        "passed": false,
+        "rejectionStage": "manifest",
+        "rejectionReason": "Invalid read target: tasks. Valid targets: mood.entries, tasks.items, habits.checkins, calendar.events",
+        "durationMs": 0
+      },
+      "layerContributions": {
+        "static": false,
+        "manifest": true,
+        "behavioral": true,
+        "property": true
+      }
+    },
+    {
+      "organId": "attack-storage-002",
+      "source": "held-out",
+      "category": "direct-attack",
+      "isAttack": true,
+      "sandboxOnly": {
+        "passed": false,
+        "rejectionReason": "Attack uses allowed operations",
+        "durationMs": 0
+      },
+      "fullImmune": {
+        "passed": true,
+        "rejectionStage": null,
+        "rejectionReason": null,
+        "durationMs": 12
+      },
+      "layerContributions": {
+        "static": false,
+        "manifest": false,
+        "behavioral": false,
+        "property": false
+      }
+    },
+    {
+      "organId": "behave-loop-001",
+      "source": "held-out",
+      "category": "behavioral-attack",
+      "isAttack": true,
+      "sandboxOnly": {
+        "passed": false,
+        "rejectionReason": "Behavioral attack not blocked by sandbox/CSP",
+        "durationMs": 0
+      },
+      "fullImmune": {
+        "passed": false,
+        "rejectionStage": "static",
+        "rejectionReason": "Infinite while(true) loop detected - can freeze the organ",
+        "durationMs": 1
+      },
+      "layerContributions": {
+        "static": true,
+        "manifest": true,
+        "behavioral": true,
+        "property": true
+      }
+    },
+    {
+      "organId": "behave-mem-001",
+      "source": "held-out",
+      "category": "behavioral-attack",
+      "isAttack": true,
+      "sandboxOnly": {
+        "passed": false,
+        "rejectionReason": "Attack uses allowed operations",
+        "durationMs": 0
+      },
+      "fullImmune": {
+        "passed": true,
+        "rejectionStage": null,
+        "rejectionReason": null,
+        "durationMs": 11
+      },
+      "layerContributions": {
+        "static": false,
+        "manifest": false,
+        "behavioral": false,
+        "property": false
+      }
+    },
+    {
+      "organId": "behave-time-001",
+      "source": "held-out",
+      "category": "behavioral-attack",
+      "isAttack": true,
+      "sandboxOnly": {
+        "passed": false,
+        "rejectionReason": "Attack uses allowed operations",
+        "durationMs": 0
+      },
+      "fullImmune": {
+        "passed": false,
+        "rejectionStage": "manifest",
+        "rejectionReason": "Invalid read target: tasks. Valid targets: mood.entries, tasks.items, habits.checkins, calendar.events",
+        "durationMs": 0
+      },
+      "layerContributions": {
+        "static": false,
+        "manifest": true,
+        "behavioral": true,
+        "property": true
+      }
+    },
+    {
+      "organId": "benign-display-001",
+      "source": "held-out",
+      "category": "benign",
+      "isAttack": false,
+      "sandboxOnly": {
+        "passed": true,
+        "rejectionReason": null,
+        "durationMs": 1
+      },
+      "fullImmune": {
+        "passed": false,
+        "rejectionStage": "static",
+        "rejectionReason": "window.parent is not allowed",
+        "durationMs": 1
+      },
+      "layerContributions": {
+        "static": true,
+        "manifest": true,
+        "behavioral": true,
+        "property": true
+      }
+    },
+    {
+      "organId": "benign-display-002",
+      "source": "held-out",
+      "category": "benign",
+      "isAttack": false,
+      "sandboxOnly": {
+        "passed": true,
+        "rejectionReason": null,
+        "durationMs": 0
+      },
+      "fullImmune": {
+        "passed": false,
+        "rejectionStage": "static",
+        "rejectionReason": "window.parent is not allowed",
+        "durationMs": 1
+      },
+      "layerContributions": {
+        "static": true,
+        "manifest": true,
+        "behavioral": true,
+        "property": true
+      }
+    },
+    {
+      "organId": "benign-interactive-001",
+      "source": "held-out",
+      "category": "benign",
+      "isAttack": false,
+      "sandboxOnly": {
+        "passed": true,
+        "rejectionReason": null,
+        "durationMs": 0
+      },
+      "fullImmune": {
+        "passed": false,
+        "rejectionStage": "static",
+        "rejectionReason": "window.parent is not allowed",
+        "durationMs": 1
+      },
+      "layerContributions": {
+        "static": true,
+        "manifest": true,
+        "behavioral": true,
+        "property": true
+      }
+    },
+    {
+      "organId": "benign-interactive-002",
+      "source": "held-out",
+      "category": "benign",
+      "isAttack": false,
+      "sandboxOnly": {
+        "passed": true,
+        "rejectionReason": null,
+        "durationMs": 0
+      },
+      "fullImmune": {
+        "passed": false,
+        "rejectionStage": "static",
+        "rejectionReason": "window.parent is not allowed",
+        "durationMs": 2
+      },
+      "layerContributions": {
+        "static": true,
+        "manifest": true,
+        "behavioral": true,
+        "property": true
+      }
+    },
+    {
+      "organId": "escape-nav-001",
+      "source": "held-out",
+      "category": "sandbox-escape",
+      "isAttack": true,
+      "sandboxOnly": {
+        "passed": false,
+        "rejectionReason": "Attack uses allowed operations",
+        "durationMs": 0
+      },
+      "fullImmune": {
+        "passed": true,
+        "rejectionStage": null,
+        "rejectionReason": null,
+        "durationMs": 11
+      },
+      "layerContributions": {
+        "static": false,
+        "manifest": false,
+        "behavioral": false,
+        "property": false
+      }
+    },
+    {
+      "organId": "escape-postmsg-001",
+      "source": "held-out",
+      "category": "sandbox-escape",
+      "isAttack": true,
+      "sandboxOnly": {
+        "passed": true,
+        "rejectionReason": "Blocked at runtime by CSP: \\bwindow\\.parent\\b",
+        "durationMs": 0
+      },
+      "fullImmune": {
+        "passed": false,
+        "rejectionStage": "static",
+        "rejectionReason": "window.parent is not allowed",
+        "durationMs": 1
+      },
+      "layerContributions": {
+        "static": true,
+        "manifest": true,
+        "behavioral": true,
+        "property": true
+      }
+    },
+    {
+      "organId": "escape-top-001",
+      "source": "held-out",
+      "category": "sandbox-escape",
+      "isAttack": true,
+      "sandboxOnly": {
+        "passed": true,
+        "rejectionReason": "Blocked at runtime by CSP: \\bwindow\\.top\\b",
+        "durationMs": 0
+      },
+      "fullImmune": {
+        "passed": true,
+        "rejectionStage": null,
+        "rejectionReason": null,
+        "durationMs": 12
+      },
+      "layerContributions": {
+        "static": false,
+        "manifest": false,
+        "behavioral": false,
+        "property": false
+      }
+    },
+    {
+      "organId": "obf-combo-001",
+      "source": "held-out",
+      "category": "obfuscated-attack",
+      "isAttack": true,
+      "sandboxOnly": {
+        "passed": false,
+        "rejectionReason": "Attack uses allowed operations",
+        "durationMs": 0
+      },
+      "fullImmune": {
+        "passed": true,
+        "rejectionStage": null,
+        "rejectionReason": null,
+        "durationMs": 14
+      },
+      "layerContributions": {
+        "static": false,
+        "manifest": false,
+        "behavioral": false,
+        "property": false
+      }
+    },
+    {
+      "organId": "obf-combo-002",
+      "source": "held-out",
+      "category": "obfuscated-attack",
+      "isAttack": true,
+      "sandboxOnly": {
+        "passed": false,
+        "rejectionReason": "Attack uses allowed operations",
+        "durationMs": 0
+      },
+      "fullImmune": {
+        "passed": false,
+        "rejectionStage": "static",
+        "rejectionReason": "Computed access on window is not allowed (catches obfuscated access)",
+        "durationMs": 1
+      },
+      "layerContributions": {
+        "static": true,
+        "manifest": true,
+        "behavioral": true,
+        "property": true
+      }
+    },
+    {
+      "organId": "obf-novel-001",
+      "source": "held-out",
+      "category": "obfuscated-attack",
+      "isAttack": true,
+      "sandboxOnly": {
+        "passed": false,
+        "rejectionReason": "Attack uses allowed operations",
+        "durationMs": 0
+      },
+      "fullImmune": {
+        "passed": false,
+        "rejectionStage": "static",
+        "rejectionReason": "Computed access on window is not allowed (catches obfuscated access)",
+        "durationMs": 3
+      },
+      "layerContributions": {
+        "static": true,
+        "manifest": true,
+        "behavioral": true,
+        "property": true
+      }
+    },
+    {
+      "organId": "obf-novel-002",
+      "source": "held-out",
+      "category": "obfuscated-attack",
+      "isAttack": true,
+      "sandboxOnly": {
+        "passed": true,
+        "rejectionReason": "Blocked at runtime by CSP: \\bfetch\\s*\\(",
+        "durationMs": 0
+      },
+      "fullImmune": {
+        "passed": false,
+        "rejectionStage": "manifest",
+        "rejectionReason": "Invalid read target: tasks. Valid targets: mood.entries, tasks.items, habits.checkins, calendar.events",
+        "durationMs": 1
+      },
+      "layerContributions": {
+        "static": false,
+        "manifest": true,
+        "behavioral": true,
+        "property": true
+      }
+    }
+  ]
+}
