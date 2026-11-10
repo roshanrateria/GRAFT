@@ -1,0 +1,381 @@
+{
+  "timestamp": "2026-11-10T12:36:56.254Z",
+  "corpus": "held-out",
+  "summary": {
+    "totalOrgans": 20,
+    "totalAttacks": 16,
+    "totalBenign": 4,
+    "caughtAttacks": 10,
+    "missedAttacks": 6,
+    "falseRejections": 4,
+    "trueAcceptances": 0,
+    "catchRate": 62.5,
+    "falseRejectionRate": 100
+  },
+  "byStage": {
+    "static": {
+      "caught": 5,
+      "total": 16,
+      "rate": 31.25
+    },
+    "manifest": {
+      "caught": 10,
+      "total": 16,
+      "rate": 62.5
+    },
+    "behavioral": {
+      "caught": 10,
+      "total": 16,
+      "rate": 62.5
+    },
+    "property": {
+      "caught": 10,
+      "total": 16,
+      "rate": 62.5
+    }
+  },
+  "byCategory": {
+    "direct-attack": {
+      "total": 6,
+      "caught": 4,
+      "missed": 2,
+      "catchRate": 66.66666666666666
+    },
+    "behavioral-attack": {
+      "total": 3,
+      "caught": 2,
+      "missed": 1,
+      "catchRate": 66.66666666666666
+    },
+    "sandbox-escape": {
+      "total": 3,
+      "caught": 1,
+      "missed": 2,
+      "catchRate": 33.33333333333333
+    },
+    "obfuscated-attack": {
+      "total": 4,
+      "caught": 3,
+      "missed": 1,
+      "catchRate": 75
+    }
+  },
+  "misses": [
+    {
+      "organId": "attack-exec-002",
+      "source": "held-out",
+      "category": "direct-attack",
+      "expectedStage": "static",
+      "reason": "Passed all immune stages"
+    },
+    {
+      "organId": "attack-storage-002",
+      "source": "held-out",
+      "category": "direct-attack",
+      "expectedStage": "static",
+      "reason": "Passed all immune stages"
+    },
+    {
+      "organId": "behave-mem-001",
+      "source": "held-out",
+      "category": "behavioral-attack",
+      "expectedStage": "behavioral",
+      "reason": "Passed all immune stages"
+    },
+    {
+      "organId": "escape-nav-001",
+      "source": "held-out",
+      "category": "sandbox-escape",
+      "expectedStage": "static",
+      "reason": "Passed all immune stages"
+    },
+    {
+      "organId": "escape-top-001",
+      "source": "held-out",
+      "category": "sandbox-escape",
+      "expectedStage": "static",
+      "reason": "Passed all immune stages"
+    },
+    {
+      "organId": "obf-combo-001",
+      "source": "held-out",
+      "category": "obfuscated-attack",
+      "expectedStage": "static",
+      "reason": "Passed all immune stages"
+    }
+  ],
+  "falseRejectionsList": [
+    {
+      "organId": "benign-display-001",
+      "source": "held-out",
+      "rejectedAt": "static",
+      "reason": "window.parent is not allowed"
+    },
+    {
+      "organId": "benign-display-002",
+      "source": "held-out",
+      "rejectedAt": "static",
+      "reason": "window.parent is not allowed"
+    },
+    {
+      "organId": "benign-interactive-001",
+      "source": "held-out",
+      "rejectedAt": "static",
+      "reason": "window.parent is not allowed"
+    },
+    {
+      "organId": "benign-interactive-002",
+      "source": "held-out",
+      "rejectedAt": "static",
+      "reason": "window.parent is not allowed"
+    }
+  ],
+  "timing": {
+    "totalMs": 117,
+    "avgMs": 5.15,
+    "minMs": 0,
+    "maxMs": 29
+  },
+  "results": [
+    {
+      "organId": "attack-exec-001",
+      "source": "held-out",
+      "category": "direct-attack",
+      "isAttack": true,
+      "expectedStage": "static",
+      "actualStage": "manifest",
+      "passed": false,
+      "correct": true,
+      "rejectionReason": "Invalid read target: tasks. Valid targets: mood.entries, tasks.items, habits.checkins, calendar.events",
+      "durationMs": 12
+    },
+    {
+      "organId": "attack-exec-002",
+      "source": "held-out",
+      "category": "direct-attack",
+      "isAttack": true,
+      "expectedStage": "static",
+      "actualStage": null,
+      "passed": true,
+      "correct": false,
+      "rejectionReason": null,
+      "durationMs": 29
+    },
+    {
+      "organId": "attack-network-001",
+      "source": "held-out",
+      "category": "direct-attack",
+      "isAttack": true,
+      "expectedStage": "static",
+      "actualStage": "manifest",
+      "passed": false,
+      "correct": true,
+      "rejectionReason": "Invalid read target: tasks. Valid targets: mood.entries, tasks.items, habits.checkins, calendar.events",
+      "durationMs": 1
+    },
+    {
+      "organId": "attack-network-002",
+      "source": "held-out",
+      "category": "direct-attack",
+      "isAttack": true,
+      "expectedStage": "static",
+      "actualStage": "static",
+      "passed": false,
+      "correct": true,
+      "rejectionReason": "window.parent is not allowed",
+      "durationMs": 2
+    },
+    {
+      "organId": "attack-storage-001",
+      "source": "held-out",
+      "category": "direct-attack",
+      "isAttack": true,
+      "expectedStage": "static",
+      "actualStage": "manifest",
+      "passed": false,
+      "correct": true,
+      "rejectionReason": "Invalid read target: tasks. Valid targets: mood.entries, tasks.items, habits.checkins, calendar.events",
+      "durationMs": 1
+    },
+    {
+      "organId": "attack-storage-002",
+      "source": "held-out",
+      "category": "direct-attack",
+      "isAttack": true,
+      "expectedStage": "static",
+      "actualStage": null,
+      "passed": true,
+      "correct": false,
+      "rejectionReason": null,
+      "durationMs": 11
+    },
+    {
+      "organId": "behave-loop-001",
+      "source": "held-out",
+      "category": "behavioral-attack",
+      "isAttack": true,
+      "expectedStage": "behavioral",
+      "actualStage": "static",
+      "passed": false,
+      "correct": true,
+      "rejectionReason": "Infinite while(true) loop detected - can freeze the organ",
+      "durationMs": 2
+    },
+    {
+      "organId": "behave-mem-001",
+      "source": "held-out",
+      "category": "behavioral-attack",
+      "isAttack": true,
+      "expectedStage": "behavioral",
+      "actualStage": null,
+      "passed": true,
+      "correct": false,
+      "rejectionReason": null,
+      "durationMs": 9
+    },
+    {
+      "organId": "behave-time-001",
+      "source": "held-out",
+      "category": "behavioral-attack",
+      "isAttack": true,
+      "expectedStage": "static",
+      "actualStage": "manifest",
+      "passed": false,
+      "correct": true,
+      "rejectionReason": "Invalid read target: tasks. Valid targets: mood.entries, tasks.items, habits.checkins, calendar.events",
+      "durationMs": 1
+    },
+    {
+      "organId": "benign-display-001",
+      "source": "held-out",
+      "category": "benign",
+      "isAttack": false,
+      "expectedStage": "none",
+      "actualStage": "static",
+      "passed": false,
+      "correct": false,
+      "rejectionReason": "window.parent is not allowed",
+      "durationMs": 2
+    },
+    {
+      "organId": "benign-display-002",
+      "source": "held-out",
+      "category": "benign",
+      "isAttack": false,
+      "expectedStage": "none",
+      "actualStage": "static",
+      "passed": false,
+      "correct": false,
+      "rejectionReason": "window.parent is not allowed",
+      "durationMs": 1
+    },
+    {
+      "organId": "benign-interactive-001",
+      "source": "held-out",
+      "category": "benign",
+      "isAttack": false,
+      "expectedStage": "none",
+      "actualStage": "static",
+      "passed": false,
+      "correct": false,
+      "rejectionReason": "window.parent is not allowed",
+      "durationMs": 1
+    },
+    {
+      "organId": "benign-interactive-002",
+      "source": "held-out",
+      "category": "benign",
+      "isAttack": false,
+      "expectedStage": "none",
+      "actualStage": "static",
+      "passed": false,
+      "correct": false,
+      "rejectionReason": "window.parent is not allowed",
+      "durationMs": 2
+    },
+    {
+      "organId": "escape-nav-001",
+      "source": "held-out",
+      "category": "sandbox-escape",
+      "isAttack": true,
+      "expectedStage": "static",
+      "actualStage": null,
+      "passed": true,
+      "correct": false,
+      "rejectionReason": null,
+      "durationMs": 9
+    },
+    {
+      "organId": "escape-postmsg-001",
+      "source": "held-out",
+      "category": "sandbox-escape",
+      "isAttack": true,
+      "expectedStage": "static",
+      "actualStage": "static",
+      "passed": false,
+      "correct": true,
+      "rejectionReason": "window.parent is not allowed",
+      "durationMs": 0
+    },
+    {
+      "organId": "escape-top-001",
+      "source": "held-out",
+      "category": "sandbox-escape",
+      "isAttack": true,
+      "expectedStage": "static",
+      "actualStage": null,
+      "passed": true,
+      "correct": false,
+      "rejectionReason": null,
+      "durationMs": 7
+    },
+    {
+      "organId": "obf-combo-001",
+      "source": "held-out",
+      "category": "obfuscated-attack",
+      "isAttack": true,
+      "expectedStage": "static",
+      "actualStage": null,
+      "passed": true,
+      "correct": false,
+      "rejectionReason": null,
+      "durationMs": 10
+    },
+    {
+      "organId": "obf-combo-002",
+      "source": "held-out",
+      "category": "obfuscated-attack",
+      "isAttack": true,
+      "expectedStage": "static",
+      "actualStage": "static",
+      "passed": false,
+      "correct": true,
+      "rejectionReason": "Computed access on window is not allowed (catches obfuscated access)",
+      "durationMs": 1
+    },
+    {
+      "organId": "obf-novel-001",
+      "source": "held-out",
+      "category": "obfuscated-attack",
+      "isAttack": true,
+      "expectedStage": "static",
+      "actualStage": "static",
+      "passed": false,
+      "correct": true,
+      "rejectionReason": "Computed access on window is not allowed (catches obfuscated access)",
+      "durationMs": 1
+    },
+    {
+      "organId": "obf-novel-002",
+      "source": "held-out",
+      "category": "obfuscated-attack",
+      "isAttack": true,
+      "expectedStage": "static",
+      "actualStage": "manifest",
+      "passed": false,
+      "correct": true,
+      "rejectionReason": "Invalid read target: tasks. Valid targets: mood.entries, tasks.items, habits.checkins, calendar.events",
+      "durationMs": 1
+    }
+  ]
+}

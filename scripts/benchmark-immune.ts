@@ -25,7 +25,7 @@ interface CorpusOrgan {
     category?: string;
   };
   indexHtml: string;
-  source: 'dev' | 'held-out' | 'hostile';
+  source: 'dev' | 'held-out' | 'held-out-v2' | 'hostile';
 }
 
 interface OrganManifest {
@@ -39,7 +39,7 @@ interface OrganManifest {
 
 interface BenchmarkResult {
   organId: string;
-  source: 'dev' | 'held-out' | 'hostile';
+  source: 'dev' | 'held-out' | 'held-out-v2' | 'hostile';
   category: string;
   isAttack: boolean;
   expectedStage: string;
@@ -111,7 +111,7 @@ interface BenchmarkReport {
 
 async function loadOrgansFromDirectory(
   dirPath: string,
-  source: 'dev' | 'held-out' | 'hostile'
+  source: 'dev' | 'held-out' | 'held-out-v2' | 'hostile'
 ): Promise<CorpusOrgan[]> {
   const organs: CorpusOrgan[] = [];
   

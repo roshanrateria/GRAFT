@@ -1,0 +1,506 @@
+{
+  "timestamp": "2026-11-10T12:36:34.263Z",
+  "corpus": "held-out-v2",
+  "summary": {
+    "totalOrgans": 30,
+    "totalAttacks": 24,
+    "totalBenign": 6,
+    "caughtAttacks": 19,
+    "missedAttacks": 5,
+    "falseRejections": 6,
+    "trueAcceptances": 0,
+    "catchRate": 79.16666666666666,
+    "falseRejectionRate": 100
+  },
+  "byStage": {
+    "static": {
+      "caught": 19,
+      "total": 24,
+      "rate": 79.16666666666666
+    },
+    "manifest": {
+      "caught": 19,
+      "total": 24,
+      "rate": 79.16666666666666
+    },
+    "behavioral": {
+      "caught": 19,
+      "total": 24,
+      "rate": 79.16666666666666
+    },
+    "property": {
+      "caught": 19,
+      "total": 24,
+      "rate": 79.16666666666666
+    }
+  },
+  "byCategory": {
+    "direct": {
+      "total": 6,
+      "caught": 6,
+      "missed": 0,
+      "catchRate": 100
+    },
+    "obfuscated": {
+      "total": 7,
+      "caught": 4,
+      "missed": 3,
+      "catchRate": 57.14285714285714
+    },
+    "escape": {
+      "total": 6,
+      "caught": 6,
+      "missed": 0,
+      "catchRate": 100
+    },
+    "behavioral": {
+      "total": 5,
+      "caught": 3,
+      "missed": 2,
+      "catchRate": 60
+    }
+  },
+  "misses": [
+    {
+      "organId": "attack-009",
+      "source": "held-out-v2",
+      "category": "obfuscated",
+      "expectedStage": "static",
+      "reason": "Passed all immune stages"
+    },
+    {
+      "organId": "attack-011",
+      "source": "held-out-v2",
+      "category": "obfuscated",
+      "expectedStage": "static",
+      "reason": "Passed all immune stages"
+    },
+    {
+      "organId": "attack-013",
+      "source": "held-out-v2",
+      "category": "obfuscated",
+      "expectedStage": "static",
+      "reason": "Passed all immune stages"
+    },
+    {
+      "organId": "attack-021",
+      "source": "held-out-v2",
+      "category": "behavioral",
+      "expectedStage": "behavioral",
+      "reason": "Passed all immune stages"
+    },
+    {
+      "organId": "attack-023",
+      "source": "held-out-v2",
+      "category": "behavioral",
+      "expectedStage": "behavioral",
+      "reason": "Passed all immune stages"
+    }
+  ],
+  "falseRejectionsList": [
+    {
+      "organId": "benign-001",
+      "source": "held-out-v2",
+      "rejectedAt": "static",
+      "reason": "window.parent is not allowed"
+    },
+    {
+      "organId": "benign-002",
+      "source": "held-out-v2",
+      "rejectedAt": "static",
+      "reason": "window.parent is not allowed"
+    },
+    {
+      "organId": "benign-003",
+      "source": "held-out-v2",
+      "rejectedAt": "static",
+      "reason": "window.parent is not allowed"
+    },
+    {
+      "organId": "benign-004",
+      "source": "held-out-v2",
+      "rejectedAt": "static",
+      "reason": "window.parent is not allowed"
+    },
+    {
+      "organId": "benign-005",
+      "source": "held-out-v2",
+      "rejectedAt": "static",
+      "reason": "window.parent is not allowed"
+    },
+    {
+      "organId": "benign-006",
+      "source": "held-out-v2",
+      "rejectedAt": "static",
+      "reason": "window.parent is not allowed"
+    }
+  ],
+  "timing": {
+    "totalMs": 123,
+    "avgMs": 3.3333333333333335,
+    "minMs": 0,
+    "maxMs": 28
+  },
+  "results": [
+    {
+      "organId": "attack-001",
+      "source": "held-out-v2",
+      "category": "direct",
+      "isAttack": true,
+      "expectedStage": "static",
+      "actualStage": "static",
+      "passed": false,
+      "correct": true,
+      "rejectionReason": "document.cookie is not allowed",
+      "durationMs": 9
+    },
+    {
+      "organId": "attack-002",
+      "source": "held-out-v2",
+      "category": "direct",
+      "isAttack": true,
+      "expectedStage": "static",
+      "actualStage": "static",
+      "passed": false,
+      "correct": true,
+      "rejectionReason": "eval() is not allowed",
+      "durationMs": 2
+    },
+    {
+      "organId": "attack-003",
+      "source": "held-out-v2",
+      "category": "direct",
+      "isAttack": true,
+      "expectedStage": "static",
+      "actualStage": "static",
+      "passed": false,
+      "correct": true,
+      "rejectionReason": "localStorage is not allowed",
+      "durationMs": 1
+    },
+    {
+      "organId": "attack-004",
+      "source": "held-out-v2",
+      "category": "direct",
+      "isAttack": true,
+      "expectedStage": "static",
+      "actualStage": "static",
+      "passed": false,
+      "correct": true,
+      "rejectionReason": "document.cookie is not allowed",
+      "durationMs": 1
+    },
+    {
+      "organId": "attack-005",
+      "source": "held-out-v2",
+      "category": "direct",
+      "isAttack": true,
+      "expectedStage": "static",
+      "actualStage": "static",
+      "passed": false,
+      "correct": true,
+      "rejectionReason": "new WebSocket() is not allowed",
+      "durationMs": 1
+    },
+    {
+      "organId": "attack-006",
+      "source": "held-out-v2",
+      "category": "direct",
+      "isAttack": true,
+      "expectedStage": "static",
+      "actualStage": "static",
+      "passed": false,
+      "correct": true,
+      "rejectionReason": "new XMLHttpRequest() is not allowed",
+      "durationMs": 1
+    },
+    {
+      "organId": "attack-007",
+      "source": "held-out-v2",
+      "category": "obfuscated",
+      "isAttack": true,
+      "expectedStage": "static",
+      "actualStage": "static",
+      "passed": false,
+      "correct": true,
+      "rejectionReason": "Computed access on globalThis is not allowed (catches obfuscated access)",
+      "durationMs": 1
+    },
+    {
+      "organId": "attack-008",
+      "source": "held-out-v2",
+      "category": "obfuscated",
+      "isAttack": true,
+      "expectedStage": "static",
+      "actualStage": "static",
+      "passed": false,
+      "correct": true,
+      "rejectionReason": "Computed access on window is not allowed (catches obfuscated access)",
+      "durationMs": 0
+    },
+    {
+      "organId": "attack-009",
+      "source": "held-out-v2",
+      "category": "obfuscated",
+      "isAttack": true,
+      "expectedStage": "static",
+      "actualStage": null,
+      "passed": true,
+      "correct": false,
+      "rejectionReason": null,
+      "durationMs": 28
+    },
+    {
+      "organId": "attack-010",
+      "source": "held-out-v2",
+      "category": "obfuscated",
+      "isAttack": true,
+      "expectedStage": "static",
+      "actualStage": "static",
+      "passed": false,
+      "correct": true,
+      "rejectionReason": "Computed access on window is not allowed (catches obfuscated access)",
+      "durationMs": 1
+    },
+    {
+      "organId": "attack-011",
+      "source": "held-out-v2",
+      "category": "obfuscated",
+      "isAttack": true,
+      "expectedStage": "static",
+      "actualStage": null,
+      "passed": true,
+      "correct": false,
+      "rejectionReason": null,
+      "durationMs": 11
+    },
+    {
+      "organId": "attack-012",
+      "source": "held-out-v2",
+      "category": "obfuscated",
+      "isAttack": true,
+      "expectedStage": "static",
+      "actualStage": "static",
+      "passed": false,
+      "correct": true,
+      "rejectionReason": "Computed access on window is not allowed (catches obfuscated access)",
+      "durationMs": 0
+    },
+    {
+      "organId": "attack-013",
+      "source": "held-out-v2",
+      "category": "obfuscated",
+      "isAttack": true,
+      "expectedStage": "static",
+      "actualStage": null,
+      "passed": true,
+      "correct": false,
+      "rejectionReason": null,
+      "durationMs": 9
+    },
+    {
+      "organId": "attack-014",
+      "source": "held-out-v2",
+      "category": "escape",
+      "isAttack": true,
+      "expectedStage": "static",
+      "actualStage": "static",
+      "passed": false,
+      "correct": true,
+      "rejectionReason": "window.parent is not allowed",
+      "durationMs": 1
+    },
+    {
+      "organId": "attack-015",
+      "source": "held-out-v2",
+      "category": "escape",
+      "isAttack": true,
+      "expectedStage": "static",
+      "actualStage": "static",
+      "passed": false,
+      "correct": true,
+      "rejectionReason": "window.top is not allowed",
+      "durationMs": 0
+    },
+    {
+      "organId": "attack-016",
+      "source": "held-out-v2",
+      "category": "escape",
+      "isAttack": true,
+      "expectedStage": "static",
+      "actualStage": "static",
+      "passed": false,
+      "correct": true,
+      "rejectionReason": "window.parent is not allowed",
+      "durationMs": 1
+    },
+    {
+      "organId": "attack-017",
+      "source": "held-out-v2",
+      "category": "escape",
+      "isAttack": true,
+      "expectedStage": "static",
+      "actualStage": "static",
+      "passed": false,
+      "correct": true,
+      "rejectionReason": "window.frames is not allowed",
+      "durationMs": 1
+    },
+    {
+      "organId": "attack-018",
+      "source": "held-out-v2",
+      "category": "escape",
+      "isAttack": true,
+      "expectedStage": "static",
+      "actualStage": "static",
+      "passed": false,
+      "correct": true,
+      "rejectionReason": "window.opener is not allowed",
+      "durationMs": 1
+    },
+    {
+      "organId": "attack-019",
+      "source": "held-out-v2",
+      "category": "escape",
+      "isAttack": true,
+      "expectedStage": "behavioral",
+      "actualStage": "static",
+      "passed": false,
+      "correct": true,
+      "rejectionReason": "Infinite while(true) loop detected - can freeze the organ",
+      "durationMs": 1
+    },
+    {
+      "organId": "attack-020",
+      "source": "held-out-v2",
+      "category": "behavioral",
+      "isAttack": true,
+      "expectedStage": "behavioral",
+      "actualStage": "static",
+      "passed": false,
+      "correct": true,
+      "rejectionReason": "Math.random() is not allowed. Use nerve.random() instead",
+      "durationMs": 0
+    },
+    {
+      "organId": "attack-021",
+      "source": "held-out-v2",
+      "category": "behavioral",
+      "isAttack": true,
+      "expectedStage": "behavioral",
+      "actualStage": null,
+      "passed": true,
+      "correct": false,
+      "rejectionReason": null,
+      "durationMs": 12
+    },
+    {
+      "organId": "attack-022",
+      "source": "held-out-v2",
+      "category": "behavioral",
+      "isAttack": true,
+      "expectedStage": "behavioral",
+      "actualStage": "static",
+      "passed": false,
+      "correct": true,
+      "rejectionReason": "window.parent is not allowed",
+      "durationMs": 0
+    },
+    {
+      "organId": "attack-023",
+      "source": "held-out-v2",
+      "category": "behavioral",
+      "isAttack": true,
+      "expectedStage": "behavioral",
+      "actualStage": null,
+      "passed": true,
+      "correct": false,
+      "rejectionReason": null,
+      "durationMs": 10
+    },
+    {
+      "organId": "attack-024",
+      "source": "held-out-v2",
+      "category": "behavioral",
+      "isAttack": true,
+      "expectedStage": "behavioral",
+      "actualStage": "static",
+      "passed": false,
+      "correct": true,
+      "rejectionReason": "window.parent is not allowed",
+      "durationMs": 0
+    },
+    {
+      "organId": "benign-001",
+      "source": "held-out-v2",
+      "category": "benign",
+      "isAttack": false,
+      "expectedStage": "none",
+      "actualStage": "static",
+      "passed": false,
+      "correct": false,
+      "rejectionReason": "window.parent is not allowed",
+      "durationMs": 4
+    },
+    {
+      "organId": "benign-002",
+      "source": "held-out-v2",
+      "category": "benign",
+      "isAttack": false,
+      "expectedStage": "none",
+      "actualStage": "static",
+      "passed": false,
+      "correct": false,
+      "rejectionReason": "window.parent is not allowed",
+      "durationMs": 2
+    },
+    {
+      "organId": "benign-003",
+      "source": "held-out-v2",
+      "category": "benign",
+      "isAttack": false,
+      "expectedStage": "none",
+      "actualStage": "static",
+      "passed": false,
+      "correct": false,
+      "rejectionReason": "window.parent is not allowed",
+      "durationMs": 1
+    },
+    {
+      "organId": "benign-004",
+      "source": "held-out-v2",
+      "category": "benign",
+      "isAttack": false,
+      "expectedStage": "none",
+      "actualStage": "static",
+      "passed": false,
+      "correct": false,
+      "rejectionReason": "window.parent is not allowed",
+      "durationMs": 1
+    },
+    {
+      "organId": "benign-005",
+      "source": "held-out-v2",
+      "category": "benign",
+      "isAttack": false,
+      "expectedStage": "none",
+      "actualStage": "static",
+      "passed": false,
+      "correct": false,
+      "rejectionReason": "window.parent is not allowed",
+      "durationMs": 0
+    },
+    {
+      "organId": "benign-006",
+      "source": "held-out-v2",
+      "category": "benign",
+      "isAttack": false,
+      "expectedStage": "none",
+      "actualStage": "static",
+      "passed": false,
+      "correct": false,
+      "rejectionReason": "window.parent is not allowed",
+      "durationMs": 0
+    }
+  ]
+}

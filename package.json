@@ -11,6 +11,8 @@
     "test:immune": "cd packages/immune && pnpm test",
     "test:a11y": "vitest run --filter @graft/web --reporter=verbose",
     "preflight": "bash scripts/preflight.sh",
+    "benchmark": "tsx scripts/benchmark-immune.ts",
+    "benchmark:corpus": "tsx scripts/benchmark-corpus.ts",
     "immune": "pnpm --filter @graft/immune-cli run-cli",
     "checkup": "tsx scripts/nightly-checkup.ts",
     "checkup:dry": "tsx scripts/nightly-checkup.ts --dry-run",
