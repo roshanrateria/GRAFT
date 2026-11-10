@@ -1,0 +1,49 @@
+name: Immune Check
+
+on:
+  pull_request:
+    branches: [main, master]
+    paths:
+      - 'organs/**'
+
+jobs:
+  immune-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 9
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Build immune CLI
+        run: pnpm --filter @graft/immune-cli build
+
+      - name: Find modified organs
+        id: organs
+        run: |
+          # Get list of modified organ directories
+          ORGANS=$(git diff --name-only origin/main...HEAD 2>/dev/null | grep '^organs/' | cut -d'/' -f1-2 | sort -u || echo "")
+          echo "organs=$ORGANS" >> $GITHUB_OUTPUT
+          echo "Found organs: $ORGANS"
+
+      - name: Run immune check on modified organs
+        if: steps.organs.outputs.organs != ''
+        run: |
+          for organ in ${{ steps.organs.outputs.organs }}; do
+            echo "Checking $organ..."
+            pnpm immune "$organ" || exit 1
+          done
+
+      - name: No organs modified
+        if: steps.organs.outputs.organs == ''
+        run: |
+          echo "No organ directories modified in this PR"

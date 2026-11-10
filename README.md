@@ -159,6 +159,63 @@ pnpm test:a11y
 pnpm preflight
 ```
 
+## Immune CLI
+
+Check organs with the immune system:
+
+```bash
+pnpm immune organs/handwritten/mood-weather
+```
+
+### CLI Options
+
+```bash
+# JSON output
+pnpm immune organs/handwritten/mood-weather --json
+
+# Verbose output
+pnpm immune organs/hostile/01-direct-fetch --verbose
+
+# Run specific stage only
+pnpm immune organs/handwritten/mood-weather --stage static
+```
+
+### Exit Codes
+
+| Code | Meaning |
+|------|---------|
+| 0 | Organ passed all stages |
+| 1 | Organ rejected (failed immune check) |
+| 2 | Error (invalid input, missing files, etc.) |
+
+### Output Format
+
+Default output:
+```
+Immune System Report for: mood-weather
+
+Stage 1 - Manifest: PASSED
+Stage 2 - Static: PASSED
+Stage 3 - Behavioral: PASSED
+Stage 4 - Property: PASSED
+
+VERDICT: APPROVED
+```
+
+JSON output (`--json`):
+```json
+{
+  "organ": "mood-weather",
+  "stages": [
+    { "name": "manifest", "passed": true },
+    { "name": "static", "passed": true },
+    { "name": "behavioral", "passed": true },
+    { "name": "property", "passed": true }
+  ],
+  "verdict": "APPROVED"
+}
+```
+
 ## Run Instructions
 
 ### Prerequisites

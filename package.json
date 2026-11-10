@@ -10,7 +10,8 @@
     "test:watch": "vitest",
     "test:immune": "cd packages/immune && pnpm test",
     "test:a11y": "vitest run --filter @graft/web --reporter=verbose",
-    "preflight": "bash scripts/preflight.sh"
+    "preflight": "bash scripts/preflight.sh",
+    "immune": "pnpm --filter @graft/immune-cli run-cli"
   },
   "devDependencies": {
     "@types/node": "^22.9.1",
