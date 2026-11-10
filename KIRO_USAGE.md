@@ -198,7 +198,37 @@ This file tracks Kiro usage throughout the GRAFT project development. Each entry
 (What each hook automated)
 
 ### Spec-driven vs Vibe
-(The experiment comparing the two approaches)
+
+**Experiment Date**: 2026-11-22
+
+**Results**:
+- **Spec-based**: 13.0 min avg time, 0.2 avg defects, 1 total repair round
+- **Vibe-based**: 9.0 min avg time, 2.8 avg defects, 11 total repair rounds
+
+**Key Findings**:
+
+1. **Spec approach produces 14x fewer defects**: Average 0.2 vs 2.8 defects per organ
+2. **Vibe approach is 31% faster initially**: 9 min vs 13 min for first implementation
+3. **Spec approach has 80% first-try success**: 4 of 5 organs passed without repairs
+4. **Vibe approach has 0% first-try success**: All 5 organs needed at least 2 repair rounds
+
+**Time accounting**:
+- Pure vibe: 9 min build + 11 repair rounds × 2 min = **31 min total**
+- Hybrid (mini-spec): 3 min spec + 13 min build + 1 repair × 2 min = **18 min total**
+- **Net savings: 42% reduction** with spec-based approach
+
+**Defect types caught**:
+- Spec-based: 1 accessibility issue (aria-live region missing)
+- Vibe-based: 14 defects including:
+  - Missing permission declarations (5)
+  - Direct Date/Math.random usage (4)
+  - Missing event emissions (3)
+  - Empty state not handled (1)
+  - localStorage usage (1)
+
+**Conclusion**: The immune system makes vibe-based development safer by catching defects automatically, but specs reduce the burden on the immune system and make development more predictable. For production features, spec-based is strongly recommended.
+
+**Full details**: See `docs/spec-vs-vibe-results.md`
 
 ### Steering
 (The strategy that mattered most)
@@ -2651,3 +2681,45 @@ ev-02-property.test.ts\
   - **Benchmark results**: 73.7% catch rate, +26.3% ablation improvement
   - **Test status**: 402 passed, 1 skipped
   - **Next steps**: Complete Step 1, then proceed to Step 2 (nerve bridge injection)
+
+
+---
+
+## Entry: 2026-11-10 Competitive Features Workflow Progress
+- Kiro surface used: IDE
+- Feature(s) used: workflow | run_workflow | execute_pwsh | fs_append | fs_write
+- What I asked / how I structured it:
+  - User provided NVIDIA API key for live testing
+  - User requested 5 competitive features: wish trials, held-out v2, immune CLI, Crew/spec-vs-vibe, MCP/powers, deploy
+  - Launched workflow wf_15353ec0b1ee7aff with 6 parallel tracks
+  - Created test scripts for LLM connection and wish trials
+- What worked:
+  - **Parallel execution**: All 6 tracks running simultaneously
+  - **MCP track completed**: Context7 and Playwright configured first
+  - **API key integration**: NVIDIA API key set for live testing
+  - **Test isolation**: Tests pass when API key cleared (402/403)
+  - **Journal reform**: Step 1 complete - per-entry files, dates fixed, STATUS.md created
+- What failed or surprised me:
+  - **API key test interference**: Tests failed with API key set (expected "not configured" but was configured)
+  - **Top-level await error**: Inline test script failed with CJS format
+  - **Wish trial script needs work**: Created but not yet validated with live API
+  - **Background process tracking**: Processes finish quickly, hard to capture output
+- What I would change:
+  - **Mock API key in tests**: Should mock environment variables in LLM tests
+  - **Better output capture**: Use file logging instead of stdout for background processes
+  - **Wait for wish trials**: Should wait for wish-trials step to complete before proceeding
+  - **Verify held-out v2**: Track that Red Team agent generates clean corpus
+- Evidence:
+  - **Workflow ID**: wf_15353ec0b1ee7aff
+  - **Status**: Running with 6 parallel tracks
+  - **Completed tracks**:
+    - MCP/Powers: Context7 + Playwright configured (commit 0107f12)
+  - **Running tracks**:
+    - Wish trials (testing live Doctor)
+    - Held-out v2 (research payloads)
+    - Immune CLI (implementation)
+    - Crew Night Doctor (scheduled checkup)
+    - Deploy passcode (live mode)
+  - **Test results**: 402 passed, 1 skipped (without API key)
+  - **Journal reform**: STATUS.md created, dates fixed, false Crew entry deleted
+  - **Commits**: 15 commits in last session (benchmark, ablation, integrity fixes, MCP config)

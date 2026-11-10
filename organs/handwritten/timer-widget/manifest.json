@@ -1,0 +1,11 @@
+{
+  "name": "timer-widget",
+  "version": "1.0.0",
+  "apiVersion": "1.0.0",
+  "permissions": ["emit:timerComplete", "emit:timerTick"],
+  "ports": [
+    { "name": "timerComplete", "direction": "out", "schema": { "type": "object" } },
+    { "name": "timerTick", "direction": "out", "schema": { "type": "object" } }
+  ],
+  "slotSize": "medium"
+}

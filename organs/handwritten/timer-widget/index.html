@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src data:;">
+  <title>Timer Widget</title>
+  <style>
+    :root {
+      --color-background: #0e0b0b;
+      --color-surface: #17120f;
+      --color-bone: #e9e1d0;
+      --color-brass: #b08d57;
+      --color-vein-green: #6f9a7d;
+      --color-alert: #c4472f;
+      --font-heading: 'Cormorant Garamond', Georgia, serif;
+      --font-body: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      --font-ledger: 'IBM Plex Mono', monospace;
+      --text-2xl: 1.563rem;
+      --text-4xl: 3.052rem;
+      --space-2: 0.5rem;
+      --space-4: 1rem;
+      --radius-md: 4px;
+      --radius-lg: 8px;
+    }
+    @media (prefers-color-scheme: light) {
+      :root {
+        --color-background: #f5f1eb;
+        --color-surface: #ffffff;
+        --color-bone: #1a1614;
+        --color-brass: #8b6914;
+        --color-vein-green: #2d5a3d;
+      }
+    }
+    [data-theme="light"] {
+      --color-background: #f5f1eb;
+      --color-surface: #ffffff;
+      --color-bone: #1a1614;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      * { animation-duration: 0.01ms !important; }
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: var(--font-body);
+      color: var(--color-bone);
+      background-color: var(--color-background);
+      min-height: 100%;
+      padding: var(--space-4);
+    }
+    .timer-widget { display: flex; flex-direction: column; gap: var(--space-4); }
+    .timer-display {
+      font-family: var(--font-ledger);
+      font-size: var(--text-4xl);
+      text-align: center;
+      padding: var(--space-4);
+      background: var(--color-surface);
+      border-radius: var(--radius-lg);
+      border: 1px solid rgba(176, 141, 87, 0.3);
+    }
+    .timer-display.running { border-color: var(--color-vein-green); }
+    .timer-display.alarm { 
+      border-color: var(--color-alert);
+      animation: pulse 0.5s ease-in-out infinite alternate;
+    }
+    @keyframes pulse {
+      from { background: var(--color-surface); }
+      to { background: rgba(196, 71, 47, 0.2); }
+    }
+    .input-group {
+      display: flex;
+      gap: var(--space-2);
+      justify-content: center;
+    }
+    .input-group label {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      font-size: 0.75rem;
+      opacity: 0.7;
+    }
+    .input-group input {
+      width: 60px;
+      padding: var(--space-2);
+      font-family: var(--font-ledger);
+      font-size: 1rem;
+      text-align: center;
+      background: var(--color-surface);
+      color: var(--color-bone);
+      border: 1px solid rgba(176, 141, 87, 0.3);
+      border-radius: var(--radius-md);
+    }
+    .controls {
+      display: flex;
+      gap: var(--space-2);
+      justify-content: center;
+    }
+    button {
+      padding: var(--space-2) var(--space-4);
+      font-family: var(--font-body);
+      font-size: 0.875rem;
+      background: var(--color-surface);
+      color: var(--color-bone);
+      border: 1px solid var(--color-brass);
+      border-radius: var(--radius-md);
+      cursor: pointer;
+    }
+    button:hover { background: rgba(176, 141, 87, 0.1); }
+    button:focus { outline: 2px solid var(--color-brass); outline-offset: 2px; }
+    button:disabled { opacity: 0.5; cursor: not-allowed; }
+    button.primary { background: var(--color-brass); color: var(--color-background); }
+    .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); border: 0; }
+  </style>
+</head>
+<body>
+  <div class="timer-widget" role="region" aria-label="Timer Widget">
+    <div class="timer-display" id="display" aria-live="polite">00:00:00</div>
+    <div class="input-group">
+      <label>Hours<input type="number" id="hours" min="0" max="23" value="0" aria-label="Hours"></label>
+      <label>Minutes<input type="number" id="minutes" min="0" max="59" value="5" aria-label="Minutes"></label>
+      <label>Seconds<input type="number" id="seconds" min="0" max="59" value="0" aria-label="Seconds"></label>
+    </div>
+    <div class="controls">
+      <button id="startBtn" class="primary">Start</button>
+      <button id="pauseBtn" disabled>Pause</button>
+      <button id="resetBtn">Reset</button>
+    </div>
+  </div>
+  <script>
+    const API_VERSION = '1.0.0';
+    let grantedPermissions = [];
+    let currentTheme = 'dark';
+    let running = false;
+    let totalSeconds = 0;
+    let remainingSeconds = 0;
+    let lastTickTime = 0;
+    
+    const display = document.getElementById('display');
+    const hoursInput = document.getElementById('hours');
+    const minutesInput = document.getElementById('minutes');
+    const secondsInput = document.getElementById('seconds');
+    const startBtn = document.getElementById('startBtn');
+    const pauseBtn = document.getElementById('pauseBtn');
+    const resetBtn = document.getElementById('resetBtn');
+    
+    function sendMessage(msg) {
+      window.parent.postMessage(msg, '*');
+    }
+    
+    function emit(port, payload) {
+      sendMessage({ type: 'emit', port, payload });
+    }
+    
+    function formatTime(seconds) {
+      const h = Math.floor(seconds / 3600);
+      const m = Math.floor((seconds % 3600) / 60);
+      const s = seconds % 60;
+      return `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+    }
+    
+    function updateDisplay() {
+      display.textContent = formatTime(remainingSeconds);
+      display.classList.toggle('running', running);
+    }
+    
+    function startTimer() {
+      if (!running && remainingSeconds === 0) {
+        const h = parseInt(hoursInput.value) || 0;
+        const m = parseInt(minutesInput.value) || 0;
+        const s = parseInt(secondsInput.value) || 0;
+        totalSeconds = h * 3600 + m * 60 + s;
+        remainingSeconds = totalSeconds;
+      }
+      if (remainingSeconds <= 0) return;
+      running = true;
+      startBtn.disabled = true;
+      pauseBtn.disabled = false;
+      hoursInput.disabled = true;
+      minutesInput.disabled = true;
+      secondsInput.disabled = true;
+      updateDisplay();
+    }
+    
+    function pauseTimer() {
+      running = false;
+      startBtn.disabled = false;
+      pauseBtn.disabled = true;
+      display.classList.remove('running');
+    }
+    
+    function resetTimer() {
+      running = false;
+      remainingSeconds = 0;
+      totalSeconds = 0;
+      startBtn.disabled = false;
+      pauseBtn.disabled = true;
+      hoursInput.disabled = false;
+      minutesInput.disabled = false;
+      secondsInput.disabled = false;
+      display.classList.remove('running', 'alarm');
+      updateDisplay();
+    }
+    
+    function handleTick(msg) {
+      if (!running) return;
+      const now = msg.now;
+      if (lastTickTime === 0) {
+        lastTickTime = now;
+        return;
+      }
+      const elapsed = Math.floor((now - lastTickTime) / 1000);
+      if (elapsed >= 1) {
+        lastTickTime = now;
+        remainingSeconds = Math.max(0, remainingSeconds - elapsed);
+        updateDisplay();
+        emit('timerTick', { remaining: remainingSeconds, total: totalSeconds });
+        if (remainingSeconds === 0) {
+          running = false;
+          display.classList.add('alarm');
+          display.classList.remove('running');
+          emit('timerComplete', { duration: totalSeconds, completedAt: now });
+          startBtn.disabled = false;
+          pauseBtn.disabled = true;
+        }
+      }
+    }
+    
+    function handleMessage(event) {
+      const msg = event.data;
+      if (!msg || typeof msg !== 'object') return;
+      switch (msg.type) {
+        case 'init':
+          grantedPermissions = msg.granted || [];
+          currentTheme = msg.theme || 'dark';
+          document.documentElement.setAttribute('data-theme', currentTheme);
+          break;
+        case 'tick':
+          handleTick(msg);
+          break;
+      }
+    }
+    
+    startBtn.addEventListener('click', startTimer);
+    pauseBtn.addEventListener('click', pauseTimer);
+    resetBtn.addEventListener('click', resetTimer);
+    
+    sendMessage({ type: 'hello', apiVersion: API_VERSION });
+    window.addEventListener('message', handleMessage);
+  </script>
+</body>
+</html>

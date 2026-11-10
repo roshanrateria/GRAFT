@@ -1,0 +1,10 @@
+{
+  "name": "expense-tracker",
+  "version": "1.0.0",
+  "apiVersion": "1.0.0",
+  "permissions": ["read:expenses.list", "emit:expenseTotal"],
+  "ports": [
+    { "name": "expenseTotal", "direction": "out", "schema": { "type": "object" } }
+  ],
+  "slotSize": "medium"
+}

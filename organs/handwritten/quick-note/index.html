@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src data:;">
+  <title>Quick Note</title>
+  <style>
+    :root {
+      --color-background: #0e0b0b;
+      --color-surface: #17120f;
+      --color-bone: #e9e1d0;
+      --color-brass: #b08d57;
+      --color-vein-green: #6f9a7d;
+      --font-body: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      --font-heading: 'Cormorant Garamond', Georgia, serif;
+      --font-ledger: 'IBM Plex Mono', monospace;
+      --text-sm: 0.8rem;
+      --space-2: 0.5rem;
+      --space-4: 1rem;
+      --radius-md: 4px;
+      --radius-lg: 8px;
+    }
+    @media (prefers-color-scheme: light) {
+      :root { --color-background: #f5f1eb; --color-surface: #ffffff; --color-bone: #1a1614; --color-brass: #8b6914; }
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: var(--font-body); color: var(--color-bone); background-color: var(--color-background); min-height: 100%; padding: var(--space-4); }
+    .quick-note { display: flex; flex-direction: column; gap: var(--space-4); }
+    .header h1 { font-family: var(--font-heading); font-size: 1.25rem; text-align: center; }
+    .note-area { width: 100%; min-height: 80px; padding: var(--space-4); font-family: var(--font-body); font-size: var(--text-sm); background: var(--color-surface); color: var(--color-bone); border: 1px solid rgba(176, 141, 87, 0.3); border-radius: var(--radius-lg); resize: vertical; }
+    .note-area:focus { outline: 2px solid var(--color-brass); outline-offset: 2px; }
+    .note-area::placeholder { opacity: 0.5; }
+    .controls { display: flex; justify-content: center; }
+    button { padding: var(--space-2) var(--space-4); font-family: var(--font-body); font-size: var(--text-sm); background: var(--color-brass); color: var(--color-background); border: none; border-radius: var(--radius-md); cursor: pointer; }
+    button:hover { opacity: 0.9; }
+    button:focus { outline: 2px solid var(--color-bone); outline-offset: 2px; }
+    .status { text-align: center; font-size: var(--text-sm); opacity: 0.7; }
+    .status.saved { color: var(--color-vein-green); }
+    .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); border: 0; }
+  </style>
+</head>
+<body>
+  <div class="quick-note" role="region" aria-label="Quick Note Taker">
+    <div class="header"><h1>Quick Note</h1></div>
+    <textarea class="note-area" id="noteInput" placeholder="Type your note here..." aria-label="Note content"></textarea>
+    <div class="controls">
+      <button id="saveBtn">Save Note</button>
+    </div>
+    <div class="status" id="status" aria-live="polite"></div>
+  </div>
+  <script>
+    const API_VERSION = '1.0.0';
+    let grantedPermissions = [];
+    let currentTheme = 'dark';
+    
+    const noteInput = document.getElementById('noteInput');
+    const saveBtn = document.getElementById('saveBtn');
+    const status = document.getElementById('status');
+    
+    function sendMessage(msg) { window.parent.postMessage(msg, '*'); }
+    function emit(port, payload) { sendMessage({ type: 'emit', port, payload }); }
+    
+    function saveNote() {
+      const content = noteInput.value.trim();
+      if (!content) {
+        status.textContent = 'Please enter a note';
+        status.classList.remove('saved');
+        return;
+      }
+      const timestamp = Date.now(); // DEFECT: Should use nerve.now()
+      emit('noteContent', { content, timestamp });
+      status.textContent = 'Note saved!';
+      status.classList.add('saved');
+      noteInput.value = '';
+    }
+    
+    function handleMessage(event) {
+      const msg = event.data;
+      if (!msg || typeof msg !== 'object') return;
+      if (msg.type === 'init') {
+        grantedPermissions = msg.granted || [];
+        currentTheme = msg.theme || 'dark';
+        document.documentElement.setAttribute('data-theme', currentTheme);
+      }
+    }
+    
+    saveBtn.addEventListener('click', saveNote);
+    noteInput.addEventListener('keydown', (e) => { if (e.key === 'Enter' && e.ctrlKey) saveNote(); });
+    
+    sendMessage({ type: 'hello', apiVersion: API_VERSION });
+    window.addEventListener('message', handleMessage);
+  </script>
+</body>
+</html>
