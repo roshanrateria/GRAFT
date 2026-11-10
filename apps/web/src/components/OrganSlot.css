@@ -1,0 +1,190 @@
+/**
+ * OrganSlot Styles
+ *
+ * Empty organ slots in the grid with Victorian anatomical theatre aesthetic.
+ * Features stitched seams between slots.
+ */
+
+.organ-slot {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  min-height: 200px;
+  transition: all var(--transition-normal);
+  cursor: pointer;
+}
+
+/* Empty slot state */
+.organ-slot--empty {
+  border-style: dashed;
+}
+
+.organ-slot--empty:hover,
+.organ-slot--empty:focus-visible {
+  background-color: rgba(176, 141, 87, 0.05);
+  border-color: var(--color-brass);
+}
+
+.organ-slot--empty:focus-visible {
+  outline: 2px solid var(--color-brass);
+  outline-offset: 2px;
+}
+
+/* Active slot (has organ) */
+.organ-slot--active {
+  border-style: solid;
+  background-color: var(--color-surface);
+  box-shadow: var(--shadow-sm);
+}
+
+.organ-slot--active:hover {
+  box-shadow: var(--shadow-md);
+}
+
+/* Quarantined slot */
+.organ-slot--quarantined {
+  border-color: var(--color-alert);
+  border-style: solid;
+}
+
+/* Decayed slot */
+.organ-slot--decayed {
+  border-color: var(--color-warning);
+  border-style: dashed;
+  opacity: 0.7;
+}
+
+/* Slot content */
+.organ-slot__content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  padding: var(--space-4);
+  width: 100%;
+  height: 100%;
+}
+
+/* Empty slot placeholder */
+.organ-slot__empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-3);
+  color: var(--color-text-muted);
+}
+
+.organ-slot__empty-icon {
+  width: 48px;
+  height: 48px;
+  opacity: 0.5;
+}
+
+.organ-slot__empty-text {
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+}
+
+/* Slot identifier */
+.organ-slot__id {
+  position: absolute;
+  top: var(--space-2);
+  left: var(--space-2);
+  font-family: var(--font-ledger);
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+  opacity: 0.5;
+}
+
+/* Organ content wrapper */
+.organ-slot__organ {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.organ-slot__organ-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--space-2) var(--space-3);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.organ-slot__organ-name {
+  font-family: var(--font-heading);
+  font-size: var(--text-base);
+  font-weight: 600;
+  color: var(--color-bone);
+}
+
+.organ-slot__organ-status {
+  font-size: var(--text-xs);
+  padding: var(--space-1) var(--space-2);
+  border-radius: var(--radius-full);
+}
+
+.organ-slot__organ-status--active {
+  background-color: rgba(111, 154, 125, 0.2);
+  color: var(--color-vein-green);
+}
+
+.organ-slot__organ-status--quarantined {
+  background-color: rgba(196, 71, 47, 0.2);
+  color: var(--color-alert);
+}
+
+.organ-slot__organ-status--decayed {
+  background-color: rgba(176, 141, 87, 0.2);
+  color: var(--color-brass);
+}
+
+.organ-slot__organ-body {
+  flex: 1;
+  overflow: auto;
+}
+
+/* Slot sizes */
+.organ-slot--small {
+  min-height: 120px;
+}
+
+.organ-slot--medium {
+  min-height: 200px;
+}
+
+.organ-slot--large {
+  min-height: 300px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .organ-slot {
+    min-height: 150px;
+  }
+
+  .organ-slot--small {
+    min-height: 100px;
+  }
+
+  .organ-slot--medium {
+    min-height: 150px;
+  }
+
+  .organ-slot--large {
+    min-height: 200px;
+  }
+
+  .organ-slot__empty-icon {
+    width: 32px;
+    height: 32px;
+  }
+}

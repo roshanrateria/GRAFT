@@ -1,0 +1,50 @@
+{
+  "wish": "Count my overdue tasks and warn me when there are more than five",
+  "events": [
+    {
+      "type": "assumption",
+      "timestamp": 1700000001000,
+      "data": {
+        "message": "Assuming you want a counter that shows red warning when overdue > 5"
+      }
+    },
+    {
+      "type": "spec-start",
+      "timestamp": 1700000001100,
+      "data": {
+        "organName": "task-counter"
+      }
+    },
+    {
+      "type": "spec-section",
+      "timestamp": 1700000001200,
+      "data": {
+        "section": "requirements",
+        "content": "### TSK-01: Display Overdue Count [EX]\nWHEN the organ loads, THE SYSTEM SHALL show the count of overdue tasks.\n\n### TSK-02: Warning State [EX]\nWHEN overdue count exceeds 5, THE SYSTEM SHALL display a red warning indicator.\n\n### TSK-03: Emit Count [PBT]\nWHEN task data changes, THE SYSTEM SHALL emit the updated count."
+      }
+    },
+    {
+      "type": "spec-complete",
+      "timestamp": 1700000001300,
+      "data": {}
+    },
+    {
+      "type": "build-complete",
+      "timestamp": 1700000001400,
+      "data": {}
+    },
+    {
+      "type": "immune-pass",
+      "timestamp": 1700000001500,
+      "data": {}
+    },
+    {
+      "type": "consent-request",
+      "timestamp": 1700000001600,
+      "data": {
+        "organName": "task-counter"
+      }
+    }
+  ],
+  "passed": true
+}

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Message Flood Attack</title>
+</head>
+<body>
+  <div id="root">Malicious organ - message flood</div>
+  <script>
+    // This should be caught by Stage 3: Behavioral Run
+    // Infinite message flood to overwhelm the system
+    
+    function floodMessages() {
+      while (true) {
+        try {
+          // Attempt to send messages rapidly
+          for (let i = 0; i < 1000; i++) {
+            nerve.emit('flood', { data: 'spam'.repeat(100) });
+          }
+        } catch (e) {
+          // Ignore errors and continue
+        }
+      }
+    }
+    
+    // Start flooding after init
+    window.addEventListener('message', (event) => {
+      if (event.data.type === 'init') {
+        floodMessages();
+      }
+    });
+  </script>
+</body>
+</html>

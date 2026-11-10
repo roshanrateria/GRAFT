@@ -1,0 +1,143 @@
+{
+  "wish": "Show a graph of how my mood changed this month",
+  "events": [
+    {
+      "type": "assumption",
+      "timestamp": 1699999999000,
+      "data": {
+        "message": "Assuming you want a line chart showing mood scores over the past 30 days"
+      }
+    },
+    {
+      "type": "spec-start",
+      "timestamp": 1699999999100,
+      "data": {
+        "organName": "mood-graph"
+      }
+    },
+    {
+      "type": "spec-section",
+      "timestamp": 1699999999200,
+      "data": {
+        "section": "requirements",
+        "content": "### MOG-01: Display Mood Graph [EX]\nWHEN the organ loads, THE SYSTEM SHALL render a line chart of mood entries for the past 30 days.\n\n### MOG-02: Interactive Hover [EX]\nWHEN the user hovers over a data point, THE SYSTEM SHALL show the date and mood score.\n\n### MOG-03: Emit Mood Summary [PBT]\nWHEN the organ receives mood data, THE SYSTEM SHALL emit the average mood score."
+      }
+    },
+    {
+      "type": "spec-complete",
+      "timestamp": 1699999999300,
+      "data": {
+        "spec": {
+          "name": "mood-graph",
+          "requirements": "See above",
+          "design": "Line chart using Tissue.line helper"
+        }
+      }
+    },
+    {
+      "type": "properties-start",
+      "timestamp": 1699999999400,
+      "data": {}
+    },
+    {
+      "type": "properties-section",
+      "timestamp": 1699999999500,
+      "data": {
+        "propertyId": "MOG-03",
+        "code": "fc.property(fc.array(fc.record({date: fc.string(), score: fc.nat(10)})), entries => {\n  // Test that average is calculated correctly\n  return true;\n})"
+      }
+    },
+    {
+      "type": "properties-complete",
+      "timestamp": 1699999999600,
+      "data": {
+        "count": 3
+      }
+    },
+    {
+      "type": "build-start",
+      "timestamp": 1699999999700,
+      "data": {}
+    },
+    {
+      "type": "build-progress",
+      "timestamp": 1699999999800,
+      "data": {
+        "step": "Creating manifest.json",
+        "progress": 25
+      }
+    },
+    {
+      "type": "build-progress",
+      "timestamp": 1699999999900,
+      "data": {
+        "step": "Creating index.html with chart",
+        "progress": 50
+      }
+    },
+    {
+      "type": "build-progress",
+      "timestamp": 1700000000000,
+      "data": {
+        "step": "Creating properties.js",
+        "progress": 75
+      }
+    },
+    {
+      "type": "build-complete",
+      "timestamp": 1700000000100,
+      "data": {}
+    },
+    {
+      "type": "immune-start",
+      "timestamp": 1700000000200,
+      "data": {}
+    },
+    {
+      "type": "immune-stage",
+      "timestamp": 1700000000300,
+      "data": {
+        "stage": "static",
+        "passed": true
+      }
+    },
+    {
+      "type": "immune-stage",
+      "timestamp": 1700000000400,
+      "data": {
+        "stage": "manifest",
+        "passed": true
+      }
+    },
+    {
+      "type": "immune-stage",
+      "timestamp": 1700000000500,
+      "data": {
+        "stage": "behavioral",
+        "passed": true
+      }
+    },
+    {
+      "type": "immune-stage",
+      "timestamp": 1700000000600,
+      "data": {
+        "stage": "property",
+        "passed": true
+      }
+    },
+    {
+      "type": "immune-pass",
+      "timestamp": 1700000000700,
+      "data": {}
+    },
+    {
+      "type": "consent-request",
+      "timestamp": 1700000000800,
+      "data": {
+        "organName": "mood-graph",
+        "message": "Organ ready for transplant. Please confirm."
+      }
+    }
+  ],
+  "passed": true
+}

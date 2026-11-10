@@ -1,0 +1,33 @@
+{
+  "name": "@graft/immune",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "dependencies": {
+    "@graft/nerve": "workspace:*",
+    "acorn": "^8.14.0",
+    "acorn-walk": "^8.3.4",
+    "parse5": "^7.2.0",
+    "zod": "^3.23.8",
+    "fast-check": "^3.22.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.9.1",
+    "typescript": "^5.6.3",
+    "vitest": "^2.1.5"
+  }
+}

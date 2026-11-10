@@ -1,0 +1,10 @@
+{
+  "name": "mood-weather",
+  "version": "1.0.0",
+  "apiVersion": "1.0.0",
+  "permissions": ["read:mood.entries", "emit:moodScore"],
+  "ports": [
+    { "name": "moodScore", "direction": "out", "schema": { "type": "number" } }
+  ],
+  "slotSize": "medium"
+}

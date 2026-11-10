@@ -1,0 +1,78 @@
+/**
+ * Creature Styles
+ *
+ * The host application layout with the slot grid.
+ * Victorian anatomical theatre aesthetic with dark theme.
+ */
+
+.creature {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: var(--color-background);
+}
+
+.creature__body {
+  flex: 1;
+  display: flex;
+  padding: var(--space-6);
+  justify-content: center;
+  align-items: flex-start;
+}
+
+/* Slot grid layout */
+.creature__slots-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, minmax(200px, auto));
+  gap: var(--space-4);
+  width: 100%;
+  max-width: 1200px;
+}
+
+/* Grid lines for stitched seams effect */
+.creature__slots-grid::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  /* Subtle stitch pattern could be added here */
+}
+
+/* Responsive grid - tablet */
+@media (max-width: 1024px) {
+  .creature__slots-grid {
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(4, minmax(180px, auto));
+  }
+}
+
+/* Responsive grid - mobile */
+@media (max-width: 640px) {
+  .creature__body {
+    padding: var(--space-4);
+  }
+
+  .creature__slots-grid {
+    grid-template-columns: 1fr;
+    grid-template-rows: none;
+  }
+}
+
+/* Focus visible for grid */
+.creature__slots-grid:focus-within {
+  outline: none;
+}
+
+/* Screen reader only utility */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}

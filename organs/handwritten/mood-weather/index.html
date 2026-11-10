@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src data:;">
+  <title>Mood Weather</title>
+  <style>
+    /* Tissue Kit Design Tokens */
+    :root {
+      --color-background: #0e0b0b;
+      --color-surface: #17120f;
+      --color-bone: #e9e1d0;
+      --color-brass: #b08d57;
+      --color-oxblood: #7a1f1f;
+      --color-vein-green: #6f9a7d;
+      --color-alert: #c4472f;
+      
+      --font-heading: 'Cormorant Garamond', 'IM Fell English', Georgia, serif;
+      --font-body: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      --font-ledger: 'IBM Plex Mono', 'Consolas', monospace;
+      
+      --text-xs: 0.64rem;
+      --text-sm: 0.8rem;
+      --text-base: 1rem;
+      --text-lg: 1.25rem;
+      --text-2xl: 1.563rem;
+      --text-3xl: 2.441rem;
+      
+      --space-2: 0.5rem;
+      --space-3: 0.75rem;
+      --space-4: 1rem;
+      --space-6: 1.5rem;
+      
+      --radius-md: 4px;
+      --radius-lg: 8px;
+    }
+    
+    /* Light theme */
+    @media (prefers-color-scheme: light) {
+      :root {
+        --color-background: #f5f1eb;
+        --color-surface: #ffffff;
+        --color-bone: #1a1614;
+        --color-brass: #8b6914;
+        --color-vein-green: #2d5a3d;
+      }
+    }
+    
+    [data-theme="light"] {
+      --color-background: #f5f1eb;
+      --color-surface: #ffffff;
+      --color-bone: #1a1614;
+      --color-brass: #8b6914;
+      --color-vein-green: #2d5a3d;
+    }
+    
+    [data-theme="dark"] {
+      --color-background: #0e0b0b;
+      --color-surface: #17120f;
+      --color-bone: #e9e1d0;
+      --color-brass: #b08d57;
+      --color-vein-green: #6f9a7d;
+    }
+    
+    /* Reduced motion */
+    @media (prefers-reduced-motion: reduce) {
+      * {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+    
+    /* Base styles */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    
+    body {
+      font-family: var(--font-body);
+      font-size: var(--text-base);
+      color: var(--color-bone);
+      background-color: var(--color-background);
+      min-height: 100%;
+      padding: var(--space-4);
+    }
+    
+    /* Container */
+    .mood-weather {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-4);
+    }
+    
+    /* Header */
+    .header {
+      text-align: center;
+    }
+    
+    .header h1 {
+      font-family: var(--font-heading);
+      font-size: var(--text-2xl);
+      font-weight: 600;
+      margin-bottom: var(--space-2);
+    }
+    
+    /* Current weather display */
+    .current-weather {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: var(--space-2);
+      padding: var(--space-6);
+      background-color: var(--color-surface);
+      border-radius: var(--radius-lg);
+      border: 1px solid rgba(176, 141, 87, 0.3);
+    }
+    
+    .weather-icon {
+      font-size: var(--text-3xl);
+      line-height: 1;
+    }
+    
+    .weather-label {
+      font-family: var(--font-heading);
+      font-size: var(--text-lg);
+      color: var(--color-brass);
+    }
+    
+    .average-score {
+      font-family: var(--font-ledger);
+      font-size: var(--text-sm);
+      color: var(--color-bone);
+      opacity: 0.7;
+    }
+    
+    /* 7-day forecast */
+    .forecast {
+      display: flex;
+      justify-content: space-between;
+      gap: var(--space-2);
+      padding: var(--space-3);
+      background-color: var(--color-surface);
+      border-radius: var(--radius-lg);
+      border: 1px solid rgba(176, 141, 87, 0.3);
+    }
+    
+    .forecast-day {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: var(--space-2);
+      flex: 1;
+      min-width: 0;
+    }
+    
+    .forecast-day .day-label {
+      font-size: var(--text-xs);
+      color: var(--color-bone);
+      opacity: 0.7;
+    }
+    
+    .forecast-day .day-icon {
+      font-size: var(--text-lg);
+    }
+    
+    .forecast-day .day-score {
+      font-family: var(--font-ledger);
+      font-size: var(--text-xs);
+      color: var(--color-brass);
+    }
+    
+    /* Empty state */
+    .empty-state {
+      text-align: center;
+      padding: var(--space-6);
+      color: var(--color-bone);
+      opacity: 0.7;
+    }
+    
+    .empty-state p {
+      font-style: italic;
+    }
+    
+    /* Loading state */
+    .loading {
+      text-align: center;
+      padding: var(--space-6);
+      color: var(--color-bone);
+      opacity: 0.5;
+    }
+    
+    /* Visually hidden for accessibility */
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      border: 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="mood-weather" role="region" aria-label="Mood Weather Display">
+    <div class="loading" id="loading">Loading mood data...</div>
+    <div class="mood-weather-content" id="content" style="display: none;"></div>
+  </div>
+  
+  <script>
+    /**
+     * Mood Weather Organ
+     * 
+     * A reference organ that visualizes mood data as weather conditions.
+     * Demonstrates the Nerve API protocol for organ-host communication.
+     * 
+     * @see docs/NERVE_API.md
+     */
+    
+    // ==========================================================================
+    // Constants
+    // ==========================================================================
+    
+    const API_VERSION = '1.0.0';
+    const DATA_PATH = 'mood.entries';
+    const OUTPUT_PORT = 'moodScore';
+    
+    // ==========================================================================
+    // State
+    // ==========================================================================
+    
+    let grantedPermissions = [];
+    let currentTheme = 'dark';
+    let reducedMotion = false;
+    let pendingReads = new Map();
+    let readIdCounter = 0;
+    
+    // ==========================================================================
+    // Nerve API Helpers
+    // ==========================================================================
+    
+    /**
+     * Send a message to the host.
+     */
+    function sendMessage(msg) {
+      window.parent.postMessage(msg, '*');
+    }
+    
+    /**
+     * Request data from a domain.
+     * Returns a promise that resolves when the data arrives.
+     */
+    function read(path) {
+      return new Promise((resolve, reject) => {
+        const id = `read-${++readIdCounter}`;
+        pendingReads.set(id, { resolve, reject });
+        sendMessage({ type: 'read', id, path });
+        
+        // Timeout after 30 seconds
+        setTimeout(() => {
+          if (pendingReads.has(id)) {
+            pendingReads.delete(id);
+            reject(new Error(`Read timeout for ${path}`));
+          }
+        }, 30000);
+      });
+    }
+    
+    /**
+     * Emit data to an output port.
+     */
+    function emit(port, payload) {
+      sendMessage({ type: 'emit', port, payload });
+    }
+    
+    /**
+     * Request iframe resize.
+     */
+    function resize(height) {
+      sendMessage({ type: 'resize', height });
+    }
+    
+    // ==========================================================================
+    // Weather Logic
+    // ==========================================================================
+    
+    /**
+     * Convert a mood score (1-10) to a weather condition.
+     */
+    function scoreToWeather(score) {
+      if (score >= 8) return { icon: '☀️', label: 'Sunny', color: 'var(--color-vein-green)' };
+      if (score >= 5) return { icon: '⛅', label: 'Partly Cloudy', color: 'var(--color-brass)' };
+      if (score >= 3) return { icon: '☁️', label: 'Cloudy', color: 'var(--color-bone)' };
+      return { icon: '🌧️', label: 'Rainy', color: 'var(--color-alert)' };
+    }
+    
+    /**
+     * Calculate the average mood score.
+     */
+    function calculateAverage(entries) {
+      if (!entries || entries.length === 0) return 0;
+      const sum = entries.reduce((acc, e) => acc + (e.score || 0), 0);
+      return Math.round((sum / entries.length) * 10) / 10;
+    }
+    
+    /**
+     * Get the last N entries sorted by date (most recent last).
+     */
+    function getLastEntries(entries, count) {
+      if (!entries || entries.length === 0) return [];
+      
+      // Sort by date descending
+      const sorted = [...entries].sort((a, b) => 
+        new Date(b.date).getTime() - new Date(a.date).getTime()
+      );
+      
+      // Take last N and reverse to show oldest to newest (left to right)
+      return sorted.slice(0, count).reverse();
+    }
+    
+    /**
+     * Format a date for display (e.g., "Mon", "Tue").
+     */
+    function formatDayLabel(dateStr) {
+      try {
+        const date = new Date(dateStr);
+        return date.toLocaleDateString('en-US', { weekday: 'short' });
+      } catch {
+        return '?';
+      }
+    }
+    
+    // ==========================================================================
+    // Rendering
+    // ==========================================================================
+    
+    /**
+     * Render the mood weather display.
+     */
+    function render(moodData) {
+      const container = document.getElementById('content');
+      const loading = document.getElementById('loading');
+      
+      if (!moodData || !moodData.entries || moodData.entries.length === 0) {
+        container.innerHTML = `
+          <div class="empty-state">
+            <p>No mood data available.</p>
+          </div>
+        `;
+        loading.style.display = 'none';
+        container.style.display = 'block';
+        return;
+      }
+      
+      const entries = moodData.entries;
+      const last7 = getLastEntries(entries, 7);
+      const average = calculateAverage(entries);
+      const todayWeather = last7.length > 0 
+        ? scoreToWeather(last7[last7.length - 1].score) 
+        : { icon: '❓', label: 'Unknown', color: 'var(--color-bone)' };
+      
+      // Build forecast HTML
+      const forecastHtml = last7.map(entry => {
+        const weather = scoreToWeather(entry.score);
+        return `
+          <div class="forecast-day">
+            <span class="day-label">${formatDayLabel(entry.date)}</span>
+            <span class="day-icon" role="img" aria-label="${weather.label}">${weather.icon}</span>
+            <span class="day-score">${entry.score}</span>
+          </div>
+        `;
+      }).join('');
+      
+      container.innerHTML = `
+        <div class="header">
+          <h1>Mood Weather</h1>
+        </div>
+        
+        <div class="current-weather">
+          <span class="weather-icon" role="img" aria-label="${todayWeather.label}">${todayWeather.icon}</span>
+          <span class="weather-label">${todayWeather.label}</span>
+          <span class="average-score">7-day average: ${average}</span>
+        </div>
+        
+        <div class="forecast" role="list" aria-label="7-day mood forecast">
+          ${forecastHtml}
+        </div>
+      `;
+      
+      loading.style.display = 'none';
+      container.style.display = 'block';
+      
+      // Emit the average mood score
+      emit(OUTPUT_PORT, average);
+    }
+    
+    // ==========================================================================
+    // Message Handling
+    // ==========================================================================
+    
+    /**
+     * Handle messages from the host.
+     */
+    function handleMessage(event) {
+      const msg = event.data;
+      
+      if (!msg || typeof msg !== 'object') return;
+      
+      switch (msg.type) {
+        case 'init':
+          handleInit(msg);
+          break;
+          
+        case 'data':
+          handleData(msg);
+          break;
+          
+        case 'tick':
+          // Tick messages are handled but not actively used
+          // Could be used for time-based features in the future
+          break;
+          
+        case 'in':
+          // Input from linked organs (not used but handled per protocol)
+          break;
+      }
+    }
+    
+    /**
+     * Handle init message from host.
+     */
+    async function handleInit(msg) {
+      grantedPermissions = msg.granted || [];
+      currentTheme = msg.theme || 'dark';
+      reducedMotion = msg.reducedMotion || false;
+      
+      // Apply theme
+      document.documentElement.setAttribute('data-theme', currentTheme);
+      
+      // Check if we have permission to read mood data
+      if (!grantedPermissions.includes('read:mood.entries')) {
+        const container = document.getElementById('content');
+        const loading = document.getElementById('loading');
+        loading.style.display = 'none';
+        container.innerHTML = `
+          <div class="empty-state">
+            <p>Permission denied: cannot read mood data.</p>
+          </div>
+        `;
+        container.style.display = 'block';
+        return;
+      }
+      
+      // Request mood data
+      try {
+        await read(DATA_PATH);
+      } catch (err) {
+        const container = document.getElementById('content');
+        const loading = document.getElementById('loading');
+        loading.style.display = 'none';
+        container.innerHTML = `
+          <div class="empty-state">
+            <p>Failed to load mood data: ${err.message}</p>
+          </div>
+        `;
+        container.style.display = 'block';
+      }
+    }
+    
+    /**
+     * Handle data message from host.
+     */
+    function handleData(msg) {
+      const pending = pendingReads.get(msg.id);
+      if (pending) {
+        pendingReads.delete(msg.id);
+        pending.resolve(msg.value);
+      }
+      
+      // If this is mood data, render it
+      if (msg.id && msg.id.startsWith('read-')) {
+        render(msg.value);
+      }
+    }
+    
+    // ==========================================================================
+    // Initialization
+    // ==========================================================================
+    
+    // Send handshake
+    sendMessage({ type: 'hello', apiVersion: API_VERSION });
+    
+    // Listen for messages
+    window.addEventListener('message', handleMessage);
+  </script>
+</body>
+</html>

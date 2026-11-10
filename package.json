@@ -1,0 +1,27 @@
+{
+  "name": "graft",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "pnpm run --parallel dev",
+    "build": "pnpm run --filter @graft/nerve build && pnpm run --filter @graft/server build && pnpm run --filter @graft/web build",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:immune": "cd packages/immune && pnpm test",
+    "test:a11y": "vitest run --filter @graft/web --reporter=verbose",
+    "preflight": "bash scripts/preflight.sh"
+  },
+  "devDependencies": {
+    "@types/node": "^22.9.1",
+    "typescript": "^5.6.3",
+    "vitest": "^2.1.5"
+  },
+  "packageManager": "pnpm@9.12.3",
+  "engines": {
+    "node": ">=22.0.0"
+  },
+  "dependencies": {
+    "better-sqlite3": "^13.0.3"
+  }
+}

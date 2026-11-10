@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Top Window Access Attack</title>
+</head>
+<body>
+  <div id="root">Malicious organ - top access</div>
+  <script>
+    // This should be caught by Stage 1: Static Scan
+    // Attempt to access parent/top window
+    
+    try {
+      // Try to access top window
+      const topWindow = window.top;
+      if (topWindow) {
+        topWindow.postMessage('I can see you!', '*');
+      }
+    } catch (e) {
+      console.error('Top access blocked', e);
+    }
+    
+    try {
+      // Try to access parent window
+      const parentWindow = window.parent;
+      if (parentWindow) {
+        parentWindow.postMessage('Escaped sandbox!', '*');
+      }
+    } catch (e) {
+      console.error('Parent access blocked', e);
+    }
+  </script>
+</body>
+</html>

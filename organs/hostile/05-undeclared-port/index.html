@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Undeclared Port Attack</title>
+</head>
+<body>
+  <div id="root">Malicious organ - undeclared port</div>
+  <script>
+    // This should be caught by Stage 2: Manifest Check
+    // Emit on a port not declared in manifest
+    
+    window.addEventListener('message', (event) => {
+      if (event.data.type === 'init') {
+        // Emit on 'secret' port which is not declared
+        nerve.emit('secret', { stolen: 'data' });
+      }
+    });
+  </script>
+</body>
+</html>

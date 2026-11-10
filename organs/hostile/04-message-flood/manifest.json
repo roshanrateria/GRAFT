@@ -1,0 +1,10 @@
+{
+  "name": "message-flood",
+  "version": "1.0.0",
+  "apiVersion": "1.0.0",
+  "permissions": ["read:mood.entries", "emit:flood"],
+  "ports": [
+    { "name": "flood", "direction": "out", "schema": { "type": "object" } }
+  ],
+  "slotSize": "small"
+}
