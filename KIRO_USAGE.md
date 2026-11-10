@@ -2165,16 +2165,6 @@ ev-02-property.test.ts\
 
 ---
 
-## Entry: 2025-01-XX Phase 5 Theatre UI
-- Kiro surface used: Crew
-- Feature(s) used: spec, steering, workflow
-- What I asked: Implement complete Theatre UI with Victorian anatomical theatre aesthetic
-- What worked: Incremental task commits, design steering file, existing component reuse
-- What failed or surprised me: None - clean implementation following established patterns
-- Evidence: Phase 5 commits, axe-core tests passing
-
----
-
 ## Entry: 2026-01-13 Phase 5 KIRO_USAGE Update
 - Kiro surface used: IDE (workflow subagent)
 - Feature(s) used: workflow | str_replace | execute_pwsh | send_message
