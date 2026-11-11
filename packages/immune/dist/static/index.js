@@ -5,8 +5,10 @@
  */
 import { analyzeJavaScript } from './js-analyzer.js';
 import { analyzeHTML } from './html-analyzer.js';
+import { extractInlineScripts } from './static-helpers.js';
 export { analyzeJavaScript } from './js-analyzer.js';
 export { analyzeHTML } from './html-analyzer.js';
+export { extractInlineScripts } from './static-helpers.js';
 /**
  * Perform complete static analysis on an organ bundle.
  * Checks both HTML and embedded JavaScript.
@@ -46,20 +48,5 @@ export function performStaticAnalysis(indexHtml, manifestJson) {
             }
             : undefined,
     };
-}
-/**
- * Extract inline scripts from HTML.
- */
-function extractInlineScripts(html) {
-    const scripts = [];
-    const scriptRegex = /<script[^>]*>([\s\S]*?)<\/script>/gi;
-    let match;
-    while ((match = scriptRegex.exec(html)) !== null) {
-        const code = match[1].trim();
-        if (code) {
-            scripts.push({ code });
-        }
-    }
-    return scripts;
 }
 //# sourceMappingURL=index.js.map

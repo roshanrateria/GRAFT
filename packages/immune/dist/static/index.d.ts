@@ -6,6 +6,7 @@
 import type { StaticAnalysisResult } from '../types.js';
 export { analyzeJavaScript } from './js-analyzer.js';
 export { analyzeHTML } from './html-analyzer.js';
+export { extractInlineScripts } from './static-helpers.js';
 /**
  * Perform complete static analysis on an organ bundle.
  * Checks both HTML and embedded JavaScript.

@@ -1,0 +1,12 @@
+{
+  "name": "obfuscated-constructor-chain",
+  "version": "1.0.0",
+  "apiVersion": "1.0.0",
+  "permissions": [],
+  "ports": [],
+  "slotSize": "small",
+  "expectedRejection": {
+    "stage": "static",
+    "reason": "constructor.constructor pattern to create arbitrary functions"
+  }
+}

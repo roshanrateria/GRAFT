@@ -1,0 +1,12 @@
+{
+  "name": "direct-eval",
+  "version": "1.0.0",
+  "apiVersion": "1.0.0",
+  "permissions": [],
+  "ports": [],
+  "slotSize": "small",
+  "expectedRejection": {
+    "stage": "static",
+    "reason": "eval() is banned - allows arbitrary code execution"
+  }
+}

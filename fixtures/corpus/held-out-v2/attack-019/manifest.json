@@ -1,0 +1,12 @@
+{
+  "name": "behavioral-memory-bomb",
+  "version": "1.0.0",
+  "apiVersion": "1.0.0",
+  "permissions": [],
+  "ports": [],
+  "slotSize": "small",
+  "expectedRejection": {
+    "stage": "behavioral",
+    "reason": "Memory bomb - unbounded array growth causes resource exhaustion"
+  }
+}

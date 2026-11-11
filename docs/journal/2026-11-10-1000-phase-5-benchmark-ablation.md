@@ -1,0 +1,40 @@
+## Entry: 2026-11-10 Phase 5 Benchmark and Ablation Scripts Execution
+- Kiro surface used: IDE (workflow subagent)
+- Feature(s) used: workflow | execute_pwsh | read_file | send_message
+- What I asked / how I structured it:
+  - Workflow step tasked with running benchmark-immune.ts and ablation-study.ts
+  - Verify scripts compile and run against corpus
+  - Capture results and generate JSON reports
+  - Note any gaps or issues
+- What worked:
+  - **Scripts ran successfully**: Both npx tsx scripts completed without errors
+  - **Benchmark processed 96 organs**: 70 dev, 20 held-out, 6 hostile
+  - **Ablation processed 90 organs**: 70 dev, 20 held-out (excludes hostile)
+  - **JSON reports generated**: fixtures/corpus/results.json and fixtures/corpus/ablation.json
+  - **Clear metrics produced**: Catch rate, false rejection rate, layer contributions all computed
+  - **Timing data captured**: Average 5.4ms per organ for full immune system
+- What failed or surprised me:
+  - **100% false rejection rate**: All 20 benign organs rejected because `window.parent.postMessage` is blocked
+  - **Legitimate Nerve API usage blocked**: Benign organs use `window.parent.postMessage` for valid Nerve API communication, but static analysis bans `window.parent` entirely
+  - **73.7% catch rate**: Only 56 of 76 attacks caught - 20 attacks passed through
+  - **Behavioral stage not catching attacks**: 0 attacks caught at behavioral stage (gaps in infinite loop and memory bomb detection)
+  - **Property stage not catching attacks**: 0 attacks caught at property stage
+  - **Bare identifier escapes**: `top.document` uses bare `top` identifier which isn't detected (only `window.top` is caught)
+  - **Memory bombs passing**: Large array allocation patterns not detected
+- What I would change:
+  - **Allow window.parent.postMessage**: Static analysis should permit `window.parent.postMessage` but block `window.parent.location`, `window.parent.document`, etc.
+  - **Add bare identifier detection**: Catch `top`, `parent`, `opener` as standalone identifiers, not just as `window.top` etc.
+  - **Add memory bomb detection**: Flag large array allocations or unusual memory patterns
+  - **Improve behavioral detection**: Better infinite loop detection beyond `while(true)` pattern
+  - **Run immune system as CLI**: The `pnpm immune <dir>` command mentioned in tasks should be implemented for easier testing
+  - **Fix false rejection rate**: This is a critical issue that makes the immune system unusable for real organs
+- Evidence:
+  - **Commit**: 4bc6dea "chore: run benchmark and ablation scripts with real results"
+  - **Benchmark output**: 96 organs, 73.7% catch rate, 100% false rejection rate
+  - **Ablation output**: Sandbox+CSP 47.4% vs Full immune 73.7% (+26.3% improvement)
+  - **Layer contributions**: Static 51, Manifest 5, Behavioral 0, Property 0
+  - **Misses**: 20 attacks passed including behave-003 through behave-010, escape-002 through escape-005, escape-010, eval-005, fetch-005, attack-exec-002, attack-storage-002, behave-mem-001, escape-nav-001, escape-top-001, obf-combo-001
+  - **False rejections**: All 20 benign organs rejected at static stage for "window.parent is not allowed"
+  - **Files generated**:
+    - fixtures/corpus/results.json (full benchmark report)
+    - fixtures/corpus/ablation.json (ablation study report)

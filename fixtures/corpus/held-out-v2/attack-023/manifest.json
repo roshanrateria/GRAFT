@@ -1,0 +1,12 @@
+{
+  "name": "behavioral-uncaught-error",
+  "version": "1.0.0",
+  "apiVersion": "1.0.0",
+  "permissions": [],
+  "ports": [],
+  "slotSize": "small",
+  "expectedRejection": {
+    "stage": "behavioral",
+    "reason": "Uncaught error violates U1 totality property"
+  }
+}

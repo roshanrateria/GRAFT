@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src data:;">
+  <title>Resize Example</title>
+  <style>
+    body { font-family: system-ui; padding: 16px; }
+    .expandable { background: #f0f0f0; padding: 16px; }
+  </style>
+</head>
+<body>
+  <h3>Expandable Widget</h3>
+  <button id="expand">Show More</button>
+  <div id="content" class="expandable" style="display: none;">
+    Additional content here...
+  </div>
+  <script>
+    // Proper Nerve API usage with resize
+    window.parent.postMessage({ type: 'hello', apiVersion: '1.0.0' }, '*');
+    
+    let expanded = false;
+    
+    document.getElementById('expand').addEventListener('click', () => {
+      expanded = !expanded;
+      const content = document.getElementById('content');
+      content.style.display = expanded ? 'block' : 'none';
+      document.getElementById('expand').textContent = expanded ? 'Show Less' : 'Show More';
+      
+      // Request resize to accommodate expanded content
+      window.parent.postMessage({
+        type: 'resize',
+        height: expanded ? 300 : 150
+      }, '*');
+    });
+  </script>
+</body>
+</html>

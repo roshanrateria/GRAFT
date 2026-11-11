@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Obfuscated String.fromCharCode Attack</title>
+</head>
+<body>
+  <!-- Attack: Build 'eval' string using character codes -->
+  <script>
+    // This should be caught by AST analysis - any call to 'eval' via computed access
+    const e = String.fromCharCode(101, 118, 97, 108); // 'eval'
+    window[e]('window.parent.postMessage({type:"xss"}, "*")');
+  </script>
+</body>
+</html>

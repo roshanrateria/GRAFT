@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>PostMessage Wildcard Target Attack</title>
+</head>
+<body>
+  <!-- Attack: postMessage with wildcard targetOrigin leaks to any listener -->
+  <script>
+    // This should be caught by AST analysis - wildcard targetOrigin is suspicious
+    window.parent.postMessage({type: 'exfil', data: 'sensitive'}, '*');
+  </script>
+</body>
+</html>

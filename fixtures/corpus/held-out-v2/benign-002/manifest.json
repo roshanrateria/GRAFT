@@ -1,0 +1,12 @@
+{
+  "name": "task-list",
+  "version": "1.0.0",
+  "apiVersion": "1.0.0",
+  "permissions": ["read:tasks.items"],
+  "ports": ["taskCount"],
+  "slotSize": "small",
+  "expectedRejection": {
+    "stage": "none",
+    "reason": "Correct Nerve API usage with proper permissions and port declaration"
+  }
+}

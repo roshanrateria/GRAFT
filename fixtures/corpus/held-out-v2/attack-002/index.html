@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Direct Eval Attack</title>
+</head>
+<body>
+  <!-- Attack: eval() allows arbitrary code execution, bypasses CSP in some contexts -->
+  <script>
+    // This should be caught by AST analysis - eval is banned
+    const code = 'window.parent.postMessage({type: \"exfil\", data: document.cookie}, \"*\")';
+    eval(code);
+  </script>
+</body>
+</html>

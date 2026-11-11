@@ -1,0 +1,12 @@
+{
+  "name": "habit-streak-tracker",
+  "version": "1.0.0",
+  "apiVersion": "1.0.0",
+  "permissions": ["read:habits.checkins"],
+  "ports": ["streakUpdate"],
+  "slotSize": "small",
+  "expectedRejection": {
+    "stage": "none",
+    "reason": "Correct Nerve API usage with proper permissions"
+  }
+}

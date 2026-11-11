@@ -65,7 +65,7 @@ export interface BannedConstruct {
     location: SourceLocation;
 }
 /** Categories of banned constructs */
-export type BannedConstructType = 'eval' | 'new-function' | 'dynamic-import' | 'import-scripts' | 'fetch' | 'xmlhttprequest' | 'websocket' | 'eventsource' | 'send-beacon' | 'worker' | 'cookie-access' | 'local-storage' | 'session-storage' | 'indexed-db' | 'window-parent' | 'window-top' | 'window-opener' | 'window-frames' | 'location-write' | 'iframe' | 'script-src' | 'external-url' | 'form-action' | 'settimeout-string' | 'setinterval-string' | 'direct-date' | 'direct-random' | 'computed-window-access';
+export type BannedConstructType = 'eval' | 'new-function' | 'dynamic-import' | 'import-scripts' | 'fetch' | 'xmlhttprequest' | 'websocket' | 'eventsource' | 'send-beacon' | 'worker' | 'cookie-access' | 'local-storage' | 'session-storage' | 'indexed-db' | 'window-parent' | 'window-top' | 'window-opener' | 'window-frames' | 'location-write' | 'iframe' | 'script-src' | 'external-url' | 'form-action' | 'settimeout-string' | 'setinterval-string' | 'direct-date' | 'direct-random' | 'computed-window-access' | 'infinite-loop';
 /** Result of static analysis */
 export interface StaticAnalysisResult {
     passed: boolean;

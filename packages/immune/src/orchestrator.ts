@@ -50,6 +50,7 @@ export async function runImmuneSystem(
 
       // Validate manifest structure
       const validation = validateManifest(manifestJson);
+
       if (!validation.passed) {
         return validation;
       }
@@ -89,6 +90,7 @@ export async function runImmuneSystem(
         permissions: bundle.manifest.permissions || [],
         ports: bundle.manifest.ports?.map((p: any) => p.name) || [],
       });
+      
       return runUniversalProperties(context);
     });
     stages.push(propertyResult);
@@ -153,6 +155,18 @@ async function runStage(
           code: 'IMM_MANIFEST_VIOLATION',
           message: violation.message,
           location: violation.location,
+        };
+      } else if (result.failures && result.failures.length > 0) {
+        // Property tests: use first failure
+        const failure = result.failures[0];
+        error = {
+          code: `IMM_PROPERTY_${failure.propertyId}_FAILED`,
+          message: failure.message || `Property ${failure.propertyId} failed`,
+          details: {
+            propertyId: failure.propertyId,
+            seed: failure.seed,
+            counterexample: failure.counterexample,
+          },
         };
       } else {
         error = {

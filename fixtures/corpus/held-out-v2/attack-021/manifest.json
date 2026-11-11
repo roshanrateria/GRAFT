@@ -1,0 +1,12 @@
+{
+  "name": "behavioral-infinite-recursion",
+  "version": "1.0.0",
+  "apiVersion": "1.0.0",
+  "permissions": [],
+  "ports": [],
+  "slotSize": "small",
+  "expectedRejection": {
+    "stage": "behavioral",
+    "reason": "Stack overflow via infinite recursion - resource exhaustion"
+  }
+}

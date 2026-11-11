@@ -61,13 +61,20 @@ export function validateManifest(
     // Validate schema
     const parseResult = OrganManifestSchema.safeParse(manifest);
     if (!parseResult.success) {
+      // Format Zod errors for better error messages
+      const formattedErrors = parseResult.error.errors.map(e => ({
+        path: e.path.join('.'),
+        message: e.message,
+        code: e.code,
+      }));
+      
       return {
         passed: false,
         violations: [],
         error: {
           code: 'IMM_MANIFEST_SCHEMA_ERROR',
-          message: `Schema validation failed: ${parseResult.error.errors.map(e => e.message).join(', ')}`,
-          details: { errors: parseResult.error.errors },
+          message: `Schema validation failed: ${parseResult.error.errors.map(e => `${e.path.join('.')}: ${e.message}`).join('; ')}`,
+          details: { errors: formattedErrors },
         },
       };
     }
@@ -194,7 +201,7 @@ function checkPermissionValidity(permission: string): PermissionViolation | null
     return {
       type: 'invalid-permission',
       permission,
-      message: `Invalid permission format: ${permission}`,
+      message: `Invalid permission format: ${permission}. Expected format: <action>:<target>`,
     };
   }
 
@@ -204,7 +211,7 @@ function checkPermissionValidity(permission: string): PermissionViolation | null
     return {
       type: 'invalid-permission',
       permission,
-      message: `Invalid permission action: ${action}`,
+      message: `Invalid permission action: ${action}. Valid actions: ${VALID_ACTIONS.join(', ')}`,
     };
   }
 
@@ -214,6 +221,15 @@ function checkPermissionValidity(permission: string): PermissionViolation | null
       type: 'invalid-permission',
       permission,
       message: `Invalid read target: ${target}. Valid targets: ${VALID_DATA_DOMAINS.join(', ')}`,
+    };
+  }
+
+  // For emit/subscribe, just require a non-empty target
+  if ((action === 'emit' || action === 'subscribe') && !target) {
+    return {
+      type: 'invalid-permission',
+      permission,
+      message: `Invalid ${action} target: must specify a port name`,
     };
   }
 

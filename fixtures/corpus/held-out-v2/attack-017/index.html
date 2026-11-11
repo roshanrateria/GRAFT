@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Frame Enumeration Attack</title>
+</head>
+<body>
+  <!-- Attack: frames collection access for sibling iframe enumeration -->
+  <script>
+    // This should be caught by AST analysis - window.frames is banned
+    const frames = window.frames;
+    for (let i = 0; i < frames.length; i++) {
+      try {
+        frames[i].postMessage({type: 'probe'}, '*');
+      } catch (e) {}
+    }
+  </script>
+</body>
+</html>

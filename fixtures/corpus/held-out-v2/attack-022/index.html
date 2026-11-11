@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Rate Limit Violation Attack</title>
+</head>
+<body>
+  <!-- Attack: Send messages faster than rate limit (20/sec) -->
+  <script>
+    // This should be caught by behavioral stage - rate limit violation
+    for (let i = 0; i < 100; i++) {
+      window.parent.postMessage({type: 'spam', seq: i}, '*');
+    }
+  </script>
+</body>
+</html>

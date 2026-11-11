@@ -1,0 +1,12 @@
+{
+  "name": "obfuscated-prototype-fetch",
+  "version": "1.0.0",
+  "apiVersion": "1.0.0",
+  "permissions": [],
+  "ports": [],
+  "slotSize": "small",
+  "expectedRejection": {
+    "stage": "static",
+    "reason": "Object.getPrototypeOf chain to access fetch from window prototype"
+  }
+}

@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>CPU Busy Loop Attack</title>
+</head>
+<body>
+  <!-- Attack: Tight loop that freezes CPU - watchdog should detect -->
+  <script>
+    // This should be caught by behavioral stage watchdog timeout
+    while (true) {
+      Math.random();
+    }
+  </script>
+</body>
+</html>

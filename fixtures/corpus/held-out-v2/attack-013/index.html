@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Location Navigation Attack</title>
+</head>
+<body>
+  <!-- Attack: location manipulation would navigate away from sandbox -->
+  <script>
+    // This should be caught by AST analysis - location is banned
+    window.location = 'https://evil.com/phishing';
+  </script>
+</body>
+</html>

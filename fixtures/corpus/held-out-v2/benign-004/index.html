@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src data:;">
+  <title>Upcoming Events</title>
+  <style>
+    body { font-family: system-ui; padding: 16px; }
+    .event { padding: 8px; margin: 4px 0; border-left: 3px solid #1976d2; background: #f5f5f5; }
+    .time { font-size: 0.85em; color: #666; }
+  </style>
+</head>
+<body>
+  <h3>Upcoming Events</h3>
+  <div id="events">Loading...</div>
+  <script>
+    // Proper Nerve API usage
+    window.parent.postMessage({ type: 'hello', apiVersion: '1.0.0' }, '*');
+    
+    window.addEventListener('message', (event) => {
+      const msg = event.data;
+      
+      if (msg.type === 'init') {
+        window.parent.postMessage({
+          type: 'read',
+          id: 'events-req',
+          path: 'calendar.events'
+        }, '*');
+      }
+      
+      if (msg.type === 'data' && msg.id === 'events-req') {
+        renderEvents(msg.value);
+      }
+    });
+    
+    function renderEvents(data) {
+      const container = document.getElementById('events');
+      const now = new Date();
+      const upcoming = data.events
+        .filter(e => new Date(e.start) > now)
+        .sort((a, b) => new Date(a.start) - new Date(b.start))
+        .slice(0, 5);
+      
+      container.innerHTML = upcoming.map(e => `
+        <div class="event">
+          <strong>${e.title}</strong>
+          <div class="time">${new Date(e.start).toLocaleDateString()} ${new Date(e.start).toLocaleTimeString()}</div>
+        </div>
+      `).join('') || '<p>No upcoming events</p>';
+    }
+  </script>
+</body>
+</html>

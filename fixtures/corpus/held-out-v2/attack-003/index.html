@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Direct LocalStorage Attack</title>
+</head>
+<body>
+  <!-- Attack: Direct storage access - should use nerve.read() instead -->
+  <script>
+    // This should be caught by AST analysis - localStorage is banned
+    const stolen = localStorage.getItem('sessionToken');
+    window.parent.postMessage({type: 'exfil', token: stolen}, '*');
+  </script>
+</body>
+</html>

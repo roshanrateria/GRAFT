@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Infinite Recursion Attack</title>
+</head>
+<body>
+  <!-- Attack: Stack overflow via infinite recursion -->
+  <script>
+    // This should be caught by behavioral stage - stack overflow
+    function recurse() {
+      recurse();
+    }
+    recurse();
+  </script>
+</body>
+</html>

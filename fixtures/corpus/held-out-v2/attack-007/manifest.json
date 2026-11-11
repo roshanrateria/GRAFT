@@ -1,0 +1,12 @@
+{
+  "name": "obfuscated-computed-fetch",
+  "version": "1.0.0",
+  "apiVersion": "1.0.0",
+  "permissions": [],
+  "ports": [],
+  "slotSize": "small",
+  "expectedRejection": {
+    "stage": "static",
+    "reason": "Computed property access on globalThis to call fetch()"
+  }
+}

@@ -97,6 +97,13 @@ export function analyzeJavaScript(code, filename = 'index.js') {
             VariableDeclarator(node) {
                 checkVariableDeclarator(node, code, filename, constructs);
             },
+            // Detect infinite loops (while(true), while(1), for(;;))
+            WhileStatement(node) {
+                checkWhileStatement(node, code, filename, constructs);
+            },
+            ForStatement(node) {
+                checkForStatement(node, code, filename, constructs);
+            },
         });
         return {
             passed: constructs.length === 0,
@@ -285,6 +292,30 @@ function checkVariableDeclarator(node, code, filename, constructs) {
         constructs.push({
             type: 'direct-date',
             reason: 'Direct Date reference is not allowed. Use nerve.now() instead',
+            location: createLocation(filename, node.loc),
+        });
+    }
+}
+function checkWhileStatement(node, code, filename, constructs) {
+    // Check for while(true) or while(1)
+    if (node.test) {
+        const isTrueLiteral = (node.test.type === 'Literal' && node.test.value === true) ||
+            (node.test.type === 'Literal' && node.test.value === 1);
+        if (isTrueLiteral) {
+            constructs.push({
+                type: 'infinite-loop',
+                reason: 'Infinite while(true) loop detected - can freeze the organ',
+                location: createLocation(filename, node.loc),
+            });
+        }
+    }
+}
+function checkForStatement(node, code, filename, constructs) {
+    // Check for for(;;) infinite loop
+    if (!node.test && !node.update) {
+        constructs.push({
+            type: 'infinite-loop',
+            reason: 'Infinite for(;;) loop detected - can freeze the organ',
             location: createLocation(filename, node.loc),
         });
     }

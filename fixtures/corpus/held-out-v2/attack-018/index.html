@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Window Opener Attack</title>
+</head>
+<body>
+  <!-- Attack: window.opener could be used if somehow available -->
+  <script>
+    // This should be caught by AST analysis - window.opener is banned
+    if (window.opener) {
+      window.opener.postMessage({type: 'xss', data: document.cookie}, '*');
+    }
+  </script>
+</body>
+</html>

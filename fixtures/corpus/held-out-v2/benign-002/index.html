@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src data:;">
+  <title>Task List</title>
+  <style>
+    body { font-family: system-ui; padding: 16px; }
+    .task { padding: 8px; margin: 4px 0; display: flex; align-items: center; gap: 8px; }
+    .completed { text-decoration: line-through; color: #666; }
+    .pending { font-weight: 500; }
+  </style>
+</head>
+<body>
+  <h3>Tasks</h3>
+  <div id="tasks">Loading...</div>
+  <script>
+    // Proper Nerve API usage
+    window.parent.postMessage({ type: 'hello', apiVersion: '1.0.0' }, '*');
+    
+    window.addEventListener('message', (event) => {
+      const msg = event.data;
+      
+      if (msg.type === 'init') {
+        window.parent.postMessage({
+          type: 'read',
+          id: 'tasks-req',
+          path: 'tasks.items'
+        }, '*');
+      }
+      
+      if (msg.type === 'data' && msg.id === 'tasks-req') {
+        renderTasks(msg.value);
+      }
+    });
+    
+    function renderTasks(data) {
+      const container = document.getElementById('tasks');
+      const sorted = data.items.sort((a, b) => {
+        if (a.completed !== b.completed) return a.completed ? 1 : -1;
+        return new Date(a.dueDate || a.created) - new Date(b.dueDate || b.created);
+      });
+      
+      container.innerHTML = sorted.map(t => `
+        <div class="task ${t.completed ? 'completed' : 'pending'}">
+          <input type="checkbox" ${t.completed ? 'checked disabled' : ''}>
+          <span>${t.title}</span>
+        </div>
+      `).join('');
+      
+      // Emit count for chimera
+      window.parent.postMessage({
+        type: 'emit',
+        port: 'taskCount',
+        payload: { 
+          total: data.items.length,
+          completed: data.items.filter(t => t.completed).length
+        }
+      }, '*');
+    }
+  </script>
+</body>
+</html>

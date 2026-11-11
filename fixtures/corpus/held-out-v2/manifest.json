@@ -1,0 +1,18 @@
+{
+  "name": "held-out-v2",
+  "version": "1.0.0",
+  "description": "Held-out test corpus generated from public payload research patterns",
+  "generated": "2026-01-20",
+  "source": "PortSwigger XSS Cheat Sheet, OWASP Filter Evasion, PayloadsAllTheThings, HackTricks",
+  "totalOrgans": 30,
+  "attackOrgans": 24,
+  "benignOrgans": 6,
+  "categories": {
+    "direct": "Direct API violations (network, eval, storage)",
+    "obfuscated": "Obfuscated attacks (computed properties, encoding)",
+    "escape": "Sandbox escape attempts (parent access, postMessage)",
+    "behavioral": "Runtime violations (loops, rate limits)",
+    "benign": "Correct Nerve API usage"
+  },
+  "cleanRoomConstraint": "Generated from public documentation only, never from immune system implementation"
+}

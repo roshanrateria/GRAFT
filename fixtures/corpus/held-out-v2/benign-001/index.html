@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src data:;">
+  <title>Mood Tracker</title>
+  <style>
+    body { font-family: system-ui; padding: 16px; }
+    .entry { padding: 8px; margin: 4px 0; border-radius: 4px; }
+    .score { font-size: 24px; font-weight: bold; }
+    .notes { color: #666; font-size: 0.9em; }
+  </style>
+</head>
+<body>
+  <h3>Recent Moods</h3>
+  <div id="moods">Loading...</div>
+  <script>
+    // Proper Nerve API usage - handshake
+    window.parent.postMessage({ type: 'hello', apiVersion: '1.0.0' }, '*');
+    
+    window.addEventListener('message', (event) => {
+      const msg = event.data;
+      
+      if (msg.type === 'init') {
+        // Request mood data
+        window.parent.postMessage({
+          type: 'read',
+          id: 'mood-req-1',
+          path: 'mood.entries'
+        }, '*');
+      }
+      
+      if (msg.type === 'data' && msg.id === 'mood-req-1') {
+        renderMoods(msg.value);
+      }
+    });
+    
+    function renderMoods(data) {
+      const container = document.getElementById('moods');
+      container.innerHTML = data.entries.slice(-5).map(e => `
+        <div class="entry" style="background: ${e.score >= 7 ? '#e8f5e9' : e.score >= 4 ? '#fff3e0' : '#ffebee'}">
+          <span class="score">${e.score}/10</span>
+          <span>${e.date}</span>
+          ${e.notes ? `<div class="notes">${e.notes}</div>` : ''}
+        </div>
+      `).join('');
+    }
+  </script>
+</body>
+</html>

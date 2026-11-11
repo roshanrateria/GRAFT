@@ -7,4 +7,6 @@ export { ReplayDoctorProvider, createReplayProvider, createReplayProviderFromFix
 export type { ReplayConfig, ReplayFixture } from './replay.js';
 export { LLMDdoctorProvider, createLLMProvider, } from './llm.js';
 export type { LLMConfig } from './llm.js';
+export { CrewDoctorProvider, createCrewProvider, } from './crew.js';
+export type { CrewConfig } from './crew.js';
 //# sourceMappingURL=index.d.ts.map

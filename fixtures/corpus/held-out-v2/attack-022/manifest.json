@@ -1,0 +1,12 @@
+{
+  "name": "behavioral-rate-limit",
+  "version": "1.0.0",
+  "apiVersion": "1.0.0",
+  "permissions": [],
+  "ports": [],
+  "slotSize": "small",
+  "expectedRejection": {
+    "stage": "behavioral",
+    "reason": "Rate limit violation: sending >20 messages per second"
+  }
+}

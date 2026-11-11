@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Oversized Payload Attack</title>
+</head>
+<body>
+  <!-- Attack: Send message larger than 16KB limit -->
+  <script>
+    // This should be caught by behavioral stage - payload too large
+    const largePayload = 'x'.repeat(20000);
+    window.parent.postMessage({
+      type: 'data',
+      payload: largePayload
+    }, '*');
+  </script>
+</body>
+</html>

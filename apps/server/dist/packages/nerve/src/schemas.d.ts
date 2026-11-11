@@ -42,12 +42,12 @@ export declare const DataMessageSchema: z.ZodObject<{
     id: z.ZodString;
     value: z.ZodUnknown;
 }, "strip", z.ZodTypeAny, {
-    type: "data";
     id: string;
+    type: "data";
     value?: unknown;
 }, {
-    type: "data";
     id: string;
+    type: "data";
     value?: unknown;
 }>;
 /** Input from a linked organ (chimera) */
@@ -99,12 +99,12 @@ export declare const HostToOrganMessageSchema: z.ZodDiscriminatedUnion<"type", [
     id: z.ZodString;
     value: z.ZodUnknown;
 }, "strip", z.ZodTypeAny, {
-    type: "data";
     id: string;
+    type: "data";
     value?: unknown;
 }, {
-    type: "data";
     id: string;
+    type: "data";
     value?: unknown;
 }>, z.ZodObject<{
     type: z.ZodLiteral<"in">;
@@ -145,13 +145,13 @@ export declare const ReadMessageSchema: z.ZodObject<{
     id: z.ZodString;
     path: z.ZodString;
 }, "strip", z.ZodTypeAny, {
-    type: "read";
-    path: string;
     id: string;
+    path: string;
+    type: "read";
 }, {
-    type: "read";
-    path: string;
     id: string;
+    path: string;
+    type: "read";
 }>;
 /** Emit data to an output port (for chimera linking) */
 export declare const EmitMessageSchema: z.ZodObject<{
@@ -193,13 +193,13 @@ export declare const OrganToHostMessageSchema: z.ZodDiscriminatedUnion<"type", [
     id: z.ZodString;
     path: z.ZodString;
 }, "strip", z.ZodTypeAny, {
-    type: "read";
-    path: string;
     id: string;
+    path: string;
+    type: "read";
 }, {
-    type: "read";
-    path: string;
     id: string;
+    path: string;
+    type: "read";
 }>, z.ZodObject<{
     type: z.ZodLiteral<"emit">;
     port: z.ZodString;

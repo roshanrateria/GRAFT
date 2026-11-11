@@ -1,0 +1,12 @@
+{
+  "name": "escape-frames-enumeration",
+  "version": "1.0.0",
+  "apiVersion": "1.0.0",
+  "permissions": [],
+  "ports": [],
+  "slotSize": "small",
+  "expectedRejection": {
+    "stage": "static",
+    "reason": "window.frames access allows enumeration of sibling iframes"
+  }
+}

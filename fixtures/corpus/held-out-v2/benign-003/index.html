@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src data:;">
+  <title>Habit Streak Tracker</title>
+  <style>
+    body { font-family: system-ui; padding: 16px; }
+    .habit { margin: 8px 0; padding: 8px; background: #f0f0f0; border-radius: 4px; }
+    .streak { font-weight: bold; color: #2e7d32; }
+  </style>
+</head>
+<body>
+  <h3>Habit Streaks</h3>
+  <div id="habits">Loading...</div>
+  <script>
+    // Proper Nerve API usage
+    window.parent.postMessage({ type: 'hello', apiVersion: '1.0.0' }, '*');
+    
+    window.addEventListener('message', (event) => {
+      const msg = event.data;
+      
+      if (msg.type === 'init') {
+        window.parent.postMessage({
+          type: 'read',
+          id: 'habits-req',
+          path: 'habits.checkins'
+        }, '*');
+      }
+      
+      if (msg.type === 'data' && msg.id === 'habits-req') {
+        renderHabits(msg.value);
+      }
+    });
+    
+    function renderHabits(data) {
+      const container = document.getElementById('habits');
+      container.innerHTML = data.habits.map(h => {
+        const streak = calculateStreak(h.checkins);
+        return `<div class="habit">
+          <strong>${h.name}</strong>: <span class="streak">${streak} day streak</span>
+        </div>`;
+      }).join('');
+      
+      // Emit streak data for chimera linking
+      window.parent.postMessage({
+        type: 'emit',
+        port: 'streakUpdate',
+        payload: { habits: data.habits.map(h => ({ name: h.name, streak: calculateStreak(h.checkins) })) }
+      }, '*');
+    }
+    
+    function calculateStreak(checkins) {
+      let streak = 0;
+      const sorted = [...checkins].sort((a, b) => new Date(b.date) - new Date(a.date));
+      for (const c of sorted) {
+        if (c.completed) streak++;
+        else break;
+      }
+      return streak;
+    }
+  </script>
+</body>
+</html>

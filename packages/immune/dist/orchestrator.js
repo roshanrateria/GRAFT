@@ -5,9 +5,10 @@
  * Implements IMM-03: Fail Closed.
  */
 import { performStaticAnalysis } from './static/index.js';
+import { extractInlineScripts } from './static/index.js';
 import { validateManifest, crossReferencePermissions } from './manifest/index.js';
 import { runBehavioralCheck } from './behavioral/index.js';
-import { runUniversalProperties, createPropertyContext } from './properties/index.js';
+import { runUniversalProperties, createMockPropertyContext as createPropertyContext } from './properties/index.js';
 // ============================================================================
 // Immune System Runner
 // ============================================================================
@@ -35,8 +36,11 @@ export async function runImmuneSystem(bundle) {
             if (!validation.passed) {
                 return validation;
             }
+            // Extract JavaScript from HTML for cross-referencing
+            const scripts = extractInlineScripts(bundle.indexHtml);
+            const jsCode = scripts.map(s => s.code).join('\n');
             // Cross-reference with code
-            const crossRef = crossReferencePermissions(bundle.manifest, bundle.indexHtml);
+            const crossRef = crossReferencePermissions(bundle.manifest, jsCode);
             return {
                 passed: crossRef.passed,
                 violations: crossRef.violations,
@@ -57,7 +61,10 @@ export async function runImmuneSystem(bundle) {
         }
         // Stage 4: Property Fuzz
         const propertyResult = await runStage('property', async () => {
-            const context = createPropertyContext();
+            const context = createPropertyContext({
+                permissions: bundle.manifest.permissions || [],
+                ports: bundle.manifest.ports?.map((p) => p.name) || [],
+            });
             return runUniversalProperties(context);
         });
         stages.push(propertyResult);
@@ -91,11 +98,53 @@ async function runStage(stage, runner) {
     try {
         const result = await runner();
         const duration = Date.now() - startTime;
+        // If stage failed but no error was provided, create one from the result
+        let error = result.error;
+        if (!result.passed && !error) {
+            // Stage failed without explicit error - create one from result details
+            if (result.constructs && result.constructs.length > 0) {
+                // Static analysis: use first banned construct
+                const construct = result.constructs[0];
+                error = {
+                    code: `IMM_BANNED_${construct.type.toUpperCase().replace(/-/g, '_')}`,
+                    message: construct.reason,
+                    location: construct.location,
+                };
+            }
+            else if (result.violations && result.violations.length > 0) {
+                // Manifest validation: use first violation
+                const violation = result.violations[0];
+                error = {
+                    code: 'IMM_MANIFEST_VIOLATION',
+                    message: violation.message,
+                    location: violation.location,
+                };
+            }
+            else if (result.failures && result.failures.length > 0) {
+                // Property tests: use first failure
+                const failure = result.failures[0];
+                error = {
+                    code: `IMM_PROPERTY_${failure.propertyId}_FAILED`,
+                    message: failure.message || `Property ${failure.propertyId} failed`,
+                    details: {
+                        propertyId: failure.propertyId,
+                        seed: failure.seed,
+                        counterexample: failure.counterexample,
+                    },
+                };
+            }
+            else {
+                error = {
+                    code: 'IMM_STAGE_FAILED',
+                    message: `Stage ${stage} failed without specific error`,
+                };
+            }
+        }
         return {
             stage,
             passed: result.passed ?? true,
             duration,
-            error: result.error,
+            error,
         };
     }
     catch (error) {

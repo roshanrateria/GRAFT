@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Window Top Navigation Attack</title>
+</head>
+<body>
+  <!-- Attack: top.location access would navigate the entire page -->
+  <script>
+    // This should be caught by AST analysis - window.top is banned
+    window.top.location.href = 'https://evil.com/phishing';
+  </script>
+</body>
+</html>

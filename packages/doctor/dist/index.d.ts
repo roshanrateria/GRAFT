@@ -7,8 +7,8 @@
  * @packageDocumentation
  */
 export type { DoctorEventType, DoctorEvent, OrganManifest, OrganPort, OrganBundle, Anatomy, Spec, RejectionReport, DecayReport, DoctorProvider, } from './types.js';
-export { ReplayDoctorProvider, createReplayProvider, createReplayProviderFromFixture, LLMDdoctorProvider, createLLMProvider, } from './providers/index.js';
-export type { ReplayConfig, ReplayFixture, LLMConfig } from './providers/index.js';
+export { ReplayDoctorProvider, createReplayProvider, createReplayProviderFromFixture, LLMDdoctorProvider, createLLMProvider, CrewDoctorProvider, createCrewProvider, } from './providers/index.js';
+export type { ReplayConfig, ReplayFixture, LLMConfig, CrewConfig } from './providers/index.js';
 export { runRepairLoop, buildWithRepairLoop, MAX_REPAIR_ROUNDS, } from './repair-loop.js';
 export type { RepairLoopResult, RepairAttempt, } from './repair-loop.js';
 //# sourceMappingURL=index.d.ts.map

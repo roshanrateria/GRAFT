@@ -1,0 +1,12 @@
+{
+  "name": "obfuscated-string-from-charcode",
+  "version": "1.0.0",
+  "apiVersion": "1.0.0",
+  "permissions": [],
+  "ports": [],
+  "slotSize": "small",
+  "expectedRejection": {
+    "stage": "static",
+    "reason": "String.fromCharCode to construct 'eval' and call it"
+  }
+}

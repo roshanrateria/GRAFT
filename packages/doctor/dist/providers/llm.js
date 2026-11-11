@@ -16,36 +16,101 @@ When given a user wish, you produce a structured spec with:
 2. Requirements in EARS format (Each requirement: ### ID: Title [TAG] WHEN condition THE SYSTEM SHALL behavior)
 3. Design overview
 
-Respond with JSON in this format:
-{
-  "organName": "name-here",
-  "requirements": "### REQ-01: Title [EX]\\nWHEN condition THE SYSTEM SHALL behavior\\n\\n### REQ-02: ...",
-  "design": "Brief design description"
-}
+Tags: [EX] for examples, [PBT] for property-based tests, [A11Y] for accessibility.
 
-Tags: [EX] for examples, [PBT] for property-based tests, [A11Y] for accessibility.`;
+IMPORTANT: Respond with valid JSON matching the schema exactly.`;
 const SYSTEM_PROMPT_BUILD = `You are the Doctor, building organ code from a spec.
 
 Produce a complete organ bundle with:
-1. manifest.json content (name, version, apiVersion, permissions, ports, slotSize)
-2. index.html content (the organ's UI with embedded JS using Nerve API)
-3. properties.js content (fast-check property tests for [PBT] requirements)
-
-Respond with JSON:
-{
-  "manifest": { ... },
-  "indexHtml": "...",
-  "properties": "..."
-}
+1. manifest (name, version, apiVersion, permissions, ports, slotSize)
+2. indexHtml (the organ's UI with embedded JS using Nerve API)
+3. properties (fast-check property tests for [PBT] requirements, optional)
 
 The index.html must:
 - Use only the Nerve API (nerve.read(), nerve.emit(), nerve.now(), nerve.random())
 - Never access network, storage, cookies, or parent DOM
-- Be a complete, self-contained HTML file`;
+- Be a complete, self-contained HTML file
+- Use inline <script> tags only (no external script src)
+
+Manifest requirements:
+- permissions: Array of strings in format "read:domain" or "emit:portName" or "subscribe:portName"
+  - CRITICAL: Read permissions MUST use EXACTLY these domain names:
+    * "read:mood.entries" (NOT "read:mood")
+    * "read:tasks.items" (NOT "read:tasks")
+    * "read:habits.checkins" (NOT "read:habits")
+    * "read:calendar.events" (NOT "read:calendar")
+  - IMPORTANT: If you declare an output port, you MUST also include "emit:portName" permission
+- ports: Array of objects with { name: string, direction: "in"|"out", schema: object }
+- slotSize: Must be one of "small", "medium", or "large"
+
+EXAMPLE: If you have ports: [{name: "count", direction: "out", schema: {type: "integer"}}]
+Then you MUST include "emit:count" in the permissions array.
+
+EXAMPLE: If you need to read task data, use "read:tasks.items" (NOT "read:tasks").
+
+IMPORTANT: Respond with valid JSON matching the schema exactly.`;
+// JSON Schema for spec generation
+const SPEC_SCHEMA = {
+    type: "object",
+    properties: {
+        organName: { type: "string" },
+        requirements: { type: "string" },
+        design: { type: "string" }
+    },
+    required: ["organName", "requirements", "design"]
+};
+// JSON Schema for organ bundle
+// Must match immune system expectations in packages/immune/src/manifest/schemas.ts
+const BUNDLE_SCHEMA = {
+    type: "object",
+    properties: {
+        manifest: {
+            type: "object",
+            properties: {
+                name: { type: "string" },
+                version: { type: "string" },
+                apiVersion: { type: "string" },
+                permissions: {
+                    type: "array",
+                    // Must match immune system: (read|emit|subscribe):<target>
+                    // Valid read targets: mood.entries, tasks.items, habits.checkins, calendar.events
+                    items: { type: "string", pattern: "^(read|emit|subscribe):.+$" }
+                },
+                ports: {
+                    type: "array",
+                    items: {
+                        type: "object",
+                        properties: {
+                            name: { type: "string" },
+                            direction: { type: "string", enum: ["in", "out"] },
+                            schema: { type: "object" }
+                        },
+                        required: ["name", "direction", "schema"]
+                    }
+                },
+                slotSize: { type: "string", enum: ["small", "medium", "large"] }
+            },
+            required: ["name", "version", "apiVersion", "permissions", "slotSize"]
+        },
+        indexHtml: { type: "string" },
+        properties: { type: "string" }
+    },
+    required: ["manifest", "indexHtml"]
+};
 const SYSTEM_PROMPT_REPAIR = `You are the Doctor, repairing a rejected organ.
 
 Given the organ bundle and rejection report, fix the issues.
-Respond with the corrected organ bundle JSON.`;
+
+CRITICAL RULES FOR PERMISSIONS:
+- Read permissions MUST use EXACTLY these domain names:
+  * "read:mood.entries" (NOT "read:mood")
+  * "read:tasks.items" (NOT "read:tasks")
+  * "read:habits.checkins" (NOT "read:habits")
+  * "read:calendar.events" (NOT "read:calendar")
+- If you have output ports, you MUST include "emit:portName" permission for each one
+
+If the rejection says "Invalid read target", change "read:tasks" to "read:tasks.items".
+If the rejection says "requires emit:XXX permission", add "emit:XXX" to the permissions array.`;
 const SYSTEM_PROMPT_HEAL = `You are the Doctor, healing a decayed organ.
 
 Given the organ bundle and decay report, update it for compatibility.
@@ -69,7 +134,7 @@ export class LLMDdoctorProvider {
     constructor(config = {}) {
         this.baseUrl = config.baseUrl ?? process.env.LLM_BASE_URL ?? 'https://api.openai.com/v1';
         this.apiKey = config.apiKey ?? process.env.LLM_API_KEY;
-        this.model = config.model ?? process.env.DOCTOR_MODEL ?? 'gpt-4o';
+        this.model = config.model ?? process.env.DOCTOR_MODEL ?? 'deepseek-ai/deepseek-v4.1-flash';
         this.maxTokens = config.maxTokens ?? 4096;
         this.temperature = config.temperature ?? 0.7;
         this.name = `llm:${this.model}`;
@@ -83,9 +148,20 @@ export class LLMDdoctorProvider {
     /**
      * Make a chat completion request to the LLM API.
      */
-    async chat(messages, stream = true) {
+    async chat(messages, stream = true, jsonSchema) {
         if (!this.isConfigured()) {
             throw new Error('LLM_API_KEY not configured. Set LLM_API_KEY environment variable.');
+        }
+        const body = {
+            model: this.model,
+            messages,
+            max_tokens: this.maxTokens,
+            temperature: this.temperature,
+            stream,
+        };
+        // Add structured output constraint if schema provided
+        if (jsonSchema) {
+            body.guided_json = jsonSchema;
         }
         const response = await fetch(`${this.baseUrl}/chat/completions`, {
             method: 'POST',
@@ -93,13 +169,7 @@ export class LLMDdoctorProvider {
                 'Content-Type': 'application/json',
                 Authorization: `Bearer ${this.apiKey}`,
             },
-            body: JSON.stringify({
-                model: this.model,
-                messages,
-                max_tokens: this.maxTokens,
-                temperature: this.temperature,
-                stream,
-            }),
+            body: JSON.stringify(body),
         });
         if (!response.ok) {
             const errorText = await response.text();
@@ -216,10 +286,11 @@ export class LLMDdoctorProvider {
             },
         };
         try {
+            // Use structured output with JSON schema
             const stream = await this.chat([
                 { role: 'system', content: SYSTEM_PROMPT_SPEC },
                 { role: 'user', content: `User wish: "${wish}"\n\nAnatomy context:\n${anatomyContext}` },
-            ]);
+            ], true, SPEC_SCHEMA);
             yield {
                 type: 'spec-start',
                 timestamp: this.now(),
@@ -287,13 +358,14 @@ export class LLMDdoctorProvider {
             data: {},
         };
         try {
+            // Use structured output with JSON schema
             const stream = await this.chat([
                 { role: 'system', content: SYSTEM_PROMPT_BUILD },
                 {
                     role: 'user',
                     content: `Build an organ from this spec:\n\nName: ${spec.name}\n\nRequirements:\n${spec.requirements}\n\nDesign:\n${spec.design}\n\nAnatomy context:\n${JSON.stringify(anatomy, null, 2)}`,
                 },
-            ]);
+            ], true, BUNDLE_SCHEMA);
             yield {
                 type: 'build-progress',
                 timestamp: this.now(),
@@ -357,14 +429,20 @@ export class LLMDdoctorProvider {
             data: { report },
         };
         try {
+            // Use structured output for repair too
             const stream = await this.chat([
-                { role: 'system', content: SYSTEM_PROMPT_REPAIR },
+                { role: 'system', content: SYSTEM_PROMPT_REPAIR + '\n\nIMPORTANT: Respond with valid JSON matching the organ bundle schema exactly.' },
                 {
                     role: 'user',
                     content: `Repair this organ:\n\nBundle:\n${JSON.stringify(bundle, null, 2)}\n\nRejection report:\n${JSON.stringify(report, null, 2)}`,
                 },
-            ], false);
-            const fullContent = await this.collectStream(stream);
+            ], true, // Stream for better UX
+            BUNDLE_SCHEMA // Use the same schema as build
+            );
+            let fullContent = '';
+            for await (const chunk of stream) {
+                fullContent += chunk;
+            }
             const parsed = this.parseJsonFromResponse(fullContent);
             const repairedBundle = {
                 manifest: parsed.manifest ?? bundle.manifest,

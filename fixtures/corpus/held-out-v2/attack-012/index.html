@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Obfuscated Split/Join Attack</title>
+</head>
+<body>
+  <!-- Attack: Build 'localStorage' using split/join -->
+  <script>
+    // This should be caught by AST analysis - computed access on window
+    const storage = window['lo' + 'calS' + 'torage'];
+    const data = storage.getItem('token');
+    window.parent.postMessage({type: 'stolen', token: data}, '*');
+  </script>
+</body>
+</html>

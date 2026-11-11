@@ -1,0 +1,12 @@
+{
+  "name": "mood-tracker",
+  "version": "1.0.0",
+  "apiVersion": "1.0.0",
+  "permissions": ["read:mood.entries"],
+  "ports": [],
+  "slotSize": "small",
+  "expectedRejection": {
+    "stage": "none",
+    "reason": "Correct Nerve API usage with proper manifest and permissions"
+  }
+}

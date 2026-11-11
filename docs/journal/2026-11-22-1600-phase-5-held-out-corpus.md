@@ -1,0 +1,37 @@
+## Entry: 2026-11-22 Phase 5 Held-Out Corpus Generation
+- Kiro surface used: IDE (workflow subagent)
+- Feature(s) used: workflow | fs_write | execute_pwsh | read_file | send_message
+- What I asked / how I structured it:
+  - Workflow step tasked with generating held-out corpus of 20 organs at fixtures/corpus/held-out/
+  - Must be separate from dev corpus and NEVER used for tuning
+  - Categories: direct attacks (6), obfuscated (4), sandbox escapes (3), behavioral (3), benign (4)
+  - Created freeze manifest with commitSHA, freezeDate, expectedCatchRates
+  - Each organ follows same format as dev corpus
+- What worked:
+  - **Clean separation**: Held-out corpus in separate directory from dev corpus
+  - **Novel obfuscation patterns**: Used Reflect.apply, Proxy, Symbol.iterator (different from dev corpus patterns)
+  - **Freeze manifest**: Includes commitSHA (3632f4b6f27a88fa2b26837778478c041fd2356c), freezeDate, expectedCatchRates
+  - **Clear documentation**: Manifest prominently marked as FROZEN with warning never to modify
+  - **Batch creation**: 41 files created efficiently (20 organs × 2 files + manifest.json)
+  - **Commit**: a3080ba "feat: add held-out corpus for immune system benchmarking"
+- What failed or surprised me:
+  - **PowerShell && syntax**: Same recurring issue - used `;` for command chaining
+  - **No live validation**: Did not run immune system against held-out organs to verify catch rates
+  - **Manifest format**: Had to read dev corpus manifest to understand expected structure
+  - **Commit SHA retrieval**: Used git rev-parse HEAD which returns SHA at time of call
+- What I would change:
+  - **Run benchmark before freezing**: Should run immune system benchmark and record actual catch rates
+  - **Add ablation results**: Manifest could include sandbox-only vs full immune comparison
+  - **Document misses**: After benchmark, update manifest with any organs that weren't caught
+  - **Add seed for reproducibility**: If using PBT in benchmark, record seeds used
+- Evidence:
+  - **Commit**: a3080ba "feat: add held-out corpus for immune system benchmarking"
+  - **Files created**: 41 files (20 directories × 2 files + manifest.json)
+  - **Categories**:
+    - Direct attacks (6): attack-network-001/002, attack-exec-001/002, attack-storage-001/002
+    - Obfuscated (4): obf-novel-001/002, obf-combo-001/002
+    - Sandbox escapes (3): escape-top-001, escape-postmsg-001, escape-nav-001
+    - Behavioral (3): behave-loop-001, behave-mem-001, behave-time-001
+    - Benign (4): benign-display-001/002, benign-interactive-001/002
+  - **Manifest**: freezeDate 2024-11-22, commitSHA 3632f4b6f27a88fa2b26837778478c041fd2356c
+  - **Expected catch rates**: 95%+ for attacks, 0% false rejection for benign

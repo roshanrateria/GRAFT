@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Window Parent Access Attack</title>
+</head>
+<body>
+  <!-- Attack: Direct parent access violates L1 sandbox boundary -->
+  <script>
+    // This should be caught by AST analysis - window.parent is banned
+    const parentWindow = window.parent;
+    parentWindow.postMessage({type: 'escape'}, '*');
+  </script>
+</body>
+</html>

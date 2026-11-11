@@ -1,0 +1,36 @@
+## Entry: 2026-11-09 Phase 5 Red Team Custom Agent Definition
+- Kiro surface used: IDE (workflow subagent)
+- Feature(s) used: workflow | fs_write | read_file | file_search | execute_pwsh | send_message
+- What I asked / how I structured it:
+  - Workflow step tasked with creating the Red Team custom agent definition at `.kiro/agents/red-team.md`
+  - Agent generates attack and benign organs for immune system testing
+  - Must operate under clean-room constraints: never read immune system implementation
+  - Reviewed existing hostile organs (01-06) for format consistency
+  - Read NERVE_API.md and js-analyzer.ts ban list comments for allowed reading materials
+- What worked:
+  - **Format consistency check**: Read existing hostile organs (manifest.json, index.html) to match structure
+  - **Clean-room constraint design**: Prominently displayed with explicit allowlist of reading materials
+  - **Attack categorization**: 5 categories with clear expected rejection stages
+    - Direct attacks (15 organs): fetch, eval, storage, cookies → static rejection
+    - Obfuscated attacks (15 organs): computed access, encoding → static rejection
+    - Sandbox escapes (10 organs): window.top/parent → static rejection
+    - Behavioral attacks (10 organs): infinite loops, memory bombs → behavioral rejection
+    - Benign organs (40 organs): valid Nerve API usage → all stages pass
+  - **Manifest expectedRejection field**: Each organ labeled with stage and reason
+  - **Committed successfully**: Single commit a3bc4b7
+- What failed or surprised me:
+  - **PowerShell syntax again**: `&&` not valid in PowerShell, used `;` for command chaining
+  - **Git staging issue**: PowerShell didn't recognize `&&` for git add && git commit, split into separate commands
+  - **No hostile organ tests yet**: The existing hostile organs don't have test coverage integration
+- What I would change:
+  - **Add corpus generation automation**: Agent should be able to run `pnpm immune <dir>` to validate organs
+  - **Add held-out set split**: Agent should automatically partition corpus into dev/test sets
+  - **Add ablation automation**: Agent should run sandbox-only vs full immune comparison
+  - **Consider OWASP pattern imports**: Could reference OWASP XSS patterns directly instead of summarizing
+- Evidence:
+  - **Commit**: a3bc4b7 "feat: add Red Team custom agent definition for immune system testing"
+  - **File created**: `.kiro/agents/red-team.md` (265 lines)
+  - **Format matched**: manifest.json with name, version, apiVersion, permissions, ports, slotSize, expectedRejection
+  - **Attack categories**: 5 categories with ~50 attack and ~40 benign organs specified
+  - **Clean-room constraint**: Explicit forbid list for immune system implementation files
+  - **Allowed reading**: NERVE_API.md, js-analyzer.ts comments only, public OWASP patterns

@@ -1,0 +1,12 @@
+{
+  "name": "calendar-widget",
+  "version": "1.0.0",
+  "apiVersion": "1.0.0",
+  "permissions": ["read:calendar.events"],
+  "ports": [],
+  "slotSize": "small",
+  "expectedRejection": {
+    "stage": "none",
+    "reason": "Correct Nerve API usage reading calendar events"
+  }
+}
