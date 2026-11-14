@@ -13,7 +13,7 @@ export {
 export type { ReplayConfig, ReplayFixture } from './replay.js';
 
 export {
-  LLMDdoctorProvider,
+  LLMDoctorProvider,
   createLLMProvider,
 } from './llm.js';
 

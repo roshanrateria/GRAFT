@@ -60,12 +60,12 @@
 - [x] Write component tests
 
 ### Task 7.8: Accessibility Audit
-- [x] Run axe-core on all views
+- [ ] Run axe-core on all views (axe-core is not a dependency; not run)
 - [x] Fix contrast issues (AA minimum)
 - [x] Verify all interactive elements keyboard accessible
-- [x] Test with screen reader (basic smoke)
-- [x] Write accessibility tests (axe-core in Vitest)
-- [x] Verify UI-01
+- [ ] Test with screen reader (basic smoke) (no screen reader testing recorded)
+- [ ] Write accessibility tests (axe-core in Vitest) (accessibility.test.tsx has contrast and keyboard checks but does not import axe-core)
+- [ ] Verify UI-01 (partial, see docs/STATUS.md)
 
 ### Task 7.9: Responsive Design
 - [x] Test tablet width (768px minimum)
@@ -89,4 +89,4 @@
 - [x] UI-02: Reduced motion disables animations
 - [x] UI-03: Heartbeat reflects real state
 - [x] UI-04: Keyboard chimera linking
-- [x] All axe-core tests pass
+- [ ] All axe-core tests pass (no axe-core tests exist)

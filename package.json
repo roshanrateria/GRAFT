@@ -19,6 +19,7 @@
     "checkup:schedule": "tsx scripts/schedule-checkup.ts"
   },
   "devDependencies": {
+    "@playwright/test": "^1.65.0",
     "@types/node": "^22.9.1",
     "tsx": "^4.19.2",
     "typescript": "^5.6.3",

@@ -34,7 +34,8 @@ export const OrganManifestSchema = z.object({
   ), {
     errorMap: () => ({ message: 'Permissions must be an array of valid permission strings' }),
   }),
-  ports: z.array(OrganPortSchema).optional(),
+  // Always an array after parsing: a manifest without ports has none.
+  ports: z.array(OrganPortSchema).default([]),
   slotSize: z.enum(['small', 'medium', 'large'], {
     errorMap: () => ({ message: 'Slot size must be "small", "medium", or "large"' }),
   }).optional(),

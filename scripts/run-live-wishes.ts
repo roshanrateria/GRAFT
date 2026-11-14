@@ -8,8 +8,10 @@
  * - Rejected (failed after max repair rounds)
  */
 
-import { LLMDdoctorProvider } from '../packages/doctor/src/providers/llm.js';
-import type { Anatomy } from '../packages/doctor/src/types.js';
+import { LLMDoctorProvider } from '../packages/doctor/src/providers/llm.js';
+import type { Anatomy, Spec } from '../packages/doctor/src/types.js';
+import { buildWithRepairLoop } from '../packages/doctor/src/repair-loop.js';
+import { VALID_DATA_DOMAINS } from '../packages/nerve/src/index.js';
 
 const WISHES = [
   // Demo wishes from PROJECT_BRIEF
@@ -71,7 +73,7 @@ async function runWishTrial(): Promise<void> {
   console.log(`Model: ${model}`);
   console.log(`Total wishes: ${WISHES.length}\n`);
   
-  const provider = new LLMDdoctorProvider({
+  const provider = new LLMDoctorProvider({
     apiKey,
     baseUrl,
     model,
@@ -79,7 +81,7 @@ async function runWishTrial(): Promise<void> {
   
   const anatomy: Anatomy = {
     apiVersion: '1.0.0',
-    dataDomains: ['tasks', 'mood', 'notes', 'habits'],
+    dataDomains: [...VALID_DATA_DOMAINS],
     installedOrgans: [],
   };
   
@@ -100,35 +102,41 @@ async function runWishTrial(): Promise<void> {
     };
     
     try {
-      // Test spec generation
-      let specGenerated = false;
-      let lastEventType = '';
+      // Full pipeline: spec -> build -> immune -> repair (max rounds).
+      let spec: Spec | null = null;
       let errorDetail = '';
-      
+
       for await (const event of provider.proposeSpec(wish, anatomy)) {
-        lastEventType = event.type;
-        // Check for both 'spec' and 'spec-complete' events
-        if (event.type === 'spec' || event.type === 'spec-complete') {
-          specGenerated = true;
+        if (event.type === 'spec-complete') {
+          spec = (event.data as { spec: Spec }).spec;
         }
-        // Capture error details
         if (event.type === 'error') {
-          errorDetail = JSON.stringify(event);
+          errorDetail = (event.data as { message?: string })?.message ?? JSON.stringify(event);
         }
       }
-      
-      console.log(`  Last event: ${lastEventType}, Spec generated: ${specGenerated}`);
-      if (errorDetail) {
-        console.log(`  Error detail: ${errorDetail.substring(0, 200)}`);
-      }
-      
-      if (specGenerated) {
-        // For this trial, count successful spec generation as shipped
-        result.outcome = 'SHIPPED_FIRST_TRY';
-        shipped++;
-      } else {
+
+      if (!spec) {
         result.outcome = 'REJECTED';
+        result.rejectionReason = `no spec: ${errorDetail || 'unknown'}`;
         rejected++;
+      } else {
+        const loop = await buildWithRepairLoop(provider, spec, anatomy);
+        result.repairRounds = loop.repairAttempts;
+        if (loop.passed) {
+          result.outcome = loop.repairAttempts === 0 ? 'SHIPPED_FIRST_TRY' : 'AFTER_REPAIR';
+          if (loop.repairAttempts === 0) shipped++;
+          else repaired++;
+          // Installed organs become link targets for later wishes (chimeras).
+          anatomy.installedOrgans.push({
+            id: loop.bundle.manifest.name,
+            name: loop.bundle.manifest.name,
+            ports: loop.bundle.manifest.ports,
+          });
+        } else {
+          result.outcome = 'REJECTED';
+          result.rejectionReason = `${loop.report.rejection?.stage}: ${loop.report.rejection?.message}`;
+          rejected++;
+        }
       }
     } catch (error: any) {
       result.error = error.message;

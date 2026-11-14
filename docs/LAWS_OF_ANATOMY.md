@@ -14,7 +14,7 @@ The sandbox is the primary security boundary. Organs are untrusted code and must
 ### Enforcement
 - Static analysis (Stage 1) detects banned constructs
 - CSP prevents network requests at runtime
-- Behavioral run (Stage 3) catches obfuscated attempts
+- Behavioral run (Stage 3) is intended to catch obfuscated attempts. On the benchmark corpus it caught no attacks that earlier stages missed (see README)
 
 ### Examples of Violations
 ```javascript
@@ -99,7 +99,7 @@ Users must be able to undo any change. This enables safe experimentation.
 ### Enforcement
 - Snapshot taken before transplant
 - Amputation restores snapshot
-- Property H3 tests this invariant
+- Tested by pps/web/src/__tests__/rev-01-property.test.ts (REV-01). No dedicated H3 suite exists.
 
 ### Examples of Violations
 ```javascript
@@ -129,7 +129,7 @@ The ledger provides tamper-evident provenance. Writing before the change ensures
 ### Enforcement
 - Ledger write must succeed before state change
 - Hash chain verified on demand
-- Property H1 tests chain integrity
+- Chain integrity is tested by packages/ledger/src/__tests__/led-01-property.test.ts (LED-01) and ordering by REV-02. No dedicated H1 suite exists.
 
 ### Examples of Violations
 ```javascript
@@ -157,6 +157,8 @@ Determinism is essential for reproducible tests. Ambient time/randomness breaks 
 ### Enforcement
 - Static analysis detects `Date` and `Math.random` usage
 - Behavioral run verifies determinism (U4)
+- Scope: L6 applies to organ code. Host code and the host-injected shim use `Date.now()` and `Math.random()` (for example ledger ids and the shim fallback). `apps/web/src/ChimeraLinking.ts` is an example.
+- Test fixture: `organs/handwritten/quick-note` deliberately violates L6 so the checker has a known defect to find.
 - Test harness controls time and RNG
 
 ### Examples of Violations
@@ -227,6 +229,7 @@ Overclaiming breeds complacency. Users must understand the limits.
 - README includes THREAT_MODEL section
 - UI never claims "guaranteed safe"
 - Documentation uses accurate language
+- Enforcement is manual review. Docs were reviewed for this in the submission pass; no automated check exists.
 
 ### Examples of Violations
 ```markdown
@@ -255,9 +258,9 @@ GRAFT does not defend against:
 Users must know when they're seeing recorded vs. live output. This prevents deception.
 
 ### Enforcement
-- Replay mode shows "REPLAY" badge
-- Doctor's Notes header indicates mode
-- Footer shows disclosure
+- Replay events are marked `_replay: true` by the replay provider and by the server's no-session wish path. **Gap:** the web UI does not yet show a "REPLAY" badge (it shows "LIVE" after passcode login), and the ledger panel falls back to unlabeled mock entries when the server is unreachable. Until fixed, label replay output in captions and voiceover.
+- Target behavior: the Doctor's Notes header indicates the mode.
+- Target behavior: a footer discloses replay data.
 
 ### Examples of Violations
 ```jsx
@@ -273,14 +276,17 @@ Users must know when they're seeing recorded vs. live output. This prevents dece
 
 ## Enforcement Summary
 
+These mechanisms reduce risk. They do not guarantee that a law cannot be violated. A static check can be bypassed (see the benchmark misses in the README).
+
+
 | Law | Static Analysis | Runtime | Ledger | Property Test |
 |-----|----------------|---------|--------|---------------|
 | L1  | ✅ Stage 1      | ✅ CSP  | -      | -             |
 | L2  | ✅ Stage 1      | ✅ Host | -      | ✅ U3         |
 | L3  | -              | ✅ UI   | ✅     | -             |
-| L4  | -              | ✅ Host | ✅     | ✅ H3         |
-| L5  | -              | ✅ Host | ✅     | ✅ H1         |
+| L4  | -              | ✅ Host | ✅     | REV-01 (rev-01-property.test.ts) |
+| L5  | -              | ✅ Host | ✅     | LED-01, REV-02 |
 | L6  | ✅ Stage 1      | ✅ Host | -      | ✅ U4         |
 | L7  | -              | ✅ Host | -      | -             |
 | L8  | -              | -       | -      | Manual        |
-| L9  | -              | ✅ UI   | -      | Manual        |
+| L9  | -              | Partial (see L9 gap) | -      | Manual        |

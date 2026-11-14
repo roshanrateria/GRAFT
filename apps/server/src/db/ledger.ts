@@ -1,14 +1,15 @@
 import Database from 'better-sqlite3';
-import { readFileSync } from 'fs';
+import { readFileSync, existsSync } from 'fs';
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
-import { 
-  type Entry, 
-  type LedgerService, 
-  computeHash, 
+import {
+  type Entry,
+  type LedgerService,
+  computeHash,
   verifyChain,
-  GENESIS_PREV_HASH 
+  GENESIS_PREV_HASH
 } from '@graft/ledger';
+import { findPackageRoot } from '../paths.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
@@ -32,7 +33,14 @@ export class SQLiteLedgerService implements LedgerService {
    * Initialize the database schema from schema.sql.
    */
   private initializeSchema(): void {
-    const schemaPath = join(__dirname, 'schema.sql');
+    const candidates = [
+      join(__dirname, 'schema.sql'), // dev (src/db) and dist if the build copies the asset
+      join(findPackageRoot(__dirname), 'src', 'db', 'schema.sql'), // built: tsc does not copy .sql assets
+    ];
+    const schemaPath = candidates.find((p) => existsSync(p));
+    if (!schemaPath) {
+      throw new Error(`schema.sql not found (tried: ${candidates.join(', ')})`);
+    }
     const schema = readFileSync(schemaPath, 'utf-8');
     this.db.exec(schema);
   }

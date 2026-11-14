@@ -16,17 +16,22 @@ export type {
   OrganBundle,
   Anatomy,
   Spec,
+  InstalledOrganInfo,
   RejectionReport,
   DecayReport,
   DoctorProvider,
 } from './types.js';
+
+// Port contract helpers
+export { applyContract, normalizePorts, normalizePermissions } from './contract.js';
+export type { Contract } from './contract.js';
 
 // Providers
 export {
   ReplayDoctorProvider,
   createReplayProvider,
   createReplayProviderFromFixture,
-  LLMDdoctorProvider,
+  LLMDoctorProvider,
   createLLMProvider,
   CrewDoctorProvider,
   createCrewProvider,

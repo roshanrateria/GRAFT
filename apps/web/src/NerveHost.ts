@@ -40,6 +40,18 @@ export type StatusUpdater = (organId: string, status: 'active' | 'quarantined' |
 export type MessageSender = (message: HostToOrganMessage) => void;
 
 /**
+ * Callback when an organ emits to a permitted output port.
+ * The host runtime routes the payload to chimera-linked organs.
+ */
+export type EmitHandler = (port: string, payload: unknown) => void;
+
+/**
+ * Callback when an organ requests an iframe resize.
+ * The sandbox host applies the height to its iframe element.
+ */
+export type ResizeHandler = (height: number) => void;
+
+/**
  * Configuration for creating a NerveHost.
  */
 export interface NerveHostConfig {
@@ -57,6 +69,10 @@ export interface NerveHostConfig {
   statusUpdater: StatusUpdater;
   /** Function to send messages to the organ */
   messageSender: MessageSender;
+  /** Called when the organ emits to a permitted output port (chimera routing) */
+  onEmit?: EmitHandler;
+  /** Called when the organ requests a resize of its iframe */
+  onResize?: ResizeHandler;
   /** Optional time provider (defaults to Date.now) */
   timeProvider?: () => number;
 }
@@ -98,11 +114,15 @@ export class NerveHost {
   private readonly dataProvider: DataProvider;
   private readonly statusUpdater: StatusUpdater;
   private readonly messageSender: MessageSender;
+  private readonly onEmit: EmitHandler | undefined;
+  private readonly onResize: ResizeHandler | undefined;
   private readonly timeProvider: () => number;
 
   private state: 'loading' | 'handshake' | 'active' | 'quarantined' | 'decayed' = 'loading';
   private rateLimitState: RateLimitState = { timestamps: [] };
-  // Reserved for future use in pending read tracking
+  /** Paths this organ is subscribed to (via read ids prefixed "sub:") */
+  private subscriptions: Set<string> = new Set();
+  /** Reserved for future use in pending read tracking */
   private _pendingReads: Map<string, { path: string; timestamp: number }> = new Map();
 
   constructor(config: NerveHostConfig) {
@@ -113,6 +133,8 @@ export class NerveHost {
     this.dataProvider = config.dataProvider;
     this.statusUpdater = config.statusUpdater;
     this.messageSender = config.messageSender;
+    this.onEmit = config.onEmit;
+    this.onResize = config.onResize;
     this.timeProvider = config.timeProvider ?? (() => Date.now());
   }
 
@@ -247,11 +269,35 @@ export class NerveHost {
 
   /**
    * Handle read message - return data if permitted.
+   *
+   * Read ids prefixed with "sub:" / "unsub:" manage subscriptions:
+   * - "sub:<path>"  registers the path and answers with the current value
+   * - "unsub:<path>" removes the registration
+   * Subscription data is later pushed via notifyDataChanged().
+   * Wire messages stay within the Nerve protocol (read in, data out).
    */
   private handleRead(id: string, path: string): void {
     if (this.state !== 'active') return;
 
-    // Check permission
+    // Subscription management (host-side extension over the read channel)
+    if (id.startsWith('sub:')) {
+      const permission: Permission = `subscribe:${path}` as Permission;
+      if (!this.granted.has(permission)) {
+        // Not permitted - do not register, do not send data
+        return;
+      }
+      this.subscriptions.add(path);
+      const value = this.dataProvider(path);
+      this.messageSender({ type: 'data', id, value });
+      return;
+    }
+
+    if (id.startsWith('unsub:')) {
+      this.subscriptions.delete(path);
+      return;
+    }
+
+    // Plain read
     const permission: Permission = `read:${path}` as Permission;
     if (!this.granted.has(permission)) {
       // Permission denied - don't send data
@@ -271,8 +317,10 @@ export class NerveHost {
 
   /**
    * Handle emit message - output to port if permitted.
+   * The payload is handed to the host runtime, which routes it to
+   * chimera-linked organs (source port -> target in port).
    */
-  private handleEmit(port: string, _payload: unknown): void {
+  private handleEmit(port: string, payload: unknown): void {
     if (this.state !== 'active') return;
 
     // Check permission
@@ -281,20 +329,49 @@ export class NerveHost {
       return;
     }
 
-    // In a full implementation, this would route to linked organs
-    // For now, we just validate and acknowledge
-    // TODO: Implement chimera routing
+    // Route the emit to linked organs via the host runtime
+    this.onEmit?.(port, payload);
   }
 
   /**
-   * Handle resize message.
+   * Handle resize message - resize the organ's iframe if permitted.
+   * The sandbox host owns the iframe element and applies the height.
    */
-  private handleResize(_height: number): void {
+  private handleResize(height: number): void {
     if (this.state !== 'active') return;
 
-    // In a full implementation, this would resize the iframe
-    // For now, we just acknowledge the message
-    // TODO: Implement iframe resize
+    // Apply the requested height via the sandbox host
+    this.onResize?.(height);
+  }
+
+  /**
+   * Push new data for a path to this organ if it is subscribed.
+   * Called by the host runtime when the underlying domain data changes.
+   */
+  notifyDataChanged(path: string): void {
+    if (this.state !== 'active') return;
+    if (!this.subscriptions.has(path)) return;
+
+    // Double-check the organ still holds the subscribe permission
+    const permission: Permission = `subscribe:${path}` as Permission;
+    if (!this.granted.has(permission)) {
+      this.subscriptions.delete(path);
+      return;
+    }
+
+    const value = this.dataProvider(path);
+    this.messageSender({
+      type: 'data',
+      id: `sub:${path}`,
+      value,
+    });
+  }
+
+  /**
+   * Get the paths this organ is currently subscribed to.
+   */
+  getSubscriptions(): string[] {
+    return Array.from(this.subscriptions);
   }
 
   /**

@@ -13,21 +13,20 @@
   /* Colors - Dark Theme (default) */
   --color-background: #0e0b0b;
   --color-surface: #17120f;
-  --color-bone: #e9e1d0;
-  --color-brass: #b08d57;
   --color-oxblood: #7a1f1f;
   --color-vein-green: #6f9a7d;
   --color-alert: #c4472f;
 
   /* Semantic color aliases */
-  --color-text-primary: var(--color-bone);
-  --color-text-secondary: rgba(233, 225, 208, 0.7);
-  --color-text-muted: rgba(233, 225, 208, 0.5);
-  --color-border: rgba(176, 141, 87, 0.3);
-  --color-border-focus: var(--color-brass);
+  --color-text-primary: #ffffff;
+  --color-text-secondary: rgba(255, 255, 255, 0.8);
+  --color-text-muted: rgba(255, 255, 255, 0.5);
+  --color-accent-light: #ff6b6b;
+  --color-border: rgba(255, 255, 255, 0.2);
+  --color-border-focus: var(--color-accent-light);
   --color-success: var(--color-vein-green);
   --color-error: var(--color-alert);
-  --color-warning: var(--color-brass);
+  --color-warning: var(--color-accent-light);
 
   /* Typography */
   --font-heading: 'Cormorant Garamond', 'IM Fell English', Georgia, serif;
@@ -91,22 +90,28 @@
   :root:not([data-theme="dark"]) {
     --color-background: #f5f1eb;
     --color-surface: #ffffff;
-    --color-bone: #1a1614;
-    --color-brass: #8b6914;
     --color-oxblood: #5c1818;
     --color-vein-green: #2d5a3d;
     --color-alert: #a33a28;
+    --color-text-primary: #1a1614;
+    --color-text-secondary: rgba(0, 0, 0, 0.8);
+    --color-text-muted: rgba(0, 0, 0, 0.5);
+    --color-accent-light: #e94560;
+    --color-border: rgba(0, 0, 0, 0.2);
   }
 }
 
 [data-theme="light"] {
   --color-background: #f5f1eb;
   --color-surface: #ffffff;
-  --color-bone: #1a1614;
-  --color-brass: #8b6914;
   --color-oxblood: #5c1818;
   --color-vein-green: #2d5a3d;
   --color-alert: #a33a28;
+  --color-text-primary: #1a1614;
+  --color-text-secondary: rgba(0, 0, 0, 0.8);
+  --color-text-muted: rgba(0, 0, 0, 0.5);
+  --color-accent-light: #e94560;
+  --color-border: rgba(0, 0, 0, 0.2);
 }
 
 /* ==========================================================================
@@ -140,13 +145,40 @@ body {
   min-height: 100vh;
 }
 
+/* Ensure all text elements have proper color */
+h1, h2, h3, h4, h5, h6 {
+  color: var(--color-text-primary);
+}
+
+p, span, div, label {
+  color: var(--color-text-primary);
+}
+
+a {
+  color: var(--color-accent-light);
+}
+
+a:hover {
+  color: var(--color-text-primary);
+}
+
+/* Input and textarea styling */
+input, textarea, select {
+  color: var(--color-text-primary);
+  background-color: var(--color-background);
+}
+
+input::placeholder, textarea::placeholder {
+  color: var(--color-text-muted);
+}
+
 /* Skip link for accessibility */
 .skip-link {
   position: absolute;
   top: -100%;
   left: 50%;
   transform: translateX(-50%);
-  background-color: var(--color-brass);
+  background-color: var(--color-accent-light);
   color: var(--color-background);
   padding: var(--space-2) var(--space-4);
   border-radius: var(--radius-md);
@@ -156,7 +188,7 @@ body {
 
 .skip-link:focus {
   top: var(--space-4);
-  outline: 2px solid var(--color-bone);
+  outline: 2px solid var(--color-text-primary);
   outline-offset: 2px;
 }
 

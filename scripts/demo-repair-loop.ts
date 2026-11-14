@@ -15,7 +15,7 @@
  * npx tsx scripts/demo-repair-loop.ts
  */
 
-import { LLMDdoctorProvider } from '../packages/doctor/src/providers/llm.js';
+import { LLMDoctorProvider } from '../packages/doctor/src/providers/llm.js';
 import { buildWithRepairLoop } from '../packages/doctor/src/repair-loop.js';
 import type { Anatomy, DoctorEvent, Spec } from '../packages/doctor/src/types.js';
 
@@ -37,7 +37,7 @@ async function main() {
   console.log(`Model: ${model}`);
   console.log(`Wish: "${WISH}"\n`);
 
-  const provider = new LLMDdoctorProvider({ apiKey, baseUrl, model });
+  const provider = new LLMDoctorProvider({ apiKey, baseUrl, model });
   
   const anatomy: Anatomy = {
     apiVersion: '1.0.0',

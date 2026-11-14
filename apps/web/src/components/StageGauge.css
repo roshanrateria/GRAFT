@@ -89,12 +89,12 @@
 /* Running - currently executing */
 .stage-gauge__bar--running .stage-gauge__fill::after {
   width: 50%;
-  background-color: var(--color-brass);
+  background-color: var(--color-accent-light);
   animation: gauge-pulse 1s ease-in-out infinite;
 }
 
 .stage-gauge__bar--running .stage-gauge__label {
-  color: var(--color-brass);
+  color: var(--color-accent-light);
   font-weight: 600;
 }
 
@@ -131,7 +131,7 @@
 
 @keyframes gauge-failed {
   0% {
-    background-color: var(--color-brass);
+    background-color: var(--color-accent-light);
   }
   100% {
     background-color: var(--color-alert);

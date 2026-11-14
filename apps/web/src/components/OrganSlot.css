@@ -31,11 +31,11 @@
 .organ-slot--empty:hover,
 .organ-slot--empty:focus-visible {
   background-color: rgba(176, 141, 87, 0.05);
-  border-color: var(--color-brass);
+  border-color: var(--color-accent-light);
 }
 
 .organ-slot--empty:focus-visible {
-  outline: 2px solid var(--color-brass);
+  outline: 2px solid var(--color-accent-light);
   outline-offset: 2px;
 }
 
@@ -163,7 +163,7 @@
   font-family: var(--font-heading);
   font-size: var(--text-base);
   font-weight: 600;
-  color: var(--color-bone);
+  color: var(--color-text-primary);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -211,7 +211,7 @@
 
 .organ-slot__organ-status--pending {
   background-color: rgba(176, 141, 87, 0.2);
-  color: var(--color-brass);
+  color: var(--color-accent-light);
 }
 
 .organ-slot__organ-status--quarantined {
@@ -221,7 +221,7 @@
 
 .organ-slot__organ-status--decayed {
   background-color: rgba(176, 141, 87, 0.2);
-  color: var(--color-brass);
+  color: var(--color-accent-light);
 }
 
 /* ==========================================================================
@@ -261,12 +261,12 @@
 }
 
 .organ-slot__port:hover {
-  border-color: var(--color-brass);
+  border-color: var(--color-accent-light);
   background-color: rgba(176, 141, 87, 0.1);
 }
 
 .organ-slot__port:focus-visible {
-  outline: 2px solid var(--color-brass);
+  outline: 2px solid var(--color-accent-light);
   outline-offset: 1px;
 }
 
@@ -275,7 +275,45 @@
 }
 
 .organ-slot__port--out {
-  color: var(--color-brass);
+  color: var(--color-accent-light);
+}
+
+/* UI-04: keyboard chimera linking states */
+
+/* Selected link source (out port awaiting a target) */
+.organ-slot__port--source {
+  border-color: var(--color-accent-light);
+  background-color: rgba(176, 141, 87, 0.2);
+  box-shadow: 0 0 0 1px var(--color-accent-light);
+}
+
+/* Highlighted compatible in-port targets while linking */
+.organ-slot__port--compatible {
+  border-color: var(--color-vein-green);
+  background-color: rgba(111, 154, 125, 0.15);
+}
+
+/* Ports that already have a chimera link */
+.organ-slot__port--linked {
+  color: var(--color-vein-green);
+  border-style: double;
+  border-width: 3px;
+}
+
+.organ-slot__port[aria-disabled='true'] {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* Slots highlighted as compatible link targets */
+.organ-slot--link-target {
+  border-color: var(--color-vein-green);
+  box-shadow: 0 0 8px rgba(111, 154, 125, 0.35);
+}
+
+/* Slots not involved in the current link are dimmed */
+.organ-slot--dimmed {
+  opacity: 0.45;
 }
 
 .organ-slot__port-marker {
@@ -421,7 +459,7 @@
 }
 
 .organ-slot__confirm-btn--no:focus-visible {
-  outline: 2px solid var(--color-brass);
+  outline: 2px solid var(--color-accent-light);
   outline-offset: 1px;
 }
 

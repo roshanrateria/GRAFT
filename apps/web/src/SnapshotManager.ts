@@ -37,6 +37,8 @@ export interface OrganSnapshot {
   };
   status: 'pending' | 'active' | 'quarantined' | 'decayed';
   installedAt: string;
+  /** Organ HTML restored together with the organ */
+  indexHtml?: string;
 }
 
 /**
@@ -75,14 +77,16 @@ export interface Snapshot {
  *
  * @param transactionId - The ID of the transaction this snapshot is for
  * @param state - The current Creature state from the store
- * @param links - Optional array of current port links (for chimera mode)
+ * @param links - Optional array of current port links (defaults to the store's chimeraLinks)
  * @returns An immutable snapshot of the state
  */
 export function capture(
   transactionId: string,
-  state: Pick<CreatureState, 'slots' | 'organs'>,
-  links: PortLink[] = []
+  state: Pick<CreatureState, 'slots' | 'organs' | 'chimeraLinks'>,
+  links?: PortLink[]
 ): Snapshot {
+  const currentLinks: PortLink[] = links ?? state.chimeraLinks ?? [];
+
   // Serialize slots (already serializable)
   const slots: SlotSnapshot[] = state.slots.map(slot => ({
     id: slot.id,
@@ -111,11 +115,12 @@ export function capture(
       },
       status: organ.status,
       installedAt: organ.installedAt,
+      ...(organ.indexHtml !== undefined ? { indexHtml: organ.indexHtml } : {}),
     };
   });
 
   // Serialize links (defensive copy)
-  const serializedLinks: PortLink[] = links.map(link => ({ ...link }));
+  const serializedLinks: PortLink[] = currentLinks.map(link => ({ ...link }));
 
   return {
     transactionId,
@@ -169,6 +174,7 @@ export function restore(
       },
       status: organ.status,
       installedAt: organ.installedAt,
+      ...(organ.indexHtml !== undefined ? { indexHtml: organ.indexHtml } : {}),
     });
   });
 
@@ -176,6 +182,7 @@ export function restore(
   store.setState({
     slots: restoredSlots,
     organs: restoredOrgans,
+    chimeraLinks: snapshot.links.map(link => ({ ...link })),
   });
 }
 

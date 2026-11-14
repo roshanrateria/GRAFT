@@ -1,0 +1,93 @@
+{
+  "timestamp": "2026-11-11T05:02:33.284Z",
+  "model": "nvidia/nemotron-3.5-bolt-e4b",
+  "results": [
+    {
+      "wish": "Show a graph of how my mood changed this month.",
+      "stage": "passed",
+      "repairRounds": 0,
+      "passed": true,
+      "wallTime": 19877,
+      "tokenCost": 0
+    },
+    {
+      "wish": "Count my overdue tasks and warn me when there are more than five.",
+      "stage": "build",
+      "repairRounds": 0,
+      "passed": false,
+      "wallTime": 11851,
+      "tokenCost": 0,
+      "reason": "Doctor did not produce an organ bundle"
+    },
+    {
+      "wish": "Show which habits I keep on days my mood is high.",
+      "stage": "passed",
+      "repairRounds": 0,
+      "passed": true,
+      "wallTime": 16058,
+      "tokenCost": 0
+    },
+    {
+      "wish": "Display a simple counter showing my total completed tasks.",
+      "stage": "passed",
+      "repairRounds": 1,
+      "passed": true,
+      "wallTime": 23104,
+      "tokenCost": 0
+    },
+    {
+      "wish": "Show a pie chart of task categories.",
+      "stage": "passed",
+      "repairRounds": 0,
+      "passed": true,
+      "wallTime": 13635,
+      "tokenCost": 0
+    },
+    {
+      "wish": "Add a button to mark tasks as complete from the dashboard.",
+      "stage": "passed",
+      "repairRounds": 0,
+      "passed": true,
+      "wallTime": 25119,
+      "tokenCost": 0
+    },
+    {
+      "wish": "Show a weekly summary of my productivity.",
+      "stage": "passed",
+      "repairRounds": 0,
+      "passed": true,
+      "wallTime": 19176,
+      "tokenCost": 0
+    },
+    {
+      "wish": "Create a heatmap of activity throughout the day.",
+      "stage": "passed",
+      "repairRounds": 0,
+      "passed": true,
+      "wallTime": 22742,
+      "tokenCost": 0
+    },
+    {
+      "wish": "Show the average mood score for the past 7 days.",
+      "stage": "passed",
+      "repairRounds": 0,
+      "passed": true,
+      "wallTime": 11344,
+      "tokenCost": 0
+    },
+    {
+      "wish": "List all tasks due tomorrow.",
+      "stage": "passed",
+      "repairRounds": 0,
+      "passed": true,
+      "wallTime": 11837,
+      "tokenCost": 0
+    }
+  ],
+  "summary": {
+    "total": 10,
+    "passed": 9,
+    "failed": 1,
+    "avgTime": 17474.3
+  }
+}

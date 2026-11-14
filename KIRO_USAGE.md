@@ -1,4 +1,204 @@
-# Kiro Usage Journal
+# How GRAFT Used Kiro (Kiroween 2026 write-up)
+
+This file has two parts. Part 1 answers the judges' questions about Kiro features and points to the files that back each claim. Part 2 (Appendix A) is the raw development journal, kept unchanged.
+
+Every claim below was checked against the repository on the day of writing. Where the repo has no evidence, the text says so. Items the author must fill in are marked `TODO(author)`. Wording follows the project rules: GRAFT reduces risk, it does not guarantee safety (L8), and replayed output is labeled as replay (L9).
+
+## Contents
+
+1. [At a glance](#at-a-glance)
+2. [IDE vs CLI vs Web vs Crew](#ide-vs-cli-vs-web-vs-crew)
+3. [Crew bot](#crew-bot)
+4. [Custom agents](#custom-agents)
+5. [Hooks](#hooks)
+6. [Spec-driven vs vibe](#spec-driven-vs-vibe)
+7. [Steering](#steering)
+8. [MCP](#mcp)
+9. [Property-based testing](#property-based-testing)
+10. [Powers](#powers)
+11. [Corrections to the raw journal](#corrections-to-the-raw-journal)
+12. [Appendix A: raw journal](#appendix-a-raw-journal)
+
+## At a glance
+
+| Kiro feature | Evidence in repo | Status |
+|---|---|---|
+| Specs | `.kiro/specs/01-...` to `08-...`; `tasks.md` for 01 to 07 | Used |
+| Steering | 7 files in `.kiro/steering/` | Used |
+| Hooks | 5 files in `.kiro/hooks/` | Configured, see [Hooks](#hooks) |
+| Custom agents | `.kiro/agents/graft-doctor.md`, `.kiro/agents/red-team.md` | Defined |
+| PBT (fast-check) | Suites beside the code, see [PBT](#property-based-testing) | Used for some PBT-tagged requirements |
+| MCP | `.kiro/settings/mcp.json` (context7, playwright) | Configured, no evidence of use |
+| Crew | `packages/doctor/src/providers/crew.ts`, `.kiro/scheduling/checkup-schedule.md` | Integration code only, not run live |
+| Powers | None found | Not used |
+| IDE | All 76 journal entries | Used |
+| CLI, Web | No journal entry | `TODO(author)` |
+
+## IDE vs CLI vs Web vs Crew
+
+What the repo shows:
+
+- **IDE.** Every one of the 76 journal entries in Appendix A records the surface as IDE. Most say "IDE (workflow subagent)": a parent session launched workflow steps (implement, review, fix) and each step ran as a subagent. This drove the phased build (Nerve and Creature, immune system, Doctor, ledger, Theatre UI, benchmark).
+- **CLI, Web.** No journal entry records Kiro CLI or Kiro Web use. (Note for readers: the project itself ships a CLI — `pnpm immune <dir>` from `packages/immune-cli`, the immune-system scanner — but that is product tooling built by Kiro, not the Kiro CLI.) The `pnpm` and `tsx` commands in the journal are project tooling, not the Kiro CLI.
+- **Crew.** The journal researched Kiro Crew documentation and wrote a provider and a scheduling guide. It records the Crew Gateway as an external process that needs a token, and no entry shows a live Crew run. See [Crew bot](#crew-bot).
+
+`TODO(author)`: if you used Kiro CLI, Kiro Web or a running Crew bot outside what the journal recorded, add one or two sentences on how each differed from the IDE. Do not add them unless they are true.
+
+What did differ, from the journal: the IDE workflow let one session split work into independent steps and then review each step with a separate reviewer step (entries titled "Review", "Re-Review" and "Review Fix Loop" in Phase 4 show this loop for each of tasks 4.1 to 4.6).
+
+## Crew bot
+
+- `packages/doctor/src/providers/crew.ts` is a REST client for the Kiro Crew Gateway (default `localhost:5476`). It posts to `/api/bots/{botName}/invocations` with a bearer token and accepts a reply, an output string or a structured event list. 11 tests in `packages/doctor/src/__tests__/crew.test.ts` cover it.
+- `.kiro/agents/graft-doctor.md` is the agent definition written to be used as the Crew bot.
+- `.kiro/scheduling/checkup-schedule.md` documents nightly checkup options, including `kirocrew cron add`. The checkup itself (`scripts/checkup.ts`, `scripts/nightly-checkup.ts`) makes no LLM calls and runs without Crew.
+- The journal (Phase 3 Step 4) says Crew is an external Gateway process, that cron jobs are set through the Crew CLI or chat, and that memory is managed by Crew. It also says the integration was left as a documented provider because a running Gateway and token were needed.
+- `docs/STATUS.md` states the `crew` provider "was not exercised live".
+- How the Crew bot differed from IDE and CLI in practice: `TODO(author)`. The repo cannot answer this. The default demo path uses the `replay` provider (labeled `_replay: true`), and the live path uses the `llm` provider.
+
+## Custom agents
+
+Both files exist and use a front matter block (name, description, model, tools, permissions, resources) followed by a prompt.
+
+**`.kiro/agents/graft-doctor.md`** (model field: `claude-sonnet-4.6`)
+- Role: the Doctor. Turns a wish into an EARS spec, builds an organ (manifest, `index.html`, `properties.js`), submits it to the immune system, repairs up to 2 rounds on rejection, and proposes healing patches after decay.
+- Permissions: read anywhere; write only to `packages/doctor/**`, `organs/**`, `fixtures/replays/**`, `.kiro/steering/**`; shell limited to `pnpm test*`, `pnpm dev`, `pnpm build`, `tsx scripts/*`.
+- Loads steering as resources: product, laws of anatomy, tech, plus `docs/NERVE_API.md`. It repeats laws L1, L2, L3, L6 and L8 in its prompt.
+- Written in the IDE for use as a Crew bot (journal, Phase 3 Step 4). No evidence it was run as a Crew bot.
+
+**`.kiro/agents/red-team.md`** (model field: `claude-sonnet-4.6`)
+- Role: generate attack organs and benign organs to test the immune system, each labeled with `expectedRejection` (stage and reason).
+- Clean-room rule: it may not read the immune checker implementations or property tests. It may read `docs/NERVE_API.md` and the ban-list comments in `js-analyzer.ts`, plus public material such as the OWASP XSS evasion sheet. The point is that the benchmark measures detection of attacks written without knowing the detector.
+- Permissions: write only to `organs/hostile/**`, `organs/handwritten/**`, `fixtures/red-team-corpus/**`; shell limited to `pnpm test:immune`.
+- Journal (Phase 5): the definition was created by a workflow subagent (commit a3bc4b7).
+
+Impact on the build, from the repo: the benchmark corpus (`fixtures/corpus/`, 70 development organs, 20 held-out) was generated by workflow subagents in the IDE following the same attack categories (journal entries "Dev Corpus Generation" and "Held-Out Corpus Generation"). The README says the red-team agent wrote the corpus. The journal entries show the generation steps ran as IDE workflow subagents, not as a separate invocation of `red-team.md`. Treat "generated by the red-team agent" as approximate.
+
+Results those agents fed (`README.md`, from `fixtures/corpus/results.json`): the immune system caught 56 of 76 attacks (73.7%) and missed 20. Behavioral and sandbox-escape categories caught under half. A sandbox plus CSP baseline modeled by `scripts/ablation-study.ts` caught 36 of 76 (47.4%); that baseline is modeled, not measured in a real browser. The corpus is not a measure of real-world attackers.
+
+## Hooks
+
+Five hooks in `.kiro/hooks/`. I read each file.
+
+| File | Trigger and matcher | Action | What it automates |
+|---|---|---|---|
+| `immune-on-change.json` | PostFileSave, `(organs\|packages/immune)/.*` | `pnpm test:immune` | Re-runs the immune package tests when an organ or the immune code is saved. Catches a changed checker or organ that breaks a hostile or benign expectation. |
+| `a11y-on-ui-change.json` | PostFileSave, `apps/web/src/.*` | `pnpm test:a11y` | Runs the web test suite (`vitest run --filter @graft/web`) when UI code is saved. `docs/STATUS.md` notes axe-core is not yet a dependency, so this is not a full accessibility audit. |
+| `nerve-docs-sync.json` | PostFileSave, `packages/nerve/.*` | Agent prompt | Asks the agent to check whether a Nerve change needs a `docs/NERVE_API.md` update or a version bump (law L2). |
+| `spec-property-gap.json` | PostFileSave, `.kiro/specs/.*/requirements.md` | `node scripts/check-pbt-gaps.js` | Looks for `[PBT]` requirements with no matching property. The script exists in `scripts/`. |
+| `preflight.json` | UserPromptSubmit, `^preflight$` | `bash scripts/preflight.sh` | Typing `preflight` runs the pre-submission checks: `.kiro` tracked, LICENSE, README sections, secret scan, tests. |
+
+How they helped, honestly:
+- The preflight hook fired during this documentation work and printed its report (checks for `.kiro`, LICENSE, README sections, secrets, then the test run). That run also showed 3 failing tests in `apps/web/src/__tests__/chimera-linking.test.ts`, the same 3 failures documented in `docs/STATUS.md`. It is a working example of a hook surfacing a real problem.
+- The journal does not attribute any specific defect to the other four hooks. I found no entry saying one of them caught a bug. `TODO(author)`: add a concrete example if you have one.
+- The Phase 0 journal entry lists six hooks including `journal-on-stop`. That hook is not in `.kiro/hooks/`, so only five exist. Journal entries are written manually (see `.kiro/steering/kiro-journal.md`). One entry ("Hook Instruction Executed") records a hook-style instruction prompting a journal append, and notes it still needed a manual response.
+- Referenced `scripts/` and `pnpm` targets (`test:immune`, `test:a11y`, `preflight`) exist in `package.json` or `scripts/`.
+
+## Spec-driven vs vibe
+
+**Structure.** Eight specs in `.kiro/specs/`, each with `requirements.md` and `design.md`. Specs 01 to 07 also have `tasks.md`. Spec 08 has none.
+
+| Spec | Topic |
+|---|---|
+| 01-creature-and-nerve | Host app, Nerve message schemas, rate limits |
+| 02-immune-system | Static, manifest, behavioral and property stages, rejection report |
+| 03-doctor-pipeline | Spec first, repair rounds, consent, replay labeling |
+| 04-ledger-and-reversibility | Hash-chain ledger, transplant, amputation |
+| 05-chimeras | Port compatibility, cycle prevention, link cleanup |
+| 06-checkups-and-healing | Re-verification, healing proposals, decay |
+| 07-theatre-ui | Slot grid, ECG line, ledger view, keyboard use |
+| 08-demo-mode | Hostile injection, fast-forward, reset (not implemented, see `docs/STATUS.md`) |
+
+Requirements use IDs and a tag, `[PBT]` or `[EX]` (example test), so each requirement says how it is verified. Workflow steps took a task from `tasks.md`, implemented it, and a reviewer step checked it against the acceptance criteria (see the Phase 4 entries in Appendix A).
+
+**Outcome of the build.** `docs/STATUS.md` reports 25 of 33 tracked requirements implemented, 4 partial, 4 not started. Spec 08 (demo mode) and the decay simulator were not built. This is an honest measure of what the specs produced.
+
+**Experiment.** `docs/spec-vs-vibe-results.md` compares 5 organs built from a spec against 5 built by chat only:
+- Spec-based: 13.0 min average, 0.2 defects average, 1 repair round in total.
+- Vibe-based: 9.0 min average, 2.8 defects average, 11 repair rounds in total.
+
+The results file itself lists limits: 5 organs per arm, self-reported numbers, no raw logs in the repo, the date is unverified, and two spec-based organs (`timer-widget`, `expense-tracker`) are rejected by today's checker for `window.parent`, so "0 defects" does not hold now. Treat the figures as anecdotal. They suggest vibe coding is faster to a first draft and produces more immune-system rejections. They do not prove a general rule. The "14x fewer defects" and "42% time saved" derived figures in Appendix A come from the same small sample.
+
+## Steering
+
+Seven files in `.kiro/steering/`:
+
+| File | Purpose |
+|---|---|
+| `product.md` | What GRAFT is, glossary, honest-language rules |
+| `tech.md` | Stack, commands, environment variables |
+| `structure.md` | Repo layout and where new code goes |
+| `laws-of-anatomy.md` | Nine invariants (L1 to L9) |
+| `testing-pbt.md` | How to write fast-check properties, U1 to U7 and H1 to H5 |
+| `design-theatre.md` | Design tokens, layout, quality bar |
+| `kiro-journal.md` | How and when to write journal entries |
+
+Strategy that mattered most: the laws file. It turns review criteria into numbered rules that every workflow step and both custom agents load as context (the agents list `laws-of-anatomy.md` among their resources, and the Doctor prompt repeats L1, L2, L3, L6, L8). Evidence that it changed outcomes: in the "Competitive Analysis and Benchmark Plan" entry, the tagline "Safely" was flagged as contradicting L8, and the README now reads "Software that grows. Accountably." with a note that safety is not guaranteed. `.kiro/steering/product.md` was updated for submission to carry the same "Accountably." wording, so steering matches the README.
+
+Known mismatch: `testing-pbt.md` and `structure.md` point to `tests/properties/`, but that folder is empty and untracked. The property suites live beside the code (see [PBT](#property-based-testing)).
+
+## MCP
+
+Configuration: `.kiro/settings/mcp.json` defines two servers.
+- `context7`: run through `npx` with `@upstash/context7-mcp`. Intended for current docs on React, Fastify, fast-check, Playwright, Vitest and Zod.
+- `playwright`: run through `npx` with `@executeautomation/playwright-mcp-server`. Intended for browser checks of the Creature UI.
+
+Facts to know:
+- The file is tracked in git as part of the submission push and is not git-ignored. Judges can read it in the public repo. `.kiro/` stays tracked per the hackathon rules.
+- The file has empty `env` blocks and holds no keys.
+- Package names were verified against the npm registry for submission: `@upstash/context7-mcp` (4.7.0) and `@executeautomation/playwright-mcp-server` (1.0.12) both exist. The original hand-made config referenced `@context7/mcp-server`, which is not a published package; it was corrected to `@upstash/context7-mcp` before the push.
+- The journal entry `docs/journal/2026-11-10-1743-mcp-configuration.md` shows a different JSON (`context7` and `playwright-mcp` commands) and says config creation was blocked by permission rules, so the user was to create it by hand. The file now in the repo is the hand-made version with different commands. The journal JSON is stale.
+- `scripts/mcp-demo.ts` only prints text describing what MCP "would" enable. It does not call an MCP server.
+
+Evidence of MCP actually being used to build GRAFT: none found. No journal entry records a Context7 lookup or a Playwright MCP session. The Playwright end-to-end tests that exist (`tests/e2e/wish-consent-amputate.spec.ts`, `tests/e2e/live-doctor.spec.ts`) use the Playwright test runner, not MCP. I therefore do not claim that MCP enabled specific features. `TODO(author)`: if you did use either server, add one concrete example.
+
+## Property-based testing
+
+Library: fast-check. Where the suites really live (not `tests/properties/`):
+
+| Requirement or property | File | Uses fast-check |
+|---|---|---|
+| LED-01 chain integrity | `packages/ledger/src/__tests__/led-01-property.test.ts` | Yes |
+| REV-01 reversibility | `apps/web/src/__tests__/rev-01-property.test.ts` | Yes (50 runs in one property) |
+| REV-02 atomicity | `apps/web/src/__tests__/rev-02-property.test.ts` | Yes (20 runs) |
+| IMM-04 universal properties U1 to U7 | `packages/immune/src/properties/universal/` run by `packages/immune/src/properties/runner.ts`; tests in `packages/immune/src/__tests__/universal-properties.test.ts` | Yes |
+| IMM-01 banned constructs, IMM-02 permissions | `packages/immune/src/__tests__/static.test.ts`, `manifest.test.ts` | Yes (some use fast-check) |
+| Per-organ properties | `organs/handwritten/mood-weather/properties.js` | Yes |
+
+Requirements tagged `[PBT]` in the specs: NRV-01, NRV-02, IMM-01, IMM-02, IMM-04, LED-01, REV-01, REV-02, CHI-01, CHI-02 (10).
+
+Gaps, from `docs/STATUS.md` and my check of the test files:
+- NRV-01 and NRV-02 are covered by `schemas.test.ts` and `NerveHost.test.ts`, which do not import fast-check. They are example tests.
+- CHI-01 and CHI-02 have example tests only. No fast-check property exists for them.
+- Host properties H2 (acyclicity) and H5 (quarantine) have no dedicated suite.
+
+Counterexamples: I found no recorded shrunk counterexample with a seed in the repo or journal. What the journal does record: property failures during Phase 3 development (U2 boundedness at 500 messages against a limit of 100, and a U6 error for light theme with reduced motion), described as expected. The seed-on-failure behavior is implemented and journaled (IMM-04). The 3 failing CHI-01 tests (`number` accepted where `integer` is required, a two-field object accepted for a primitive input, and a missing `ports` array throwing a `TypeError`) were found by example tests, not by PBT. `TODO(author)`: if fast-check found a bug that example tests would have missed, add the seed and the minimal counterexample here. I did not invent one.
+
+Why `[PBT]` was applied: to requirements phrased as "for any input" (message schemas, rate limits, ban list, permissions, ledger tampering, reversibility, atomicity, link cycles). These are invariants rather than single scenarios.
+
+## Powers
+
+Not used. The only direct evidence is the MCP journal entry, which says a `kiro_powers` list action "confirmed no powers currently installed". No power is referenced in `.kiro/`. The old "Powers" summary in Appendix A listed workflow subagents, file tools, steering and hooks. Those are Kiro features, not Powers, and are covered in their own sections above.
+
+`TODO(author)`: if you installed a Kiro Power before submitting, name it here and say what it changed. Otherwise leave this section as is.
+
+## Corrections to the raw journal
+
+The journal in Appendix A was written as the work happened. Some statements are out of date. These are the ones I found:
+- Phase 0 says "6 steering documents" and lists seven names. The folder holds seven.
+- Phase 0 lists six hooks including `journal-on-stop`. Only five exist (see [Hooks](#hooks)).
+- MCP entries say the config could not be created and show different JSON. The current `mcp.json` differs (see [MCP](#mcp)).
+- The old "Powers" summary lists features that are not Kiro Powers (see [Powers](#powers)).
+- Test counts in various entries (for example "402 passed") are from the time of writing. `docs/STATUS.md` records the later state: 3 failing tests in `chimera-linking.test.ts`.
+- The old "Spec-driven vs Vibe" summary states derived percentages without the caveats listed in `docs/spec-vs-vibe-results.md`.
+- Dates in some entries (for example 2026-11-22) are later than the last git commit (2026-11-11). Treat those dates as unverified.
+
+## Appendix A: raw journal
+
+Everything below is the original journal, unchanged. The block titled "Summary Sections (to complete before submission)" is the earlier draft of the summaries above and is superseded by Part 1.
+
+---
+
+# Kiro Usage Journal (raw)
 
 This file tracks Kiro usage throughout the GRAFT project development. Each entry documents what features were used, what worked, what failed, and evidence of the work.
 
@@ -2877,3 +3077,63 @@ ev-02-property.test.ts\
   - **Total duration**: 58 seconds for all 20 wishes
   - **Script**: scripts/run-live-wishes.ts with event type detection fix
   - **Next**: Document model choice in KIRO_USAGE.md summary, update STATUS.md
+
+---
+
+## Entry: 2026-11-10 Benchmark Matrix and Evidence Tasks
+- Kiro surface used: IDE
+- Feature(s) used: fs_write | str_replace | execute_pwsh | MCP
+- What I asked / how I structured it:
+  - Run benchmark matrix against all corpora (dev, held-out-v1, held-out-v2, benign)
+  - Fix BOM encoding issue in manifest files
+  - Create Playwright e2e test for wish-consent-amputate flow
+  - Create per-stage log script showing Stage 3 runs in Node.js/jsdom
+  - Configure MCP servers (Context7, Playwright)
+- What worked:
+  - **Benchmark matrix completed**: All 4 corpora tested
+    - dev: 70 organs, 80.0% catch rate [69.2%, 87.7%]
+    - held-out-v1: 20 organs, 70.0% catch rate [48.1%, 85.5%]
+    - held-out-v2: 30 organs, 83.3% catch rate [66.4%, 92.7%]
+    - benign: 11 organs, 100% pass rate [74.1%, 100%]
+  - **BOM fix**: Added UTF-8 BOM detection to benchmark-matrix.ts (charCodeAt(0) === 0xFEFF)
+  - **Stage 3 clarification**: Per-stage log shows behavioral tests run in Node.js/jsdom, NOT real browser iframe
+  - **Playwright tests written**: tests/e2e/wish-consent-amputate.spec.ts covers full flow
+  - **MCP configured**: .kiro/settings/mcp.json with Context7 and Playwright servers
+- What failed or surprised me:
+  - **UTF-8 BOM in manifests**: Windows/PowerShell saved JSON files with BOM, breaking JSON.parse
+  - **MCP config blocked**: .kiro/settings/mcp.json protected by permission rules - user created manually
+  - **Playwright not run**: E2E tests require testids in UI components (future work)
+- Evidence:
+  - **Benchmark results**: fixtures/corpus/benchmark-matrix.json with Wilson confidence intervals
+  - **Scripts created**: scripts/per-stage-log.ts, scripts/benchmark-matrix.ts (updated)
+  - **Tests created**: tests/e2e/wish-consent-amputate.spec.ts
+  - **Config created**: playwright.config.ts, .kiro/settings/mcp.json
+
+
+---
+
+## Entry: 2026-11-11 Live Mode with NVIDIA API
+- Kiro surface used: IDE
+- Feature(s) used: execute_pwsh | control_pwsh_process | str_replace | fs_append
+- What I asked / how I structured it:
+  - Configure live mode with NVIDIA API (nvapi key, nemotron-3.5-bolt-e4b model)
+  - Set LIVE_PASSCODE="test" for authentication
+  - Update e2e tests to test live mode authentication and wish submission
+  - Fix better-sqlite3 v11 native build for ledger tests
+  - Update @fastify/static to v10 for Fastify 5.x compatibility
+- What worked:
+  - **NVIDIA API connection**: Successfully streaming responses from nemotron-3.5-bolt-e4b
+  - **Live mode authentication**: POST /api/doctor/live with passcode returns session token
+  - **Wish submission with session token**: POST /api/doctor/wish with sessionToken works
+  - **All 9 e2e tests pass**: Including live mode tests
+  - **All 409 unit tests pass**: After rebuilding better-sqlite3 v11
+- What failed or surprised me:
+  - **@fastify/static version mismatch**: v7 expected Fastify 4.x, updated to v10
+  - **better-sqlite3 v11 not rebuilt**: Had to manually rebuild in pnpm store
+  - **PowerShell ternary syntax**: Different from bash, used if/else instead
+- Evidence:
+  - **Doctor API status**: `{"mode":"passcode-protected","canGoLive":true}`
+  - **NVIDIA API test**: Successfully compared 9.11 vs 9.8
+  - **E2E tests**: 9 passed including live mode authentication
+  - **Unit tests**: 409 passed, 1 skipped
+  - **Environment**: LIVE_PASSCODE=test, DOCTOR_MODEL=nvidia/nemotron-3.5-bolt-e4b, LLM_BASE_URL=https://integrate.api.nvidia.com/v1

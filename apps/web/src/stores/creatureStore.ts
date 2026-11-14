@@ -47,6 +47,8 @@ export interface OrganInstance {
   manifest: OrganManifest;
   status: 'pending' | 'active' | 'quarantined' | 'decayed';
   installedAt: string;
+  /** Organ HTML (from the approved bundle) rendered inside a sandboxed iframe */
+  indexHtml?: string;
 }
 
 export interface OrganManifest {
@@ -77,6 +79,18 @@ export interface CreatureState {
   // Organs
   organs: Map<string, OrganInstance>;
   
+  // Chimera links (organ output port -> organ input port)
+  chimeraLinks: ChimeraLink[];
+  
+  // Active keyboard-linking source (UI-04): organ + output port awaiting a target
+  linkingSource: { organId: string; port: string } | null;
+  
+  // Status message for assistive tech (screen readers) during linking
+  linkingStatus: string | null;
+  
+  // Slot awaiting a wish (set when the user activates an empty slot)
+  pendingWishSlot: string | null;
+  
   // Built-in data domains (read-only to organs)
   mood: {
     entries: MoodEntry[];
@@ -96,6 +110,25 @@ export interface CreatureState {
   addOrgan: (slotId: string, organ: OrganInstance) => void;
   removeOrgan: (slotId: string) => void;
   updateOrganStatus: (organId: string, status: OrganInstance['status']) => void;
+  addChimeraLink: (link: ChimeraLink) => void;
+  removeChimeraLink: (linkId: string) => void;
+  getChimeraLinksFor: (organId: string) => ChimeraLink[];
+  startLinking: (organId: string, port: string) => void;
+  cancelLinking: () => void;
+  setLinkingStatus: (message: string | null) => void;
+  setPendingWishSlot: (slotId: string | null) => void;
+}
+
+/**
+ * A chimera link: one organ's output port feeds another organ's input port.
+ * Shape mirrors SnapshotManager's PortLink so snapshots capture links too.
+ */
+export interface ChimeraLink {
+  id: string;
+  sourceOrganId: string;
+  sourcePort: string;
+  targetOrganId: string;
+  targetPort: string;
 }
 
 // =============================================================================
@@ -239,6 +272,10 @@ export const useCreatureStore = create<CreatureState>()(
       // Initial state
       slots: generateInitialSlots(),
       organs: new Map(),
+      chimeraLinks: [],
+      linkingSource: null,
+      linkingStatus: null,
+      pendingWishSlot: null,
       mood: { entries: initialData.mood },
       tasks: { items: initialData.tasks },
       habits: { checkins: initialData.habits },
@@ -278,10 +315,12 @@ export const useCreatureStore = create<CreatureState>()(
       },
 
       removeOrgan: (slotId) => {
-        const { slots, organs } = get();
+        const { slots, organs, chimeraLinks } = get();
         const slot = slots.find(s => s.id === slotId);
         
         if (!slot?.organId) return;
+        
+        const removedOrganId = slot.organId;
         
         // Remove organ reference from slot
         const updatedSlots = slots.map(s =>
@@ -290,9 +329,21 @@ export const useCreatureStore = create<CreatureState>()(
         
         // Remove organ from registry
         const updatedOrgans = new Map(organs);
-        updatedOrgans.delete(slot.organId);
+        updatedOrgans.delete(removedOrganId);
         
-        set({ slots: updatedSlots, organs: updatedOrgans });
+        // Remove chimera links involving the removed organ
+        const updatedLinks = chimeraLinks.filter(
+          l => l.sourceOrganId !== removedOrganId && l.targetOrganId !== removedOrganId
+        );
+        
+        // Clear linking mode if its source organ was removed
+        const linkingSource = get().linkingSource;
+        const clearedLinking =
+          linkingSource?.organId === removedOrganId
+            ? { linkingSource: null, linkingStatus: 'Linking cancelled.' }
+            : {};
+        
+        set({ slots: updatedSlots, organs: updatedOrgans, chimeraLinks: updatedLinks, ...clearedLinking });
       },
 
       updateOrganStatus: (organId, status) => {
@@ -305,6 +356,57 @@ export const useCreatureStore = create<CreatureState>()(
         updatedOrgans.set(organId, { ...organ, status });
         
         set({ organs: updatedOrgans });
+      },
+
+      addChimeraLink: (link) => {
+        const { chimeraLinks } = get();
+        
+        // Ignore exact duplicates (same source port and target port)
+        const exists = chimeraLinks.some(
+          l =>
+            l.sourceOrganId === link.sourceOrganId &&
+            l.sourcePort === link.sourcePort &&
+            l.targetOrganId === link.targetOrganId &&
+            l.targetPort === link.targetPort
+        );
+        if (exists) return;
+        
+        set({ chimeraLinks: [...chimeraLinks, link] });
+      },
+
+      removeChimeraLink: (linkId) => {
+        set({
+          chimeraLinks: get().chimeraLinks.filter(l => l.id !== linkId),
+        });
+      },
+
+      getChimeraLinksFor: (organId) => {
+        return get().chimeraLinks.filter(
+          l => l.sourceOrganId === organId || l.targetOrganId === organId
+        );
+      },
+
+      startLinking: (organId, port) => {
+        set({
+          linkingSource: { organId, port },
+          linkingStatus: `Linking: select an input port to connect to ${organId}:${port}. Escape cancels.`,
+        });
+      },
+
+      cancelLinking: () => {
+        const { linkingSource } = get();
+        set({
+          linkingSource: null,
+          linkingStatus: linkingSource ? 'Linking cancelled.' : null,
+        });
+      },
+
+      setLinkingStatus: (message) => {
+        set({ linkingStatus: message });
+      },
+
+      setPendingWishSlot: (slotId) => {
+        set({ pendingWishSlot: slotId });
       },
     }),
     { name: 'creature-store' }

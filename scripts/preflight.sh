@@ -39,8 +39,21 @@ echo "✓ README has all required sections"
 # 4. Check for secrets
 echo ""
 echo "4. Checking for secrets..."
-if grep -r "LLM_API_KEY\|API_KEY\|SECRET" --include="*.ts" --include="*.tsx" --include="*.js" . 2>/dev/null | grep -v "process.env\|import.meta.env" | grep -v ".env.example"; then
-  echo "ERROR: Potential secrets found in code"
+# Check source files only, exclude node_modules and dist
+# Look for actual hardcoded API keys (not env var references)
+if grep -rE "(sk-[a-zA-Z0-9]{20,}|nvapi-[a-zA-Z0-9]{20,}|AIza[a-zA-Z0-9_-]{33,})" \
+  --include="*.ts" --include="*.tsx" --include="*.js" \
+  --exclude-dir=node_modules --exclude-dir=dist --exclude-dir=.git \
+  apps/ packages/ scripts/ organs/ tests/ 2>/dev/null; then
+  echo "ERROR: Potential hardcoded API keys found"
+  exit 1
+fi
+# Check for password/secret assignments (not env var references)
+if grep -rE "(password|secret|apikey|api_key)\s*[:=]\s*['\"][^'\"]+['\"]" \
+  --include="*.ts" --include="*.tsx" --include="*.js" \
+  --exclude-dir=node_modules --exclude-dir=dist --exclude-dir=.git \
+  apps/ packages/ scripts/ organs/ tests/ 2>/dev/null | grep -v "process.env\|import.meta.env"; then
+  echo "ERROR: Potential hardcoded secrets found"
   exit 1
 fi
 echo "✓ No secrets found"
@@ -49,7 +62,11 @@ echo "✓ No secrets found"
 echo ""
 echo "5. Running tests..."
 if command -v pnpm &> /dev/null; then
-  pnpm test || echo "WARNING: Tests not configured yet"
+  if pnpm test; then
+    echo "✓ All tests passed"
+  else
+    echo "WARNING: Some tests failed (may require environment setup)"
+  fi
 else
   echo "WARNING: pnpm not available, skipping tests"
 fi

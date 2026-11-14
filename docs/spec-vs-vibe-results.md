@@ -1,8 +1,15 @@
 # Spec-vs-Vibe Experiment Results
 
-**Experiment Date**: 2026-11-22
+**Experiment Date**: 2026-11-22 (as written by the author; this is later than the last git commit, 2026-11-11, so treat the date as unverified)
 **Goal**: Compare building organs from formal specifications vs building by vibe (chat-only, no specs)
 
+## Read this first: limits of this experiment
+
+- Sample size is 5 organs per approach. Who built them and under what conditions is not recorded. The figures below are not statistically meaningful.
+- Times, defect counts and repair rounds are self-reported. No raw logs for them are stored in the repo (checked `docs/journal/` and `fixtures/`), so they could not be re-verified.
+- "Defects" was defined as immune-system rejections, but the table also lists defects such as a missing `aria-live` region, which the immune system does not check. The definition was applied loosely.
+- Re-check on the current tree with `pnpm immune <absolute-path>`: the spec-based organs `timer-widget` and `expense-tracker` are rejected for `window.parent`, so "0 defects" for spec-based organs does not hold under today's checker. The other organs in `organs/handwritten/` have no `manifest.json` and cannot be checked by the CLI. `quick-note` carries a deliberate `Date.now()` defect used as a test fixture, so it is not a clean sample of vibe-built output.
+- The "14x fewer defects", "80% first-try" and "42% time saved" figures follow from these tables only. Quote them as anecdotal.
 ## Methodology
 
 ### Spec-based Approach
@@ -175,8 +182,8 @@
 
 ## Conclusion
 
-The spec-based approach produces higher-quality organs with significantly fewer defects and repair rounds. While it takes longer initially, the reduction in debugging time more than compensates. For production use, specs are strongly recommended.
+In this small, self-reported sample the spec-based approach had fewer defects and repair rounds. It took longer initially, and the reported repair counts suggest less debugging time afterward. Specs are the approach used for the rest of this project; this experiment alone does not prove they are better.
 
-The vibe approach is appropriate for prototyping and exploration, but the defect rate (14x higher) makes it unsuitable for production features without an automated safety net like the immune system.
+The vibe approach is appropriate for prototyping and exploration, but the defect rate in this sample (14x higher) argues for an automated check such as the immune system. The immune system reduces risk and does not guarantee safety.
 
-**Key insight**: The immune system makes vibe-based development safer by catching defects automatically, but specs reduce the burden on the immune system and make development more predictable.
+**Takeaway (author opinion, not measured here)**: an automated check catches some defects in vibe-built organs, and specs may reduce how many it has to catch.

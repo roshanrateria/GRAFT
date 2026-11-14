@@ -80,6 +80,22 @@ Request data from a domain.
 }
 ```
 
+#### Receiving on input ports: `nerve.onIn`
+
+The sandbox shim wraps the `in` message: `nerve.onIn('open-count', fn)` calls
+`fn(payload)` for every `in` message addressed to that port (it returns an
+unsubscribe function). It is sugar over the existing `in` message, not a new
+channel. The port name must match a declared `in` port in `manifest.ports`.
+
+Port contract rules enforced by the Doctor and the immune system:
+
+- `manifest.ports` is always an array (defaults to `[]`).
+- Every `out` port needs a matching `emit:<port>` permission; `nerve.emit('x', …)`
+  must name a declared `out` port, and `nerve.onIn('x', …)` a declared `in` port.
+- `subscribe:<x>` is for data domains (e.g. `subscribe:tasks.items`), never ports.
+- Links require the output schema to satisfy the input schema (an `integer` may
+  feed a `number`, not the reverse).
+
 #### `emit`
 Emit data to an output port (for chimera linking).
 
@@ -126,12 +142,18 @@ Permission format: `<action>:<target>`
 ## Constraints
 
 ### Rate Limit
-- **Maximum**: 20 messages per second per organ
-- **Violation**: Organ is quarantined (hidden and flagged)
+- **Maximum**: 20 messages per second per organ (`RATE_LIMIT_PER_SECOND` in `packages/nerve/src/protocol.ts`)
+- **Violation**: Organ is quarantined (hidden and flagged). The protocol constant `QUARANTINE_TIMEOUT_MS` is 1000.
 
 ### Payload Size
-- **Maximum**: 16 KB per message
-- **Violation**: Message dropped, warning logged
+- **Maximum**: 16 KB per message (`MAX_PAYLOAD_BYTES`)
+- **Violation**: Message rejected with reason `payload_too_large`
+
+### Resize
+- `height` must be a positive integer. The host clamps it to 40 to 4000 pixels.
+
+### Tick
+- `now` is a non-negative integer. The protocol defines a 100 ms tick interval (`TICK_INTERVAL_MS`).
 
 ### API Version
 - Organ's `apiVersion` must match host's version
@@ -142,28 +164,30 @@ Permission format: `<action>:<target>`
 Organs must not use `Date.now()` or `Math.random()`. Instead, use:
 
 ```javascript
-// Get current time (injected by host)
-const now = await nerve.now();
+// Get current time (synchronous; injected by the host when available)
+const now = nerve.now();
 
-// Get deterministic random number (seeded by host)
+// Get a random number in [0, 1) (injected by the host when available)
 const random = nerve.random();
 ```
 
-This ensures:
+This supports:
 - Deterministic behavior under test
 - Reproducible property-based tests
-- Control over time in demo mode
+
+Note: the sandbox shim (`apps/web/src/components/SandboxHost.tsx`) falls back to `Date.now()` and `Math.random()` when the host has not injected a value. That fallback is in the host-injected shim, not in organ code. Organ code that calls them directly is flagged by static analysis.
 
 ## Data Domains
 
-The Creature provides seeded data domains (read-only to organs):
+The Creature provides seeded data domains (read-only to organs). Valid paths are `mood.entries`, `tasks.items`, `habits.checkins` and `calendar.events` (`VALID_DATA_DOMAINS`). The shapes below follow `apps/web/src/host/dataProvider.ts` and the types in `apps/web/src/stores/creatureStore.ts`.
 
 ### `mood.entries`
 ```typescript
 {
   entries: Array<{
-    date: string;      // ISO date
-    score: number;     // 1-10
+    id: string;
+    date: string;
+    mood: number;      // 1-10
     notes?: string;
   }>
 }
@@ -177,7 +201,7 @@ The Creature provides seeded data domains (read-only to organs):
     title: string;
     completed: boolean;
     dueDate?: string;
-    created: string;
+    priority: 'low' | 'medium' | 'high';
   }>
 }
 ```
@@ -185,13 +209,11 @@ The Creature provides seeded data domains (read-only to organs):
 ### `habits.checkins`
 ```typescript
 {
-  habits: Array<{
+  checkins: Array<{
     id: string;
-    name: string;
-    checkins: Array<{
-      date: string;
-      completed: boolean;
-    }>
+    habitId: string;
+    date: string;
+    completed: boolean;
   }>
 }
 ```
@@ -202,56 +224,39 @@ The Creature provides seeded data domains (read-only to organs):
   events: Array<{
     id: string;
     title: string;
-    start: string;
-    end: string;
-    type: string;
+    date: string;
+    time?: string;
+    duration?: number;
   }>
 }
 ```
 
 ## Example Usage
 
+Organs do not call `window.parent.postMessage` themselves. The static analyzer rejects `window.parent` (`IMM_BANNED_WINDOW_PARENT`). The Creature injects a shim that exposes `window.nerve` and speaks the protocol above.
+
 ```javascript
-// In organ's index.html <script>
+// In the organ's index.html <script>
 
-// 1. Send handshake
-window.parent.postMessage({
-  type: 'hello',
-  apiVersion: '1.0.0'
-}, '*');
-
-// 2. Listen for messages
-window.addEventListener('message', (event) => {
-  const msg = event.data;
-  
-  switch (msg.type) {
-    case 'init':
-      console.log('Granted:', msg.granted);
-      // Request data
-      window.parent.postMessage({
-        type: 'read',
-        id: 'req-1',
-        path: 'mood.entries'
-      }, '*');
-      break;
-      
-    case 'data':
-      if (msg.id === 'req-1') {
-        // Render mood data
-        renderMoodGraph(msg.value);
-      }
-      break;
-  }
+// Read declared data (needs the read:mood.entries permission)
+nerve.read('mood.entries').then((data) => {
+  renderMoodGraph(data.entries);
 });
 
-// 3. Emit to port (for chimera)
-window.parent.postMessage({
-  type: 'emit',
-  port: 'moodScore',
-  payload: { score: currentScore }
-}, '*');
+// Subscribe to changes (needs the subscribe:mood.entries permission)
+nerve.subscribe('mood.entries', (data) => renderMoodGraph(data.entries));
+
+// Emit to a declared output port (needs emit:moodScore and an out port named moodScore)
+nerve.emit('moodScore', { score: 7 });
+
+// Receive on a declared input port
+nerve.onIn('open-count', (payload) => showCount(payload));
+
+// Injected time and randomness
+const now = nerve.now();
 ```
 
+The shim also sends the `hello` handshake and handles `init`, `data`, `in` and `tick` for you. Exact permission and port rules are enforced by the manifest validator in `packages/immune/src/manifest/`.
 ## Sandbox
 
 Organs run in a sandboxed iframe:

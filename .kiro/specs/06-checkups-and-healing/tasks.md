@@ -3,18 +3,18 @@
 ## Phase 4: Accountability
 
 ### Task 6.1: Checkup Script
-- [ ] Create `scripts/checkup.ts`
-- [ ] Implement organ enumeration from registry
-- [ ] Implement immune system re-run
-- [ ] Implement ledger entry writing
-- [ ] Verify CHK-01 and CHK-02
+- [x] Create `scripts/checkup.ts`
+- [x] Implement organ enumeration from registry (from the ledger)
+- [x] Implement immune system re-run
+- [x] Implement ledger entry writing
+- [x] Verify CHK-01 and CHK-02 (by reading code; not run end to end)
 
 ### Task 6.2: Healing Doctor Method
-- [ ] Update `packages/doctor/src/types.ts` with heal() in interface
-- [ ] Implement in LLM provider (if using)
-- [ ] Implement in Crew provider
+- [x] Update `packages/doctor/src/types.ts` with heal() in interface
+- [x] Implement in LLM provider (if using)
+- [x] Implement in Crew provider
 - [ ] Add replay fixture for healing
-- [ ] Write tests
+- [x] Write tests (heal is covered in crew, llm and replay tests)
 
 ### Task 6.3: Healing UI Flow
 - [ ] Create `apps/web/src/HealingDialog.tsx`
@@ -54,8 +54,8 @@
 
 ## Acceptance Criteria
 
-- [ ] CHK-01: All organs re-verified on checkup
-- [ ] CHK-02: Checkup script has no LLM calls
+- [x] CHK-01: All organs re-verified on checkup (script only)
+- [x] CHK-02: Checkup script has no LLM calls
 - [ ] CHK-03: Healing proposed and waits for approval
 - [ ] CHK-04: Decay simulator causes v1 failures
 - [ ] DEM-02: "Fast-forward the night" button works

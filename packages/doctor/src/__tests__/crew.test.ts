@@ -1,12 +1,25 @@
 /**
  * Crew Provider Tests
  *
- * Tests for Crew provider stub. Full integration tests would require
- * running Crew Gateway.
+ * Tests for the Crew Doctor provider's configuration and not-configured
+ * behavior. Full integration tests would require running Crew Gateway.
  */
 
 import { describe, it, expect } from 'vitest';
 import { CrewDoctorProvider, createCrewProvider } from '../providers/crew.js';
+
+/**
+ * Restore an env var after a test touched it.
+ * `process.env.X = undefined` sets the literal string "undefined" in Node,
+ * so an originally-absent variable must be deleted, not assigned.
+ */
+function restoreEnv(name: string, original: string | undefined): void {
+  if (original === undefined) {
+    delete process.env[name];
+  } else {
+    process.env[name] = original;
+  }
+}
 
 describe('CrewDoctorProvider', () => {
   describe('constructor', () => {
@@ -36,8 +49,8 @@ describe('CrewDoctorProvider', () => {
       const provider = new CrewDoctorProvider();
       expect(provider.name).toContain('http://env-crew:8888');
 
-      process.env.KIROCREW_GATEWAY_URL = originalUrl;
-      process.env.KIROCREW_TOKEN = originalToken;
+      restoreEnv('KIROCREW_GATEWAY_URL', originalUrl);
+      restoreEnv('KIROCREW_TOKEN', originalToken);
     });
   });
 
@@ -49,9 +62,7 @@ describe('CrewDoctorProvider', () => {
       const provider = new CrewDoctorProvider();
       expect(provider.isConfigured()).toBe(false);
 
-      if (originalToken !== undefined) {
-        process.env.KIROCREW_TOKEN = originalToken;
-      }
+      restoreEnv('KIROCREW_TOKEN', originalToken);
     });
 
     it('should return true with token', () => {

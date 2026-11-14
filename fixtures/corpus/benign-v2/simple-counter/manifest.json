@@ -1,0 +1,16 @@
+{
+  "name": "simple-counter",
+  "version": "1.0.0",
+  "apiVersion": "1.0.0",
+  "permissions": ["read:tasks"],
+  "ports": [
+    {
+      "name": "taskCount",
+      "direction": "out",
+      "schema": {
+        "type": "integer"
+      }
+    }
+  ],
+  "slotSize": "small"
+}

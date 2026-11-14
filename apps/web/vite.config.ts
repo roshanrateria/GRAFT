@@ -7,6 +7,10 @@ export default defineConfig({
   resolve: {
     alias: {
       '@': resolve(__dirname, './src'),
+      // The real ledger package computes hashes with node:crypto, which is
+      // unavailable in the browser. Browser flows delegate hashing/appends to
+      // the server (POST /api/ledger/append) via the browser-safe stub.
+      '@graft/ledger': resolve(__dirname, './src/stubs/ledger.ts'),
     },
   },
   server: {

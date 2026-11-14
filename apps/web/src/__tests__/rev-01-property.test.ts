@@ -24,6 +24,10 @@ function createMockStore(initialState?: Partial<CreatureState>) {
   let state: CreatureState = {
     slots: [],
     organs: new Map(),
+    chimeraLinks: [],
+    linkingSource: null,
+    linkingStatus: null,
+    pendingWishSlot: null,
     mood: { entries: [] },
     tasks: { items: [] },
     habits: { checkins: [] },
@@ -32,6 +36,13 @@ function createMockStore(initialState?: Partial<CreatureState>) {
     addOrgan: () => {},
     removeOrgan: () => {},
     updateOrganStatus: () => {},
+    addChimeraLink: () => {},
+    removeChimeraLink: () => {},
+    getChimeraLinksFor: () => [],
+    startLinking: () => {},
+    cancelLinking: () => {},
+    setLinkingStatus: () => {},
+    setPendingWishSlot: () => {},
     ...initialState,
   };
 

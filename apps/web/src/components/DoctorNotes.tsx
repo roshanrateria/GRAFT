@@ -3,12 +3,18 @@
  *
  * The left panel of the Theatre UI.
  * Displays wish input, streaming spec, properties, and build progress.
- * Includes passcode input for live Doctor mode.
+ * Includes passcode input for live Doctor mode and the transplant consent
+ * flow (organ preview -> consent -> ledger-first transplant).
  *
  * @see .kiro/steering/design-theatre.md for UI specifications
  */
 
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback, useEffect, useRef } from 'react';
+import type { OrganBundle } from '@graft/immune';
+import { ConsentDialog } from './ConsentDialog';
+import type { StageName } from './StageGauge';
+import { useCreatureStore } from '../stores/creatureStore';
+import { getTransplantCoordinator } from '../TransplantService';
 import './DoctorNotes.css';
 
 interface Assumption {
@@ -21,6 +27,16 @@ interface LiveSession {
   token: string;
   expiresAt: number;
   wishCount: number;
+}
+
+/** Pending consent shown in the ConsentDialog */
+interface PendingConsent {
+  organName: string;
+  organVersion: string;
+  description?: string;
+  passedStages: StageName[];
+  permissions: string[];
+  bundle: OrganBundle;
 }
 
 interface DoctorNotesProps {
@@ -38,6 +54,15 @@ export function DoctorNotes({ className }: DoctorNotesProps) {
   const [specText, setSpecText] = useState('');
   const [propertiesText, setPropertiesText] = useState('');
   const [buildProgress, setBuildProgress] = useState<number | null>(null);
+  const [streamError, setStreamError] = useState<string | null>(null);
+  const [transplantStatus, setTransplantStatus] = useState<string | null>(null);
+
+  // Consent flow state
+  const [pendingConsent, setPendingConsent] = useState<PendingConsent | null>(null);
+
+  // Wish slot targeting (activated from an empty OrganSlot)
+  const pendingWishSlot = useCreatureStore(state => state.pendingWishSlot);
+  const setPendingWishSlot = useCreatureStore(state => state.setPendingWishSlot);
 
   // Live mode state
   const [passcode, setPasscode] = useState('');
@@ -45,6 +70,14 @@ export function DoctorNotes({ className }: DoctorNotesProps) {
   const [liveSession, setLiveSession] = useState<LiveSession | null>(null);
   const [authError, setAuthError] = useState<string | null>(null);
   const [canGoLive, setCanGoLive] = useState(false);
+
+  // Focus the wish input when an empty slot was activated in the Specimen
+  const wishInputRef = useRef<HTMLTextAreaElement>(null);
+  useEffect(() => {
+    if (pendingWishSlot) {
+      wishInputRef.current?.focus();
+    }
+  }, [pendingWishSlot]);
 
   // Check if live mode is available on mount
   useEffect(() => {
@@ -80,28 +113,221 @@ export function DoctorNotes({ className }: DoctorNotesProps) {
     setSpecText('');
     setPropertiesText('');
     setBuildProgress(null);
+    setStreamError(null);
+    setTransplantStatus(null);
 
     try {
-      // TODO: Connect to Doctor API
-      // For now, just log the wish
       console.log('Wish submitted:', wish);
 
-      // Simulate assumptions for demo
-      setAssumptions([
-        { id: '1', text: 'User wants a visual mood tracker', status: 'pending' },
-        { id: '2', text: 'Data should persist locally', status: 'pending' },
-      ]);
+      // Connect to Doctor API via Server-Sent Events
+      const response = await fetch('/api/doctor/wish', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          wish,
+          sessionToken: liveSession?.token,
+        }),
+      });
+
+      // Check if response is SSE stream
+      const contentType = response.headers.get('content-type');
+      if (contentType?.includes('text/event-stream')) {
+        // Handle SSE stream
+        const reader = response.body?.getReader();
+        const decoder = new TextDecoder();
+
+        if (!reader) {
+          console.error('No reader available');
+          return;
+        }
+
+        let buffer = '';
+        while (true) {
+          const { done, value } = await reader.read();
+          if (done) break;
+
+          buffer += decoder.decode(value, { stream: true });
+          const lines = buffer.split('\n');
+          buffer = lines.pop() || '';
+
+          for (const line of lines) {
+            if (line.startsWith('data: ')) {
+              try {
+                const data = JSON.parse(line.slice(6));
+                handleDoctorEvent(data);
+              } catch (e) {
+                console.error('Failed to parse event:', line, e);
+              }
+            }
+          }
+        }
+      } else {
+        // Handle JSON response (error or live mode placeholder)
+        const data = await response.json();
+        if (data.message) {
+          // Show placeholder message for live mode
+          setSpecText(data.message);
+        }
+      }
+    } catch (error) {
+      console.error('Wish submission failed:', error);
+      // Surface connection failures (server down, dropped SSE mid-stream) -
+      // a silent console.error left the UI frozen on the placeholder.
+      setStreamError(
+        'Could not reach the Doctor. Check the connection and submit the wish again.'
+      );
     } finally {
       setIsSubmitting(false);
     }
-  }, [wish, isSubmitting]);
+  }, [wish, isSubmitting, liveSession]);
 
-  const handleKeyDown = useCallback((event: React.KeyboardEvent<HTMLTextAreaElement>) => {
-    if (event.key === 'Enter' && (event.metaKey || event.ctrlKey)) {
-      event.preventDefault();
-      handleWishSubmit();
+  // Handle Doctor events from SSE stream
+  const handleDoctorEvent = useCallback((event: { type: string; data: unknown; timestamp: number; _replay?: boolean }) => {
+    console.log('Doctor event:', event.type, event.data);
+
+    switch (event.type) {
+      case 'assumption': {
+        const data = event.data as { id?: string; text?: string; message?: string };
+        const text = data.text ?? data.message ?? '';
+        const id = data.id ?? `assumption-${Date.now()}`;
+        setAssumptions(prev => [...prev, { id, text, status: 'pending' }]);
+        break;
+      }
+      case 'spec-start':
+        setSpecText('Generating specification...');
+        break;
+      case 'spec-section': {
+        const data = event.data as { section?: string; content?: string; partial?: string };
+        if (typeof data.partial === 'string') {
+          // Streaming chunk: append raw text (first chunk replaces the placeholder)
+          setSpecText(prev =>
+            prev === 'Generating specification...' ? data.partial! : prev + data.partial!
+          );
+        } else if (typeof data.content === 'string') {
+          // Full section (e.g. parsed requirements after the stream)
+          setSpecText(prev => prev + '\n\n' + data.content);
+        }
+        break;
+      }
+      case 'spec-complete':
+        break;
+      case 'properties-start':
+        setPropertiesText('Generating properties...');
+        break;
+      case 'properties-section': {
+        const data = event.data as { content: string };
+        setPropertiesText(prev => prev + '\n' + data.content);
+        break;
+      }
+      case 'properties-complete':
+        break;
+      case 'build-start':
+        setBuildProgress(0);
+        break;
+      case 'build-progress': {
+        const data = event.data as { progress: number };
+        setBuildProgress(data.progress);
+        break;
+      }
+      case 'build-complete':
+        setBuildProgress(100);
+        break;
+      case 'immune-start':
+      case 'immune-stage':
+      case 'immune-pass':
+      case 'immune-fail':
+        // Stage detail is shown by the Laboratory overlay; the consent dialog
+        // summarises the final report.
+        break;
+      case 'consent-request': {
+        const data = event.data as {
+          organName: string;
+          bundle: OrganBundle;
+          report?: { stages: Array<{ stage: StageName; passed: boolean }> };
+        };
+        if (!data?.bundle?.manifest) {
+          setStreamError('Consent request was missing the organ bundle.');
+          break;
+        }
+        setPendingConsent({
+          organName: data.organName ?? data.bundle.manifest.name,
+          organVersion: data.bundle.manifest.version,
+          description: data.bundle.spec?.slice(0, 240),
+          passedStages: (data.report?.stages ?? [])
+            .filter(s => s.passed)
+            .map(s => s.stage),
+          permissions: [...data.bundle.manifest.permissions],
+          bundle: data.bundle,
+        });
+        break;
+      }
+      case 'error': {
+        const data = event.data as { message?: string; hint?: string };
+        const message = data.message ?? 'Unknown Doctor error';
+        console.error('Doctor error:', message);
+        setStreamError(data.hint ? `${message} (${data.hint})` : message);
+        break;
+      }
     }
-  }, [handleWishSubmit]);
+  }, []);
+
+  // Handle transplant consent decision
+  const handleConsentTransplant = useCallback(async () => {
+    if (!pendingConsent) return;
+
+    const consent = pendingConsent;
+    setPendingConsent(null);
+
+    // Target slot: the slot the wish was activated from, else the first empty slot
+    const state = useCreatureStore.getState();
+    const targetSlot =
+      state.slots.find(s => s.id === state.pendingWishSlot && !s.organId) ??
+      state.slots.find(s => !s.organId);
+
+    if (!targetSlot) {
+      setTransplantStatus('Transplant failed: no empty slot available.');
+      return;
+    }
+
+    try {
+      const coordinator = getTransplantCoordinator();
+      const result = await coordinator.transplant(consent.bundle, targetSlot.id);
+
+      if (result.success) {
+        setPendingWishSlot(null);
+        setTransplantStatus(
+          `Transplanted ${consent.organName} into ${targetSlot.id} (entry ${result.ledgerEntryId}).`
+        );
+      } else {
+        setTransplantStatus(`Transplant rejected: ${result.error}`);
+      }
+    } catch (error) {
+      setTransplantStatus(
+        `Transplant failed: ${error instanceof Error ? error.message : String(error)}`
+      );
+    }
+  }, [pendingConsent, setPendingWishSlot]);
+
+  const handleConsentReject = useCallback(() => {
+    setPendingConsent(null);
+    setPendingWishSlot(null);
+    setTransplantStatus('Organ rejected - the Creature stays as it was.');
+  }, [setPendingWishSlot]);
+
+  const handleKeyDown = useCallback(
+    (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
+      if (event.key === 'Enter' && (event.metaKey || event.ctrlKey)) {
+        event.preventDefault();
+        handleWishSubmit();
+      }
+      // Escape clears a slot-activated wish and returns the slot to idle
+      if (event.key === 'Escape' && pendingWishSlot) {
+        event.preventDefault();
+        setPendingWishSlot(null);
+      }
+    },
+    [handleWishSubmit, pendingWishSlot, setPendingWishSlot]
+  );
 
   // Passcode submission for live mode
   const handlePasscodeSubmit = useCallback(async () => {
@@ -223,6 +449,7 @@ export function DoctorNotes({ className }: DoctorNotesProps) {
         </label>
         <textarea
           id="wish-input"
+          ref={wishInputRef}
           className="doctor-notes__wish-input"
           value={wish}
           onChange={(e) => setWish(e.target.value)}
@@ -231,15 +458,19 @@ export function DoctorNotes({ className }: DoctorNotesProps) {
           disabled={isSubmitting}
           rows={3}
           aria-describedby="wish-hint"
+          data-testid="wish-input"
         />
         <span id="wish-hint" className="doctor-notes__wish-hint">
-          Press Ctrl+Enter to submit
+          {pendingWishSlot
+            ? `Wishing for slot ${pendingWishSlot} — press Escape to cancel.`
+            : 'Press Ctrl+Enter to submit'}
         </span>
         <button
           className="doctor-notes__wish-submit"
           onClick={handleWishSubmit}
           disabled={!wish.trim() || isSubmitting}
           aria-label="Submit wish"
+          data-testid="wish-submit"
         >
           {isSubmitting ? 'Processing...' : 'Submit Wish'}
         </button>
@@ -268,7 +499,7 @@ export function DoctorNotes({ className }: DoctorNotesProps) {
       {/* Streaming Spec Display */}
       <section className="doctor-notes__section" aria-label="Specification">
         <h3 className="doctor-notes__section-title">Specification</h3>
-        <div className="doctor-notes__streaming-area" role="status" aria-live="polite">
+        <div className="doctor-notes__streaming-area" role="status" aria-live="polite" data-testid="spec-status">
           {specText || (
             <span className="doctor-notes__placeholder">
               Spec will appear here...
@@ -289,10 +520,24 @@ export function DoctorNotes({ className }: DoctorNotesProps) {
         </div>
       </section>
 
+      {/* Stream / doctor errors */}
+      {streamError && (
+        <div className="doctor-notes__error" role="alert" data-testid="stream-error">
+          {streamError}
+        </div>
+      )}
+
+      {/* Transplant result status */}
+      {transplantStatus && (
+        <div className="doctor-notes__transplant-status" role="status" data-testid="transplant-status">
+          {transplantStatus}
+        </div>
+      )}
+
       {/* Build Progress */}
       <section className="doctor-notes__section" aria-label="Build Progress">
         <h3 className="doctor-notes__section-title">Build Progress</h3>
-        <div className="doctor-notes__progress-area">
+        <div className="doctor-notes__progress-area" data-testid="build-status">
           {buildProgress !== null ? (
             <div className="doctor-notes__progress-bar">
               <div
@@ -311,6 +556,18 @@ export function DoctorNotes({ className }: DoctorNotesProps) {
           )}
         </div>
       </section>
+
+      {/* Transplant consent dialog (ledger-first flow entry point) */}
+      <ConsentDialog
+        isVisible={!!pendingConsent}
+        organName={pendingConsent?.organName}
+        organVersion={pendingConsent?.organVersion}
+        organDescription={pendingConsent?.description}
+        passedStages={pendingConsent?.passedStages ?? []}
+        permissions={pendingConsent?.permissions ?? []}
+        onTransplant={() => void handleConsentTransplant()}
+        onReject={handleConsentReject}
+      />
     </aside>
   );
 }

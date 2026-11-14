@@ -92,11 +92,17 @@ export function ChartPanel({ className }: ChartPanelProps) {
   const [verification, setVerification] = useState<VerificationResult | null>(null);
   const [isVerifying, setIsVerifying] = useState(false);
 
-  // Fetch ledger history on mount
+  // Fetch ledger history on mount and keep it live: wishes, transplants and
+  // amputations append server-side, so the timeline would otherwise go stale
+  // (and "Verify chain" stays disabled while entries.length === 0).
   useEffect(() => {
+    let firstFetch = true;
+
     async function fetchLedger() {
       try {
-        setIsLoading(true);
+        // The loading spinner is for the first fetch only: silent polling
+        // every few seconds keeps the timeline live without flashing it.
+        if (firstFetch) setIsLoading(true);
         setError(null);
 
         const response = await fetch('/api/ledger/history');
@@ -118,11 +124,16 @@ export function ChartPanel({ className }: ChartPanelProps) {
           setError(err instanceof Error ? err.message : 'Failed to load ledger');
         }
       } finally {
-        setIsLoading(false);
+        if (firstFetch) {
+          setIsLoading(false);
+          firstFetch = false;
+        }
       }
     }
 
     fetchLedger();
+    const interval = setInterval(fetchLedger, 5000);
+    return () => clearInterval(interval);
   }, []);
 
   // Verify chain integrity
@@ -160,6 +171,7 @@ export function ChartPanel({ className }: ChartPanelProps) {
     <aside
       className={`chart-panel ${className || ''}`}
       aria-label="The Chart - Ledger timeline"
+      data-testid="nav-ledger"
     >
       <header className="chart-panel__header">
         <h2 className="chart-panel__title">The Chart</h2>
@@ -183,7 +195,7 @@ export function ChartPanel({ className }: ChartPanelProps) {
           aria-live="polite"
         >
           {verification.valid ? (
-            <span className="chart-panel__verification-text">
+            <span className="chart-panel__verification-text" data-testid="chain-validation">
               <span className="chart-panel__verification-icon" aria-hidden="true">✓</span>
               Chain valid
             </span>
@@ -229,6 +241,7 @@ export function ChartPanel({ className }: ChartPanelProps) {
                 role="listitem"
                 tabIndex={0}
                 aria-label={`Entry ${index + 1}: ${entry.event} at ${formatTimestamp(entry.ts)}`}
+                data-testid="ledger-entry"
               >
                 <div className="chart-panel__entry-header">
                   <time
@@ -254,7 +267,7 @@ export function ChartPanel({ className }: ChartPanelProps) {
                     {getPayloadSummary(entry.payload_json)}
                   </span>
                 </div>
-                <div className="chart-panel__entry-hash" title={entry.hash}>
+                <div className="chart-panel__entry-hash" title={entry.hash} data-testid="entry-hash">
                   {entry.hash.slice(0, 8)}...
                 </div>
               </article>

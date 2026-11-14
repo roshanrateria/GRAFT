@@ -3,46 +3,46 @@
 ## Phase 4: Accountability
 
 ### Task 4.1: Ledger Package
-- [ ] Create `packages/ledger/src/types.ts` with Entry, EventType types
-- [ ] Create `packages/ledger/src/canonical-json.ts` for canonical serialization
-- [ ] Create `packages/ledger/src/service.ts` with LedgerService
-- [ ] Create `packages/ledger/src/verify.ts` with chain verification
-- [ ] Write PBT for LED-01 (chain integrity)
+- [x] Create `packages/ledger/src/types.ts` with Entry, EventType types
+- [x] Create `packages/ledger/src/canonical-json.ts` for canonical serialization
+- [x] Create `packages/ledger/src/service.ts` with LedgerService
+- [x] Create `packages/ledger/src/verify.ts` with chain verification
+- [x] Write PBT for LED-01 (chain integrity)
 
 ### Task 4.2: Ledger Database
-- [ ] Create `apps/server/src/db/schema.sql` with ledger table
-- [ ] Create `apps/server/src/db/ledger.ts` with SQLite operations
-- [ ] Implement append operation with hash computation
-- [ ] Implement history queries
-- [ ] Write tests
+- [x] Create `apps/server/src/db/schema.sql` with ledger table
+- [x] Create `apps/server/src/db/ledger.ts` with SQLite operations
+- [x] Implement append operation with hash computation
+- [x] Implement history queries
+- [x] Write tests
 
 ### Task 4.3: Snapshot Manager
-- [ ] Create `apps/web/src/SnapshotManager.ts`
-- [ ] Implement state capture
-- [ ] Implement state restore
-- [ ] Store snapshots with transaction IDs
-- [ ] Write tests
+- [x] Create `apps/web/src/SnapshotManager.ts`
+- [x] Implement state capture
+- [x] Implement state restore
+- [x] Store snapshots with transaction IDs
+- [x] Write tests
 
 ### Task 4.4: Transaction Coordinator
-- [ ] Create `apps/web/src/TransactionCoordinator.ts`
-- [ ] Implement atomic transplant with rollback
-- [ ] Write PBT for REV-02 (atomicity)
-- [ ] Write PBT for REV-01 (reversibility)
-- [ ] Verify LED-02 (ledger first)
+- [x] Create `apps/web/src/TransactionCoordinator.ts`
+- [x] Implement atomic transplant with rollback
+- [x] Write PBT for REV-02 (atomicity)
+- [x] Write PBT for REV-01 (reversibility)
+- [x] Verify LED-02 (ledger first)
 
 ### Task 4.5: Amputation Flow
-- [ ] Create `apps/web/src/AmputationService.ts`
-- [ ] Implement snapshot restore on amputation
-- [ ] Remove organ, links, state
-- [ ] Write ledger entry
-- [ ] Write integration tests
+- [x] Create `apps/web/src/AmputationService.ts`
+- [x] Implement snapshot restore on amputation
+- [x] Remove organ, links, state
+- [x] Write ledger entry
+- [x] Write integration tests
 
 ### Task 4.6: Ledger UI
-- [ ] Create `apps/web/src/ChartPanel.tsx` for ledger timeline
-- [ ] Implement "Verify chain" button
-- [ ] Show verification result
-- [ ] Display event history
-- [ ] Write component tests
+- [x] Create `apps/web/src/ChartPanel.tsx` for ledger timeline (at apps/web/src/components/ChartPanel.tsx)
+- [x] Implement "Verify chain" button
+- [x] Show verification result
+- [x] Display event history
+- [x] Write component tests
 
 ## Dependencies
 

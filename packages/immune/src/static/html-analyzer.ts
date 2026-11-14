@@ -117,16 +117,15 @@ function checkElement(
     }
   }
 
-  // Check for <form action="...">
+  // <form> is never allowed: the sandbox blocks form submission, so a form
+  // can only be a (failed) exfiltration path. Use <input> + <button type="button">.
   if (tagName === 'form') {
-    const actionAttr = attrs.find((a: any) => a.name === 'action');
-    if (actionAttr && isExternalURL(actionAttr.value)) {
-      constructs.push({
-        type: 'form-action',
-        reason: '<form action="..."> with external URL is not allowed',
-        location: createLocation(filename, node.sourceCodeLocation),
-      });
-    }
+    constructs.push({
+      type: 'form-action',
+      reason:
+        '<form> elements are not allowed (the sandbox blocks form submission). Use <input> and <button type="button"> with event handlers',
+      location: createLocation(filename, node.sourceCodeLocation),
+    });
   }
 
   // Check for event handlers (onclick, onload, etc.)

@@ -1,6 +1,6 @@
 # GRAFT Product Overview
 
-> **Tagline:** Software that grows. Safely.
+> **Tagline:** Software that grows. Accountably.
 > **Category:** Frankenstein (also submit for Best Kiro Crew App)
 
 GRAFT is a small living application called **the Creature** that grows new features on demand.

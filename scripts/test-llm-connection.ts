@@ -3,7 +3,7 @@
  * Test LLM connection with NVIDIA API
  */
 
-import { LLMDdoctorProvider } from '../packages/doctor/src/providers/llm.js';
+import { LLMDoctorProvider } from '../packages/doctor/src/providers/llm.js';
 
 async function testConnection() {
   const apiKey = process.env.LLM_API_KEY;
@@ -20,7 +20,7 @@ async function testConnection() {
     process.exit(1);
   }
   
-  const provider = new LLMDdoctorProvider({
+  const provider = new LLMDoctorProvider({
     apiKey,
     baseUrl,
     model,

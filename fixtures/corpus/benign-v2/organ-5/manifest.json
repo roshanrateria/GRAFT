@@ -1,0 +1,13 @@
+﻿{
+    "version":  "1.0.0",
+    "name":  "organ-5",
+    "slotSize":  "small",
+    "permissions":  [
+                        "read:tasks.items",
+                        "read:mood.entries"
+                    ],
+    "apiVersion":  "1.0.0",
+    "ports":  [
+
+              ]
+}

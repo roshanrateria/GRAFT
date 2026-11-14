@@ -126,7 +126,7 @@ export interface StaticAnalysisResult {
 /** Permission violation detected */
 export interface PermissionViolation {
   /** Type of violation */
-  type: 'undeclared-read' | 'undeclared-emit' | 'invalid-permission';
+  type: 'undeclared-read' | 'undeclared-emit' | 'undeclared-port' | 'invalid-permission';
   /** The violating permission/action */
   permission: string;
   /** Location if available */
@@ -162,6 +162,14 @@ export interface BehavioralMetrics {
   cspViolations: string[];
   /** Messages sent by organ */
   messages: unknown[];
+  /**
+   * Environment the check ran in ('browser' = real sandbox run, 'node' = skipped).
+   * When 'node', the sandbox cannot execute (no DOM); the check runs for real
+   * in the host browser at transplant time (TransactionCoordinator).
+   */
+  environment?: 'browser' | 'node';
+  /** Whether the organ code actually executed */
+  executed?: boolean;
 }
 
 /** Result of behavioral check */

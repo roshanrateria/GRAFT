@@ -164,6 +164,7 @@ export function crossReferencePermissions(
     }
 
     // Check all emits are declared
+    const ports = manifest.ports ?? [];
     for (const emit of actualCalls.emits) {
       const permission = `emit:${emit}`;
       if (!manifest.permissions.includes(permission)) {
@@ -171,6 +172,23 @@ export function crossReferencePermissions(
           type: 'undeclared-emit',
           permission,
           message: `Undeclared emit: organ emits to "${emit}" but has no "${permission}" permission`,
+        });
+      } else if (!ports.some(p => p.direction === 'out' && p.name === emit)) {
+        violations.push({
+          type: 'undeclared-port',
+          permission,
+          message: `Undeclared port: organ emits to "${emit}" but the manifest declares no output port named "${emit}"`,
+        });
+      }
+    }
+
+    // Check all input-port handlers (nerve.onIn) target declared input ports
+    for (const port of actualCalls.inputs) {
+      if (!ports.some(p => p.direction === 'in' && p.name === port)) {
+        violations.push({
+          type: 'undeclared-port',
+          permission: `in:${port}`,
+          message: `Undeclared port: organ listens on "${port}" but the manifest declares no input port named "${port}"`,
         });
       }
     }
@@ -239,9 +257,10 @@ function checkPermissionValidity(permission: string): PermissionViolation | null
 /**
  * Extract nerve.read() and nerve.emit() calls from JavaScript code.
  */
-function extractNerveCalls(code: string): { reads: string[]; emits: string[] } {
+function extractNerveCalls(code: string): { reads: string[]; emits: string[]; inputs: string[] } {
   const reads: Set<string> = new Set();
   const emits: Set<string> = new Set();
+  const inputs: Set<string> = new Set();
 
   try {
     const ast = acorn.parse(code, {
@@ -273,6 +292,14 @@ function extractNerveCalls(code: string): { reads: string[]; emits: string[] } {
               emits.add(arg.value);
             }
           }
+
+          // nerve.onIn('port', fn): receiving on an input port
+          if ((methodName === 'onIn' || methodName === 'onInput') && node.arguments.length > 0) {
+            const arg = node.arguments[0];
+            if (arg.type === 'Literal' && typeof arg.value === 'string') {
+              inputs.add(arg.value);
+            }
+          }
         }
       },
     });
@@ -283,5 +310,6 @@ function extractNerveCalls(code: string): { reads: string[]; emits: string[] } {
   return {
     reads: Array.from(reads),
     emits: Array.from(emits),
+    inputs: Array.from(inputs),
   };
 }

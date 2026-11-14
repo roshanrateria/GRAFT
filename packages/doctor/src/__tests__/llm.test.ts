@@ -5,7 +5,7 @@
  */
 
 import { describe, it, expect } from 'vitest';
-import { LLMDdoctorProvider, createLLMProvider } from '../providers/llm.js';
+import { LLMDoctorProvider, createLLMProvider } from '../providers/llm.js';
 import type { Anatomy, Spec } from '../types.js';
 
 describe('LLM Doctor Provider', () => {
@@ -17,7 +17,7 @@ describe('LLM Doctor Provider', () => {
 
   describe('configuration', () => {
     it('is not configured when no API key provided', () => {
-      const provider = new LLMDdoctorProvider({
+      const provider = new LLMDoctorProvider({
         apiKey: undefined,
         baseUrl: 'https://api.example.com/v1',
         model: 'test-model',
@@ -29,7 +29,7 @@ describe('LLM Doctor Provider', () => {
     });
 
     it('is configured when API key is provided', () => {
-      const provider = new LLMDdoctorProvider({
+      const provider = new LLMDoctorProvider({
         apiKey: 'test-key',
         baseUrl: 'https://api.example.com/v1',
         model: 'test-model',
@@ -47,7 +47,7 @@ describe('LLM Doctor Provider', () => {
       process.env.LLM_BASE_URL = 'https://env.example.com/v1';
       process.env.DOCTOR_MODEL = 'env-model';
 
-      const provider = new LLMDdoctorProvider();
+      const provider = new LLMDoctorProvider();
 
       expect(provider.isConfigured()).toBe(true);
       expect(provider.name).toBe('llm:env-model');
@@ -64,7 +64,7 @@ describe('LLM Doctor Provider', () => {
 
   describe('graceful failure', () => {
     it('yields error event when not configured on proposeSpec', async () => {
-      const provider = new LLMDdoctorProvider({
+      const provider = new LLMDoctorProvider({
         apiKey: undefined,
       });
 
@@ -79,7 +79,7 @@ describe('LLM Doctor Provider', () => {
     });
 
     it('yields error event when not configured on build', async () => {
-      const provider = new LLMDdoctorProvider({
+      const provider = new LLMDoctorProvider({
         apiKey: undefined,
       });
 
@@ -100,7 +100,7 @@ describe('LLM Doctor Provider', () => {
     });
 
     it('yields error event when not configured on repair', async () => {
-      const provider = new LLMDdoctorProvider({
+      const provider = new LLMDoctorProvider({
         apiKey: undefined,
       });
 
@@ -132,7 +132,7 @@ describe('LLM Doctor Provider', () => {
     });
 
     it('yields error event when not configured on heal', async () => {
-      const provider = new LLMDdoctorProvider({
+      const provider = new LLMDoctorProvider({
         apiKey: undefined,
       });
 
@@ -168,7 +168,7 @@ describe('LLM Doctor Provider', () => {
     it('creates provider via factory function', () => {
       const provider = createLLMProvider({ apiKey: 'test-key' });
       expect(provider.type).toBe('llm');
-      expect((provider as LLMDdoctorProvider).isConfigured()).toBe(true);
+      expect((provider as LLMDoctorProvider).isConfigured()).toBe(true);
     });
   });
 });

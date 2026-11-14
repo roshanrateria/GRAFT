@@ -75,10 +75,17 @@ export interface Anatomy {
   apiVersion: string;
   /** Available data domains */
   dataDomains: string[];
-  /** Current organs installed */
-  installedOrgans: string[];
+  /** Current organs installed, with their ports (so new organs can link to them) */
+  installedOrgans: InstalledOrganInfo[];
   /** User preferences */
   preferences?: Record<string, unknown>;
+}
+
+/** An installed organ as seen by the Doctor */
+export interface InstalledOrganInfo {
+  id: string;
+  name: string;
+  ports: OrganPort[];
 }
 
 /** Spec produced by Doctor */
@@ -89,6 +96,14 @@ export interface Spec {
   requirements: string;
   /** Design document */
   design: string;
+  /**
+   * Port contract: the ports the wish explicitly names (name, direction,
+   * schema). Authoritative: applied to the manifest after build and repair.
+   * Absent/empty when the wish names no ports.
+   */
+  ports?: OrganPort[];
+  /** Permissions the wish explicitly names (e.g. read:tasks.items). */
+  permissions?: string[];
 }
 
 /** Rejection report from immune system */
@@ -149,4 +164,10 @@ export interface DoctorProvider {
    * Yields events as healing is applied.
    */
   heal(bundle: OrganBundle, decay: DecayReport): AsyncIterable<DoctorEvent>;
+
+  /**
+   * Whether this provider has the credentials/config it needs to run.
+   * Optional: providers may always be considered configured (e.g. replay).
+   */
+  isConfigured?(): boolean;
 }

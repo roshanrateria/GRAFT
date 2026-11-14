@@ -4,6 +4,14 @@
 > **Category:** Frankenstein (also submit for Best Kiro Crew App)
 > **Deadline:** Dec 4, 2026, 2:00 PM PT. Internal target: submit by Dec 3 evening.
 
+> **Note (submission pass):** This is the original build brief, kept as written for provenance. It describes the plan, not the final state. Where they differ, trust [README.md](README.md) and [docs/STATUS.md](docs/STATUS.md). Known differences:
+> - The file is `project-brief.md`, not `PROJECT_BRIEF.md` as Section 0 says.
+> - Property tests live beside the code (for example `packages/ledger/src/__tests__/led-01-property.test.ts`), not in `tests/properties/`, which is empty.
+> - Spec 08 (demo mode UI) and the healing and decay UI in spec 06 are not implemented; Sections 4.7 and 11 (fast-forward, decay, healing) describe plans that the UI does not yet have. The Section 11 video plan is superseded by [DEMO_GUIDE.md](DEMO_GUIDE.md).
+> - The `replay` provider's "REPLAY" tag is not yet shown in the web UI (see Law L9 notes in docs/LAWS_OF_ANATOMY.md).
+> - The README tagline is "Software that grows. Accountably." The tagline below says "Safely". Under Law L8, do not read "Safely" as a guarantee; GRAFT reduces risk.
+> - The Section 12 checklist below is the original to-do list and is not ticked. Current state is in docs/STATUS.md.
+
 ## 0. How to use this file
 
 Put this file at the repo root as `PROJECT_BRIEF.md`. Then send Kiro this as the first message:

@@ -16,7 +16,8 @@
     "noFallthroughCasesInSwitch": true,
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      "@graft/ledger": ["./src/stubs/ledger.ts"]
     }
   },
   "include": ["src"],

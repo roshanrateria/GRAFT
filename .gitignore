@@ -1,1 +1,31 @@
 node_modules
+.env
+# env / secrets
+**/.env
+
+# local DB
+*.db
+
+# test + scratch artifacts
+playwright-report/
+test-results/
+scratch/
+.worktrees/
+
+# demo video artifacts (large; the final mp4 is delivered via YouTube)
+demo-take/
+presentation/
+scripts/
+
+# agent session artifacts
+.agents/
+
+# sqlite sidecars
+*.db-wal
+*.db-shm
+
+# build info
+*.tsbuildinfo
+
+# build outputs
+dist/

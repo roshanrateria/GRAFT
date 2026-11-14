@@ -10,13 +10,13 @@
  * - Optionally set DOCTOR_MODEL (defaults to gpt-4o)
  */
 
-import { createLLMProvider, LLMDdoctorProvider } from '../packages/doctor/dist/index.js';
+import { createLLMProvider, LLMDoctorProvider } from '../packages/doctor/dist/index.js';
 import type { Anatomy } from '../packages/doctor/dist/index.js';
 
 async function main() {
   console.log('=== LLM Doctor Provider Demo ===\n');
 
-  const provider = createLLMProvider() as LLMDdoctorProvider;
+  const provider = createLLMProvider() as LLMDoctorProvider;
 
   // Check configuration
   if (!provider.isConfigured()) {

@@ -163,6 +163,57 @@ describe('Manifest Validation - IMM-02', () => {
       expect(result.violations.some(v => v.type === 'undeclared-emit')).toBe(true);
     });
 
+    it('should reject emit on a port that is not a declared output port', () => {
+      const manifest: OrganManifest = {
+        name: 'test',
+        version: '1.0.0',
+        apiVersion: '1.0.0',
+        permissions: ['emit:output'],
+        ports: [{ name: 'output', direction: 'in', schema: {} }],
+        slotSize: 'small',
+      };
+      const result = crossReferencePermissions(manifest, `nerve.emit('output', 1);`);
+      expect(result.passed).toBe(false);
+      expect(result.violations.some(v => v.type === 'undeclared-port')).toBe(true);
+    });
+
+    it('should require nerve.onIn targets to be declared input ports', () => {
+      const base: OrganManifest = {
+        name: 'test',
+        version: '1.0.0',
+        apiVersion: '1.0.0',
+        permissions: [],
+        ports: [],
+        slotSize: 'small',
+      };
+      const code = `nerve.onIn('open-count', function (n) {});`;
+      expect(crossReferencePermissions(base, code).passed).toBe(false);
+
+      const declared = {
+        ...base,
+        ports: [{ name: 'open-count', direction: 'in' as const, schema: { type: 'integer' } }],
+      };
+      expect(crossReferencePermissions(declared, code).passed).toBe(true);
+    });
+
+    it('property: any undeclared emit or onIn port name is rejected', () => {
+      fc.assert(
+        fc.property(fc.stringMatching(/^[a-z][a-z0-9-]{0,12}$/), (name) => {
+          const manifest: OrganManifest = {
+            name: 'test',
+            version: '1.0.0',
+            apiVersion: '1.0.0',
+            permissions: [`emit:${name}`],
+            ports: [],
+            slotSize: 'small',
+          };
+          expect(crossReferencePermissions(manifest, `nerve.emit('${name}', 1);`).passed).toBe(false);
+          expect(crossReferencePermissions(manifest, `nerve.onIn('${name}', function () {});`).passed).toBe(false);
+        }),
+        { numRuns: 100, seed: 42 }
+      );
+    });
+
     it('should pass when permissions match', () => {
       const manifest: OrganManifest = {
         name: 'test',

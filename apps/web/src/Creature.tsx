@@ -23,11 +23,33 @@ import './styles/Creature.css';
  */
 export function Creature() {
   const { slots } = useCreatureStore();
+  // Announced to screen readers while keyboard chimera linking is active (UI-04)
+  const linkingStatus = useCreatureStore(state => state.linkingStatus);
 
   return (
     <div className="creature">
       {/* Top bar with logo and heartbeat */}
       <TopBar />
+
+      {/* Screen-reader announcements for chimera linking (UI-04) */}
+      <div
+        role="status"
+        aria-live="polite"
+        data-testid="linking-status"
+        style={{
+          position: 'absolute',
+          width: '1px',
+          height: '1px',
+          margin: '-1px',
+          padding: 0,
+          overflow: 'hidden',
+          clip: 'rect(0 0 0 0)',
+          whiteSpace: 'nowrap',
+          border: 0,
+        }}
+      >
+        {linkingStatus ?? ''}
+      </div>
 
       {/* Main content - The Specimen */}
       <section className="creature__body" aria-label="The Specimen - Organ slots">

@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-11-10T09:15:14.623Z",
+  "timestamp": "2026-11-11T04:40:33.411Z",
   "corpus": {
     "dev": 70,
     "heldOut": 20,
@@ -330,10 +330,10 @@
     }
   ],
   "timing": {
-    "totalMs": 1830,
-    "avgMs": 5.447916666666667,
+    "totalMs": 414,
+    "avgMs": 3.6979166666666665,
     "minMs": 0,
-    "maxMs": 69,
+    "maxMs": 50,
     "byStage": {
       "static": {
         "totalMs": 0,
@@ -368,7 +368,7 @@
       "passed": false,
       "correct": true,
       "rejectionReason": "Infinite while(true) loop detected - can freeze the organ",
-      "durationMs": 18
+      "durationMs": 11
     },
     {
       "organId": "behave-002",
@@ -380,7 +380,7 @@
       "passed": false,
       "correct": true,
       "rejectionReason": "Infinite for(;;) loop detected - can freeze the organ",
-      "durationMs": 4
+      "durationMs": 2
     },
     {
       "organId": "behave-003",
@@ -392,7 +392,7 @@
       "passed": true,
       "correct": false,
       "rejectionReason": null,
-      "durationMs": 69
+      "durationMs": 50
     },
     {
       "organId": "behave-004",
@@ -404,7 +404,7 @@
       "passed": true,
       "correct": false,
       "rejectionReason": null,
-      "durationMs": 19
+      "durationMs": 11
     },
     {
       "organId": "behave-005",
@@ -416,7 +416,7 @@
       "passed": false,
       "correct": true,
       "rejectionReason": "Direct Date usage is not allowed. Use nerve.now() instead",
-      "durationMs": 7
+      "durationMs": 1
     },
     {
       "organId": "behave-006",
@@ -428,7 +428,7 @@
       "passed": true,
       "correct": false,
       "rejectionReason": null,
-      "durationMs": 20
+      "durationMs": 10
     },
     {
       "organId": "behave-007",
@@ -440,7 +440,7 @@
       "passed": true,
       "correct": false,
       "rejectionReason": null,
-      "durationMs": 19
+      "durationMs": 10
     },
     {
       "organId": "behave-008",
@@ -452,7 +452,7 @@
       "passed": true,
       "correct": false,
       "rejectionReason": null,
-      "durationMs": 16
+      "durationMs": 15
     },
     {
       "organId": "behave-009",
@@ -464,7 +464,7 @@
       "passed": true,
       "correct": false,
       "rejectionReason": null,
-      "durationMs": 18
+      "durationMs": 17
     },
     {
       "organId": "behave-010",
@@ -476,7 +476,7 @@
       "passed": true,
       "correct": false,
       "rejectionReason": null,
-      "durationMs": 17
+      "durationMs": 13
     },
     {
       "organId": "benign-001",
@@ -500,7 +500,7 @@
       "passed": false,
       "correct": false,
       "rejectionReason": "window.parent is not allowed",
-      "durationMs": 2
+      "durationMs": 1
     },
     {
       "organId": "benign-003",
@@ -512,7 +512,7 @@
       "passed": false,
       "correct": false,
       "rejectionReason": "window.parent is not allowed",
-      "durationMs": 2
+      "durationMs": 1
     },
     {
       "organId": "benign-004",
@@ -524,7 +524,7 @@
       "passed": false,
       "correct": false,
       "rejectionReason": "window.parent is not allowed",
-      "durationMs": 1
+      "durationMs": 2
     },
     {
       "organId": "benign-005",
@@ -536,7 +536,7 @@
       "passed": false,
       "correct": false,
       "rejectionReason": "window.parent is not allowed",
-      "durationMs": 2
+      "durationMs": 1
     },
     {
       "organId": "benign-006",
@@ -548,7 +548,7 @@
       "passed": false,
       "correct": false,
       "rejectionReason": "window.parent is not allowed",
-      "durationMs": 4
+      "durationMs": 2
     },
     {
       "organId": "benign-007",
@@ -572,7 +572,7 @@
       "passed": false,
       "correct": false,
       "rejectionReason": "window.parent is not allowed",
-      "durationMs": 2
+      "durationMs": 1
     },
     {
       "organId": "benign-009",
@@ -584,7 +584,7 @@
       "passed": false,
       "correct": false,
       "rejectionReason": "window.parent is not allowed",
-      "durationMs": 3
+      "durationMs": 2
     },
     {
       "organId": "benign-010",
@@ -596,7 +596,7 @@
       "passed": false,
       "correct": false,
       "rejectionReason": "window.parent is not allowed",
-      "durationMs": 2
+      "durationMs": 1
     },
     {
       "organId": "cookie-001",
@@ -644,7 +644,7 @@
       "passed": false,
       "correct": true,
       "rejectionReason": "document.cookie is not allowed",
-      "durationMs": 1
+      "durationMs": 0
     },
     {
       "organId": "cookie-005",
@@ -656,7 +656,7 @@
       "passed": false,
       "correct": true,
       "rejectionReason": "document.cookie is not allowed",
-      "durationMs": 0
+      "durationMs": 1
     },
     {
       "organId": "direct-fetch-001",
@@ -680,7 +680,7 @@
       "passed": false,
       "correct": true,
       "rejectionReason": "new XMLHttpRequest() is not allowed",
-      "durationMs": 1
+      "durationMs": 0
     },
     {
       "organId": "direct-fetch-003",
@@ -704,7 +704,7 @@
       "passed": false,
       "correct": true,
       "rejectionReason": "fetch() is not allowed",
-      "durationMs": 1
+      "durationMs": 0
     },
     {
       "organId": "direct-fetch-005",
@@ -716,7 +716,7 @@
       "passed": false,
       "correct": true,
       "rejectionReason": "new EventSource() is not allowed",
-      "durationMs": 1
+      "durationMs": 0
     },
     {
       "organId": "escape-001",
@@ -740,7 +740,7 @@
       "passed": true,
       "correct": false,
       "rejectionReason": null,
-      "durationMs": 16
+      "durationMs": 12
     },
     {
       "organId": "escape-003",
@@ -752,7 +752,7 @@
       "passed": true,
       "correct": false,
       "rejectionReason": null,
-      "durationMs": 11
+      "durationMs": 12
     },
     {
       "organId": "escape-004",
@@ -764,7 +764,7 @@
       "passed": true,
       "correct": false,
       "rejectionReason": null,
-      "durationMs": 13
+      "durationMs": 7
     },
     {
       "organId": "escape-005",
@@ -776,7 +776,7 @@
       "passed": true,
       "correct": false,
       "rejectionReason": null,
-      "durationMs": 16
+      "durationMs": 9
     },
     {
       "organId": "escape-006",
@@ -812,7 +812,7 @@
       "passed": false,
       "correct": true,
       "rejectionReason": "window.parent is not allowed",
-      "durationMs": 1
+      "durationMs": 0
     },
     {
       "organId": "escape-009",
@@ -836,7 +836,7 @@
       "passed": true,
       "correct": false,
       "rejectionReason": null,
-      "durationMs": 13
+      "durationMs": 11
     },
     {
       "organId": "eval-001",
@@ -848,7 +848,7 @@
       "passed": false,
       "correct": true,
       "rejectionReason": "eval() is not allowed",
-      "durationMs": 1
+      "durationMs": 0
     },
     {
       "organId": "eval-002",
@@ -860,7 +860,7 @@
       "passed": false,
       "correct": true,
       "rejectionReason": "new Function() is not allowed",
-      "durationMs": 3
+      "durationMs": 1
     },
     {
       "organId": "eval-003",
@@ -884,7 +884,7 @@
       "passed": false,
       "correct": true,
       "rejectionReason": "setInterval with string argument is not allowed",
-      "durationMs": 1
+      "durationMs": 0
     },
     {
       "organId": "eval-005",
@@ -896,7 +896,7 @@
       "passed": true,
       "correct": false,
       "rejectionReason": null,
-      "durationMs": 22
+      "durationMs": 13
     },
     {
       "organId": "fetch-005",
@@ -908,7 +908,7 @@
       "passed": true,
       "correct": false,
       "rejectionReason": null,
-      "durationMs": 17
+      "durationMs": 11
     },
     {
       "organId": "obf-cp-001",
@@ -920,7 +920,7 @@
       "passed": false,
       "correct": true,
       "rejectionReason": "Computed access on window is not allowed (catches obfuscated access)",
-      "durationMs": 1
+      "durationMs": 0
     },
     {
       "organId": "obf-cp-002",
@@ -932,7 +932,7 @@
       "passed": false,
       "correct": true,
       "rejectionReason": "Computed access on window is not allowed (catches obfuscated access)",
-      "durationMs": 0
+      "durationMs": 1
     },
     {
       "organId": "obf-cp-003",
@@ -944,7 +944,7 @@
       "passed": false,
       "correct": true,
       "rejectionReason": "Computed access on window is not allowed (catches obfuscated access)",
-      "durationMs": 1
+      "durationMs": 0
     },
     {
       "organId": "obf-cp-004",
@@ -956,7 +956,7 @@
       "passed": false,
       "correct": true,
       "rejectionReason": "Computed access on window is not allowed (catches obfuscated access)",
-      "durationMs": 1
+      "durationMs": 0
     },
     {
       "organId": "obf-cp-005",
@@ -968,7 +968,7 @@
       "passed": false,
       "correct": true,
       "rejectionReason": "Computed access on window is not allowed (catches obfuscated access)",
-      "durationMs": 1
+      "durationMs": 0
     },
     {
       "organId": "obf-enc-001",
@@ -980,7 +980,7 @@
       "passed": false,
       "correct": true,
       "rejectionReason": "Computed access on window is not allowed (catches obfuscated access)",
-      "durationMs": 0
+      "durationMs": 1
     },
     {
       "organId": "obf-enc-002",
@@ -992,7 +992,7 @@
       "passed": false,
       "correct": true,
       "rejectionReason": "fetch() is not allowed",
-      "durationMs": 1
+      "durationMs": 0
     },
     {
       "organId": "obf-enc-003",
@@ -1028,7 +1028,7 @@
       "passed": false,
       "correct": true,
       "rejectionReason": "Computed access on window is not allowed (catches obfuscated access)",
-      "durationMs": 1
+      "durationMs": 0
     },
     {
       "organId": "obf-str-001",
@@ -1064,7 +1064,7 @@
       "passed": false,
       "correct": true,
       "rejectionReason": "Computed access on window is not allowed (catches obfuscated access)",
-      "durationMs": 0
+      "durationMs": 1
     },
     {
       "organId": "obf-str-004",
@@ -1076,7 +1076,7 @@
       "passed": false,
       "correct": true,
       "rejectionReason": "Computed access on window is not allowed (catches obfuscated access)",
-      "durationMs": 1
+      "durationMs": 0
     },
     {
       "organId": "obf-str-005",
@@ -1112,7 +1112,7 @@
       "passed": false,
       "correct": true,
       "rejectionReason": "sessionStorage is not allowed",
-      "durationMs": 1
+      "durationMs": 0
     },
     {
       "organId": "storage-003",
@@ -1160,7 +1160,7 @@
       "passed": false,
       "correct": true,
       "rejectionReason": "new XMLHttpRequest() is not allowed",
-      "durationMs": 1
+      "durationMs": 0
     },
     {
       "organId": "xhr-002",
@@ -1172,7 +1172,7 @@
       "passed": false,
       "correct": true,
       "rejectionReason": "new XMLHttpRequest() is not allowed",
-      "durationMs": 0
+      "durationMs": 1
     },
     {
       "organId": "xhr-003",
@@ -1208,7 +1208,7 @@
       "passed": false,
       "correct": true,
       "rejectionReason": "Invalid read target: tasks. Valid targets: mood.entries, tasks.items, habits.checkins, calendar.events",
-      "durationMs": 0
+      "durationMs": 1
     },
     {
       "organId": "attack-exec-002",
@@ -1220,7 +1220,7 @@
       "passed": true,
       "correct": false,
       "rejectionReason": null,
-      "durationMs": 15
+      "durationMs": 16
     },
     {
       "organId": "attack-network-001",
@@ -1232,7 +1232,7 @@
       "passed": false,
       "correct": true,
       "rejectionReason": "Invalid read target: tasks. Valid targets: mood.entries, tasks.items, habits.checkins, calendar.events",
-      "durationMs": 2
+      "durationMs": 1
     },
     {
       "organId": "attack-network-002",
@@ -1268,7 +1268,7 @@
       "passed": true,
       "correct": false,
       "rejectionReason": null,
-      "durationMs": 51
+      "durationMs": 14
     },
     {
       "organId": "behave-loop-001",
@@ -1292,7 +1292,7 @@
       "passed": true,
       "correct": false,
       "rejectionReason": null,
-      "durationMs": 18
+      "durationMs": 17
     },
     {
       "organId": "behave-time-001",
@@ -1328,7 +1328,7 @@
       "passed": false,
       "correct": false,
       "rejectionReason": "window.parent is not allowed",
-      "durationMs": 2
+      "durationMs": 1
     },
     {
       "organId": "benign-interactive-001",
@@ -1340,7 +1340,7 @@
       "passed": false,
       "correct": false,
       "rejectionReason": "window.parent is not allowed",
-      "durationMs": 1
+      "durationMs": 2
     },
     {
       "organId": "benign-interactive-002",
@@ -1364,7 +1364,7 @@
       "passed": true,
       "correct": false,
       "rejectionReason": null,
-      "durationMs": 16
+      "durationMs": 15
     },
     {
       "organId": "escape-postmsg-001",
@@ -1376,7 +1376,7 @@
       "passed": false,
       "correct": true,
       "rejectionReason": "window.parent is not allowed",
-      "durationMs": 2
+      "durationMs": 0
     },
     {
       "organId": "escape-top-001",
@@ -1388,7 +1388,7 @@
       "passed": true,
       "correct": false,
       "rejectionReason": null,
-      "durationMs": 16
+      "durationMs": 13
     },
     {
       "organId": "obf-combo-001",
@@ -1400,7 +1400,7 @@
       "passed": true,
       "correct": false,
       "rejectionReason": null,
-      "durationMs": 14
+      "durationMs": 13
     },
     {
       "organId": "obf-combo-002",
@@ -1436,7 +1436,7 @@
       "passed": false,
       "correct": true,
       "rejectionReason": "Invalid read target: tasks. Valid targets: mood.entries, tasks.items, habits.checkins, calendar.events",
-      "durationMs": 2
+      "durationMs": 0
     },
     {
       "organId": "01-direct-fetch",
@@ -1472,7 +1472,7 @@
       "passed": false,
       "correct": false,
       "rejectionReason": "document.cookie is not allowed",
-      "durationMs": 1
+      "durationMs": 0
     },
     {
       "organId": "04-message-flood",
@@ -1496,7 +1496,7 @@
       "passed": false,
       "correct": false,
       "rejectionReason": "Undeclared emit: organ emits to \"secret\" but has no \"emit:secret\" permission",
-      "durationMs": 1
+      "durationMs": 0
     },
     {
       "organId": "06-top-access",

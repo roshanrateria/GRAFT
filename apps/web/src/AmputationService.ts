@@ -16,6 +16,7 @@
 import { capture, restore, type Snapshot, type PortLink } from './SnapshotManager.js';
 import type { CreatureState } from './stores/creatureStore.js';
 import type { LedgerService, EventType } from '@graft/ledger';
+import { getChainHeadHash } from './ledger/head.js';
 
 // =============================================================================
 // Types
@@ -206,6 +207,8 @@ export class AmputationService {
     // Step 3: Write AMPUTATED Ledger Entry BEFORE State Mutation (LED-02)
     // =========================================================================
     try {
+      const prevHash = await getChainHeadHash(this.ledgerService);
+
       await this.ledgerService.append({
         id: transactionId,
         ts: Date.now(),
@@ -216,7 +219,7 @@ export class AmputationService {
           slotId: slot.id,
           transactionId,
         }),
-        prev_hash: '', // Will be computed by ledger service
+        prev_hash: prevHash,
       });
     } catch (error) {
       return {
@@ -242,6 +245,8 @@ export class AmputationService {
       const organLinks = await this.linkStorage.getLinksForOrgan(organId);
       for (const link of organLinks) {
         // Write CHIMERA_LINKED ledger entry for link removal (CHI-03)
+        const linkPrevHash = await getChainHeadHash(this.ledgerService);
+
         await this.ledgerService.append({
           id: `${transactionId}-link-${link.id}`,
           ts: Date.now(),
@@ -256,7 +261,7 @@ export class AmputationService {
             targetPort: link.targetPort,
             reason: 'amputation',
           }),
-          prev_hash: '', // Will be computed by ledger service
+          prev_hash: linkPrevHash,
         });
         
         await this.linkStorage.removeLink(link.id);

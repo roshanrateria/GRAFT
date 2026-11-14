@@ -18,6 +18,7 @@ import type { CreatureState, OrganInstance } from './stores/creatureStore.js';
 import type { ImmuneReport, OrganBundle } from '@graft/immune';
 import { runImmuneSystem } from '@graft/immune';
 import type { LedgerService, Entry, EventType } from '@graft/ledger';
+import { getChainHeadHash } from './ledger/head.js';
 
 // =============================================================================
 // Types
@@ -138,17 +139,24 @@ export class TransactionCoordinator {
     // =========================================================================
     let ledgerEntry: Entry;
     try {
+      // LED: prev_hash must chain from the current head (the ledger service
+      // validates it and throws on mismatch).
+      const prevHash = await getChainHeadHash(this.ledgerService);
+
       ledgerEntry = await this.ledgerService.append({
         id: transactionId,
         ts: Date.now(),
         organ_id: organId,
         event: 'TRANSPLANT_APPROVED' as EventType,
+        // The full bundle is stored for provenance: nightly checkups re-run
+        // the immune system on payload.bundle.
         payload_json: JSON.stringify({
           slotId,
           organName: bundle.manifest.name,
           manifest: bundle.manifest,
+          bundle,
         }),
-        prev_hash: '', // Will be computed by ledger service
+        prev_hash: prevHash,
       });
     } catch (error) {
       // Ledger write failed - rollback not needed (no state changed yet)
@@ -178,7 +186,8 @@ export class TransactionCoordinator {
         throw new Error(`Slot ${slotId} already has an organ`);
       }
 
-      // Create organ instance
+      // Create organ instance (with the approved HTML so the slot can render
+      // the live organ in its sandbox)
       const organInstance: OrganInstance = {
         id: organId,
         name: bundle.manifest.name,
@@ -187,7 +196,7 @@ export class TransactionCoordinator {
           version: bundle.manifest.version,
           apiVersion: bundle.manifest.apiVersion,
           permissions: bundle.manifest.permissions,
-          ports: bundle.manifest.ports.map(p => ({
+          ports: (bundle.manifest.ports ?? []).map(p => ({
             name: p.name,
             direction: p.direction,
             schema: p.schema,
@@ -196,6 +205,7 @@ export class TransactionCoordinator {
         },
         status: 'active',
         installedAt: new Date().toISOString(),
+        indexHtml: bundle.indexHtml,
       };
 
       // Update state atomically
@@ -281,6 +291,8 @@ export class TransactionCoordinator {
 
     // Write AMPUTATED ledger entry before state change (LED-02)
     try {
+      const prevHash = await getChainHeadHash(this.ledgerService);
+
       await this.ledgerService.append({
         id: transactionId,
         ts: Date.now(),
@@ -290,7 +302,7 @@ export class TransactionCoordinator {
           organName: organ.name,
           slotId: slot.id,
         }),
-        prev_hash: '', // Will be computed by ledger service
+        prev_hash: prevHash,
       });
     } catch (error) {
       return {
@@ -313,9 +325,15 @@ export class TransactionCoordinator {
         s.id === slot.id ? { ...s, organId: undefined } : s
       );
 
+      // Remove chimera links involving the removed organ (CHI-03)
+      const updatedLinks = state.chimeraLinks.filter(
+        l => l.sourceOrganId !== organId && l.targetOrganId !== organId
+      );
+
       this.store.setState({
         slots: updatedSlots,
         organs: updatedOrgans,
+        chimeraLinks: updatedLinks,
       });
 
       return {

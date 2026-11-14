@@ -39,7 +39,7 @@
   font-family: var(--font-heading);
   font-size: var(--text-2xl);
   font-weight: 600;
-  color: var(--color-bone);
+  color: var(--color-text-primary);
   letter-spacing: 0.1em;
 }
 
@@ -86,9 +86,9 @@
 
 /* Erratic heartbeat - attention needed (amber, irregular pulse) */
 .top-bar__ecg-line--erratic {
-  stroke: var(--color-brass);
+  stroke: var(--color-accent-light);
   animation: ecg-pulse-erratic 0.8s ease-in-out infinite;
-  filter: drop-shadow(0 0 2px var(--color-brass));
+  filter: drop-shadow(0 0 2px var(--color-accent-light));
 }
 
 /* Flatline - quarantined organ (red, flat line with alert) */
@@ -171,8 +171,8 @@
 }
 
 .top-bar__ecg-indicator--erratic {
-  background-color: var(--color-brass);
-  box-shadow: 0 0 4px var(--color-brass);
+  background-color: var(--color-accent-light);
+  box-shadow: 0 0 4px var(--color-accent-light);
 }
 
 .top-bar__ecg-indicator--flatline {
@@ -202,7 +202,7 @@
 }
 
 .top-bar__ecg-indicator--erratic + .top-bar__ecg-label {
-  color: var(--color-brass);
+  color: var(--color-accent-light);
 }
 
 .top-bar__ecg-indicator--flatline + .top-bar__ecg-label {
@@ -240,7 +240,7 @@
 
 .top-bar__stat--attention {
   background-color: rgba(176, 141, 87, 0.2);
-  color: var(--color-brass);
+  color: var(--color-accent-light);
   border: 1px solid rgba(176, 141, 87, 0.3);
 }
 

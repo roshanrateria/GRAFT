@@ -4,8 +4,8 @@
 
 ### Task 3.1: Doctor Interface
 - [x] Create `packages/doctor/src/types.ts` with DoctorProvider interface
-- [x] Create `packages/doctor/src/events.ts` with DoctorEvent types
-- [x] Create `packages/doctor/src/anatomy.ts` with Anatomy type
+- [x] Create `packages/doctor/src/events.ts` with DoctorEvent types (DoctorEvent is defined in packages/doctor/src/types.ts)
+- [x] Create `packages/doctor/src/anatomy.ts` with Anatomy type (Anatomy is defined in packages/doctor/src/types.ts)
 - [x] Write type tests
 
 ### Task 3.2: LLM Provider
@@ -31,25 +31,25 @@
 - [x] Verify DOC-05
 
 ### Task 3.5: Doctor Gateway
-- [ ] Create `apps/server/src/doctor/gateway.ts`
+- [ ] Create `apps/server/src/doctor/gateway.ts` (not created; provider selection and SSE live in apps/server/src/index.ts)
 - [x] Implement provider selection via `DOCTOR_PROVIDER` env (llm | crew | replay)
-- [ ] Implement streaming endpoint (WebSocket or SSE)
+- [x] Implement streaming endpoint (WebSocket or SSE) (SSE at POST /api/doctor/wish in apps/server/src/index.ts)
 - [x] Add event logging (via LLM adapter)
-- [ ] Write tests
+- [ ] Write tests (no server-side tests for the wish endpoint)
 
 ### Task 3.6: Doctor UI Components
-- [ ] Create `apps/web/src/DoctorNotes.tsx` for case file display
-- [ ] Create `apps/web/src/WishInput.tsx` for wish submission
-- [ ] Create `apps/web/src/ConsentDialog.tsx` for transplant approval
-- [ ] Implement event streaming consumption
-- [ ] Write component tests
+- [x] Create `apps/web/src/DoctorNotes.tsx` for case file display (at apps/web/src/components/DoctorNotes.tsx)
+- [x] Create `apps/web/src/WishInput.tsx` for wish submission (wish input is part of DoctorNotes.tsx; no separate file)
+- [x] Create `apps/web/src/ConsentDialog.tsx` for transplant approval (at apps/web/src/components/ConsentDialog.tsx)
+- [x] Implement event streaming consumption
+- [x] Write component tests (DoctorNotes.test.tsx, ChartPanel.test.tsx)
 
 ### Task 3.7: Demo Wish Recordings
-- [ ] Record replay for wish 1: "Show a graph of my mood this month"
-- [ ] Record replay for wish 2: "Count overdue tasks"
-- [ ] Record replay for wish 3: "Show habits when mood is high"
-- [ ] Record replay for hostile wish
-- [ ] Save to `fixtures/replays/`
+- [x] Record replay for wish 1: "Show a graph of my mood this month" (fixtures/replays/mood-graph.json)
+- [x] Record replay for wish 2: "Count overdue tasks" (fixtures/replays/task-counter.json)
+- [ ] Record replay for wish 3: "Show habits when mood is high" (no habits fixture exists)
+- [x] Record replay for hostile wish (fixtures/replays/hostile-attempt.json)
+- [x] Save to `fixtures/replays/`
 
 ## Dependencies
 
@@ -62,11 +62,13 @@
 - [x] DOC-01: Spec with ≤8 requirements before build
 - [x] DOC-02: ≥3 properties per organ
 - [x] DOC-03: Max 2 repair rounds (repair-loop.ts implemented)
-- [ ] DOC-04: Never install without consent click (UI pending)
-- [x] DOC-05: Replay labeled in UI
-- [ ] 3 demo wishes pass live (requires LLM_API_KEY)
+- [x] DOC-04: Never install without consent click (UI pending) (ConsentDialog Transplant button; live e2e not re-run)
+- [ ] DOC-05: Replay labeled in UI (provider and server mark _replay, but the web UI shows no REPLAY badge)
+- [ ] 3 demo wishes pass live (requires LLM_API_KEY) (docs/wish-trial-results.json: wishes 1 and 3 passed, wish 2 (count overdue tasks) failed at build in the recorded run)
 
 ## Phase 3 Status (2026-11-10)
+
+_Historical snapshot. The checkboxes above and docs/STATUS.md reflect the verified current state._
 
 **Completed:**
 - ✅ Task 3.1-3.4: Doctor interface and providers (llm, crew stub, replay)

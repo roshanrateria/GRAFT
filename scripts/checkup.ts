@@ -1,9 +1,14 @@
-#!/usr/bin/env ts-node
+#!/usr/bin/env tsx
 /**
- * Re-verify all installed organs
+ * Re-verify all installed organs (Graft Checkup)
  *
- * This script is a thin wrapper around the nightly-checkup.ts script.
- * It exists for backwards compatibility and convenience.
+ * Scans the ledger for installed organs (TRANSPLANT_APPROVED without an
+ * AMPUTATED follow-up) and re-runs the full immune system on each stored
+ * bundle, writing CHECKUP_PASS / CHECKUP_FAIL entries back to the ledger.
+ *
+ * This is the "decay sweep": an organ that passed its transplant-time checks
+ * may fail today if its environment changed (API version drift, behavioral
+ * flakiness, property regressions).
  *
  * Triggered by:
  * - Scheduled by Crew bot (kirocrew cron)
@@ -21,32 +26,44 @@
  *   2 - Checkup script error (configuration issue)
  */
 
-// Re-export and run the nightly checkup
-import './nightly-checkup.js';
+import { homedir } from 'node:os';
+import { existsSync, mkdirSync, writeFileSync } from 'node:fs';
+import { dirname, resolve } from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+// Immune system (real verification, same as transplant gate)
+import { runImmuneSystem } from '../packages/immune/src/orchestrator.js';
+import type { ImmuneReport } from '../packages/immune/src/types.js';
+
+// Ledger
+import { SQLiteLedgerService } from '../apps/server/src/db/ledger.js';
+import { EventType, type Entry, GENESIS_PREV_HASH } from '../packages/ledger/src/index.js';
 
 // ============================================================================
 // Types
 // ============================================================================
 
-interface Organ {
+interface OrganBundle {
+  manifest: {
+    name: string;
+    version: string;
+    apiVersion: string;
+    permissions: string[];
+    ports: Array<{ name: string; direction: 'in' | 'out'; schema: Record<string, unknown> }>;
+    slotSize: 'small' | 'medium' | 'large';
+  };
+  indexHtml: string;
+  spec?: string;
+  properties?: string;
+}
+
+interface InstalledOrgan {
   id: string;
   name: string;
-  bundle: {
-    manifest: {
-      name: string;
-      version: string;
-      apiVersion: string;
-      permissions: string[];
-      ports: Array<{ name: string; direction: 'in' | 'out'; schema: Record<string, unknown> }>;
-      slotSize: 'small' | 'medium' | 'large';
-    };
-    indexHtml: string;
-    spec?: string;
-    properties?: string;
-  };
+  bundle: OrganBundle;
   installedAt: number;
   lastCheckup?: number;
-  status: 'healthy' | 'decayed' | 'quarantined';
+  status: 'active' | 'decayed' | 'quarantined';
 }
 
 interface CheckupResult {
@@ -56,6 +73,7 @@ interface CheckupResult {
   stage?: string;
   reason?: string;
   timestamp: number;
+  report?: ImmuneReport;
 }
 
 interface CheckupReport {
@@ -65,121 +83,207 @@ interface CheckupReport {
     total: number;
     passed: number;
     failed: number;
+    skipped: number;
+  };
+  config: {
+    dryRun: boolean;
+    organId?: string;
+    database: string;
   };
 }
 
 // ============================================================================
-// Organ Registry (Stub - would connect to actual registry)
+// Configuration
 // ============================================================================
 
-/**
- * Get all installed organs from the registry.
- * In production, this would query the actual organ registry.
- */
-async function getInstalledOrgans(): Promise<Organ[]> {
-  // Stub: In production, this would:
-  // 1. Connect to the Creature's registry (Zustand store or API)
-  // 2. Return all organs with status 'healthy' or 'decayed'
-  // 3. Exclude 'quarantined' organs (already hidden)
+// Database path - use environment or default
+const DB_PATH = process.env.GRAFT_DB ?? resolve(homedir(), '.graft', 'graft.db');
+const LOG_DIR = resolve(process.cwd(), 'logs');
 
-  console.log('Fetching installed organs from registry...');
-
-  // Placeholder: Return empty array
-  // The actual implementation would look like:
-  // const response = await fetch('http://localhost:3000/api/organs');
-  // const organs = await response.json();
-  // return organs.filter(o => o.status !== 'quarantined');
-
-  return [];
-}
-
-/**
- * Write checkup result to ledger.
- */
-async function writeLedgerEntry(organId: string, result: 'pass' | 'fail', details?: { stage?: string; reason?: string }): Promise<void> {
-  // Stub: In production, this would:
-  // 1. Compute hash of previous entry + new data
-  // 2. Append to ledger table in SQLite
-  // 3. Include: timestamp, event_type (CHECKUP_PASS/CHECKUP_FAIL), organ_id, payload
-
-  const eventType = result === 'pass' ? 'CHECKUP_PASS' : 'CHECKUP_FAIL';
-  console.log(`  Ledger: ${eventType} for ${organId}`);
-
-  // The actual implementation would look like:
-  // const ledger = new SQLiteLedgerService(db);
-  // await ledger.append({
-  //   id: generateId(),
-  //   ts: Date.now(),
-  //   event: eventType,
-  //   organ_id: organId,
-  //   payload_json: JSON.stringify(details || {}),
-  // });
+/** Parse CLI flags (--dry-run, --organ <id>) */
+function parseArgs(argv: string[]): { dryRun: boolean; organId?: string } {
+  const dryRun = argv.includes('--dry-run');
+  const organIdx = argv.indexOf('--organ');
+  const organId = organIdx !== -1 ? argv[organIdx + 1] : undefined;
+  return { dryRun, organId };
 }
 
 // ============================================================================
-// Immune System Integration (Stub - would import actual immune system)
+// Organ Registry
 // ============================================================================
 
 /**
- * Run immune system verification on an organ bundle.
- *
- * This is the non-LLM verification that checks:
- * - Stage 1: Static analysis (banned constructs, CSP compliance)
- * - Stage 2: Manifest validation (permissions, ports, schema)
- * - Stage 3: Behavioral verification (runtime simulation)
- * - Stage 4: Property fuzzing (fast-check invariants)
+ * Get all installed organs from the ledger.
+ * An organ is "installed" if it has a TRANSPLANT_APPROVED event whose payload
+ * contains the approved bundle, and no AMPUTATED event afterwards.
  */
-async function runImmuneSystem(bundle: Organ['bundle']): Promise<{
-  pass: boolean;
-  failedStage?: string;
-  reason?: string;
-}> {
-  // Stub: In production, this would:
-  // 1. Import the immune system orchestrator
-  // 2. Run all 4 stages
-  // 3. Return the result
+async function getInstalledOrgans(ledger: SQLiteLedgerService): Promise<InstalledOrgan[]> {
+  const entries = await ledger.getHistory();
 
-  console.log('  Running immune system verification...');
+  // Find all transplanted organs
+  const transplanted = new Map<string, { entry: Entry; bundle: OrganBundle }>();
 
-  // The actual implementation would look like:
-  // import { runImmuneSystem } from '@graft/immune';
-  // const report = await runImmuneSystem(bundle);
-  // return { pass: report.pass, failedStage: report.failedStage, reason: report.reason };
+  for (const entry of entries) {
+    if (entry.event === EventType.TRANSPLANT_APPROVED && entry.organ_id) {
+      try {
+        const payload = JSON.parse(entry.payload_json);
+        if (payload?.bundle?.manifest) {
+          transplanted.set(entry.organ_id, { entry, bundle: payload.bundle });
+        }
+      } catch (e) {
+        console.error(`Failed to parse transplant payload for ${entry.organ_id}:`, e);
+      }
+    }
+  }
 
-  // For now, return pass (no organs to check)
-  return { pass: true };
+  // Remove amputated organs
+  for (const entry of entries) {
+    if (entry.event === EventType.AMPUTATED && entry.organ_id) {
+      transplanted.delete(entry.organ_id);
+    }
+  }
+
+  // Find last checkup for each organ
+  const lastCheckups = new Map<string, { pass: boolean; timestamp: number }>();
+  for (const entry of entries) {
+    if (
+      (entry.event === EventType.CHECKUP_PASS || entry.event === EventType.CHECKUP_FAIL) &&
+      entry.organ_id
+    ) {
+      const existing = lastCheckups.get(entry.organ_id);
+      if (!existing || entry.ts > existing.timestamp) {
+        lastCheckups.set(entry.organ_id, {
+          pass: entry.event === EventType.CHECKUP_PASS,
+          timestamp: entry.ts,
+        });
+      }
+    }
+  }
+
+  // Build result
+  const organs: InstalledOrgan[] = [];
+
+  for (const [id, data] of transplanted) {
+    const lastCheckup = lastCheckups.get(id);
+
+    organs.push({
+      id,
+      name: data.bundle.manifest?.name ?? 'Unknown',
+      bundle: data.bundle,
+      installedAt: data.entry.ts,
+      lastCheckup: lastCheckup?.timestamp,
+      status: lastCheckup && !lastCheckup.pass ? 'decayed' : 'active',
+    });
+  }
+
+  return organs;
+}
+
+// ============================================================================
+// Ledger Entry Writer
+// ============================================================================
+
+/**
+ * Write a checkup result to the ledger, chaining from the current head.
+ */
+async function writeCheckupEntry(
+  ledger: SQLiteLedgerService,
+  organId: string,
+  passed: boolean,
+  details?: { stage?: string; reason?: string; report?: ImmuneReport }
+): Promise<Entry> {
+  const lastEntry = (await ledger.getHistory()).pop();
+  const prevHash = lastEntry?.hash ?? GENESIS_PREV_HASH;
+
+  const entry: Omit<Entry, 'hash'> = {
+    id: `checkup-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
+    ts: Date.now(),
+    organ_id: organId,
+    event: passed ? EventType.CHECKUP_PASS : EventType.CHECKUP_FAIL,
+    payload_json: JSON.stringify({
+      stage: details?.stage,
+      reason: details?.reason,
+      report: details?.report
+        ? {
+            passed: details.report.passed,
+            stages: details.report.stages,
+          }
+        : undefined,
+    }),
+    prev_hash: prevHash,
+  };
+
+  return ledger.append(entry);
 }
 
 // ============================================================================
 // Checkup Main
 // ============================================================================
 
-async function checkup(): Promise<CheckupReport> {
+async function runCheckup(options: { dryRun: boolean; organId?: string }): Promise<CheckupReport> {
+  const timestamp = Date.now();
+
   console.log('========================================');
   console.log('GRAFT Organ Checkup');
   console.log('========================================');
   console.log('');
   console.log('Timestamp:', new Date().toISOString());
+  console.log('Mode:', options.dryRun ? 'DRY RUN (no ledger writes)' : 'LIVE');
+  if (options.organId) {
+    console.log('Filter: Organ', options.organId);
+  }
   console.log('');
 
-  // 1. Get all installed organs
-  const organs = await getInstalledOrgans();
+  // Initialize ledger
+  let ledger: SQLiteLedgerService;
+  try {
+    // Ensure database directory exists
+    const dbDir = dirname(DB_PATH);
+    if (!existsSync(dbDir)) {
+      mkdirSync(dbDir, { recursive: true });
+    }
+
+    ledger = new SQLiteLedgerService(DB_PATH);
+    console.log('Database:', DB_PATH);
+  } catch (error) {
+    console.error('Failed to initialize ledger:', error);
+    throw error;
+  }
+
+  // Get installed organs
+  let organs: InstalledOrgan[];
+  try {
+    organs = await getInstalledOrgans(ledger);
+
+    if (options.organId) {
+      organs = organs.filter(o => o.id === options.organId);
+    }
+  } catch (error) {
+    console.error('Failed to get installed organs:', error);
+    throw error;
+  }
 
   if (organs.length === 0) {
     console.log('No organs installed.');
     console.log('');
     console.log('Checkup complete: No organs to verify.');
+
     return {
-      timestamp: Date.now(),
+      timestamp,
       results: [],
-      summary: { total: 0, passed: 0, failed: 0 },
+      summary: { total: 0, passed: 0, failed: 0, skipped: 0 },
+      config: {
+        dryRun: options.dryRun,
+        organId: options.organId,
+        database: DB_PATH,
+      },
     };
   }
 
   console.log(`Found ${organs.length} installed organ(s).`);
   console.log('');
 
-  // 2. Run immune system on each organ
+  // Run immune system on each organ
   const results: CheckupResult[] = [];
 
   for (const organ of organs) {
@@ -188,46 +292,80 @@ async function checkup(): Promise<CheckupReport> {
     console.log(`  Last checkup: ${organ.lastCheckup ? new Date(organ.lastCheckup).toISOString() : 'Never'}`);
     console.log(`  Status: ${organ.status}`);
 
-    const immuneResult = await runImmuneSystem(organ.bundle);
+    let immuneReport: ImmuneReport;
+    try {
+      immuneReport = await runImmuneSystem(organ.bundle);
+    } catch (error) {
+      console.error('  Immune system error:', error);
+      immuneReport = {
+        passed: false,
+        stages: [],
+        rejection: {
+          stage: 'property',
+          reasonCode: 'CHECKUP_ERROR',
+          message: error instanceof Error ? error.message : String(error),
+        },
+        timestamp: Date.now(),
+      };
+    }
 
     const result: CheckupResult = {
       organId: organ.id,
       organName: organ.name,
-      pass: immuneResult.pass,
-      stage: immuneResult.failedStage,
-      reason: immuneResult.reason,
+      pass: immuneReport.passed,
+      stage: immuneReport.rejection?.stage,
+      reason: immuneReport.rejection?.message,
       timestamp: Date.now(),
+      report: immuneReport,
     };
 
     results.push(result);
 
-    if (immuneResult.pass) {
+    if (immuneReport.passed) {
       console.log('  ✓ PASSED');
-      await writeLedgerEntry(organ.id, 'pass');
     } else {
-      console.log(`  ✗ FAILED at stage: ${immuneResult.failedStage}`);
-      console.log(`    Reason: ${immuneResult.reason}`);
-      await writeLedgerEntry(organ.id, 'fail', {
-        stage: immuneResult.failedStage,
-        reason: immuneResult.reason,
-      });
+      console.log(`  ✗ FAILED at stage: ${immuneReport.rejection?.stage}`);
+      console.log(`    Reason: ${immuneReport.rejection?.message}`);
+      if (immuneReport.rejection?.source) {
+        console.log(`    Source: ${immuneReport.rejection.source.file}:${immuneReport.rejection.source.line}`);
+      }
+    }
+
+    // Write to ledger (unless dry run)
+    if (!options.dryRun) {
+      try {
+        await writeCheckupEntry(ledger, organ.id, immuneReport.passed, {
+          stage: result.stage,
+          reason: result.reason,
+          report: immuneReport,
+        });
+        console.log('  Ledger entry written');
+      } catch (error) {
+        console.error('  Failed to write ledger entry:', error);
+      }
     }
 
     console.log('');
   }
 
-  // 3. Generate summary
+  // Generate summary
   const report: CheckupReport = {
-    timestamp: Date.now(),
+    timestamp,
     results,
     summary: {
       total: results.length,
       passed: results.filter(r => r.pass).length,
       failed: results.filter(r => !r.pass).length,
+      skipped: 0,
+    },
+    config: {
+      dryRun: options.dryRun,
+      organId: options.organId,
+      database: DB_PATH,
     },
   };
 
-  // 4. Print summary
+  // Print summary
   console.log('========================================');
   console.log('Checkup Summary');
   console.log('========================================');
@@ -236,32 +374,49 @@ async function checkup(): Promise<CheckupReport> {
   console.log(`Failed: ${report.summary.failed}`);
   console.log('');
 
-  // 5. Exit with appropriate code
-  if (report.summary.failed > 0) {
-    console.log('⚠ Some organs failed checkup.');
-    console.log('Doctor will propose healing patches for decayed organs.');
-    console.log('');
-    process.exit(1);
+  // Write report to file
+  if (!existsSync(LOG_DIR)) {
+    mkdirSync(LOG_DIR, { recursive: true });
   }
 
-  console.log('✓ All organs healthy.');
-  process.exit(0);
+  const reportPath = resolve(LOG_DIR, `checkup-${timestamp}.json`);
+  try {
+    writeFileSync(reportPath, JSON.stringify(report, null, 2));
+    console.log('Report written to:', reportPath);
+  } catch (error) {
+    console.error('Failed to write report file:', error);
+  }
+
+  return report;
 }
 
 // ============================================================================
-// Run Checkup
+// Entry Point
 // ============================================================================
 
-checkup().catch(error => {
-  console.error('');
-  console.error('========================================');
-  console.error('Checkup Error');
-  console.error('========================================');
-  console.error('');
-  console.error('An error occurred during checkup:');
-  console.error(error instanceof Error ? error.message : String(error));
-  console.error('');
-  console.error('This may indicate a configuration issue.');
-  console.error('Please check the GRAFT setup and try again.');
-  process.exit(2);
-});
+async function main(): Promise<number> {
+  const options = parseArgs(process.argv.slice(2));
+
+  try {
+    const report = await runCheckup(options);
+    return report.summary.failed > 0 ? 1 : 0;
+  } catch (error) {
+    console.error('Checkup failed with error:', error);
+    return 2;
+  }
+}
+
+// Run when executed directly
+const isDirectRun =
+  process.argv[1] !== undefined &&
+  resolve(process.argv[1]) === fileURLToPath(import.meta.url);
+
+if (isDirectRun) {
+  main().then(code => {
+    process.exit(code);
+  });
+}
+
+// Also export for programmatic use (e.g. demo fast-forward button)
+export { runCheckup, getInstalledOrgans, writeCheckupEntry, parseArgs };
+export type { CheckupReport, CheckupResult, InstalledOrgan };
